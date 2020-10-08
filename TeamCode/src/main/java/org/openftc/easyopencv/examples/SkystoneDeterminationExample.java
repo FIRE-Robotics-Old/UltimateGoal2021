@@ -324,8 +324,7 @@ public class SkystoneDeterminationExample extends LinearOpMode
                         GREEN, // The color the rectangle is drawn in
                         -1); // Negative thickness means solid fill
             }
-            else if(max == avg3) // Was it from region 3?
-            {
+            else {
                 position = SkystonePosition.RIGHT; // Record our analysis
 
                 /*

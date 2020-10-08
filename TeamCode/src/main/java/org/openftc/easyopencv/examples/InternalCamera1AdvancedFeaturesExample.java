@@ -39,8 +39,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
  * by the {@link OpenCvInternalCamera} interface
  */
 @TeleOp
-public class InternalCamera1AdvancedFeaturesExample extends LinearOpMode
-{
+public class InternalCamera1AdvancedFeaturesExample extends LinearOpMode {
     /**
      * NB: we declare our camera as the {@link OpenCvInternalCamera} type,
      * as opposed to simply {@link OpenCvCamera}. This allows us to access
@@ -49,8 +48,7 @@ public class InternalCamera1AdvancedFeaturesExample extends LinearOpMode
     OpenCvInternalCamera phoneCam;
 
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         /**
          * NOTE: Many comments have been omitted from this sample for the
          * sake of conciseness. If you're just starting out with EasyOpenCV,
@@ -58,8 +56,15 @@ public class InternalCamera1AdvancedFeaturesExample extends LinearOpMode
          * webcam counterpart, {@link WebcamExample} first.
          */
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "cameraMonitorViewId",
+                "id",
+                hardwareMap.appContext.getPackageName()
+        );
+        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(
+                OpenCvInternalCamera.CameraDirection.BACK,
+                cameraMonitorViewId
+        );
         phoneCam.openCameraDevice();
         phoneCam.setPipeline(new UselessColorBoxDrawingPipeline(new Scalar(255, 0, 0)));
 

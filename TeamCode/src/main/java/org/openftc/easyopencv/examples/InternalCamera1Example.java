@@ -34,6 +34,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import java.util.Locale;
+
 /*
  * This version of the internal camera example uses EasyOpenCV's interface to the
  * original Android camera API
@@ -44,8 +46,7 @@ public class InternalCamera1Example extends LinearOpMode
     OpenCvCamera phoneCam;
 
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         /*
          * Instantiate an OpenCvCamera object for the camera we'll be using.
          * In this sample, we're using the phone's internal camera. We pass it a
@@ -54,8 +55,14 @@ public class InternalCamera1Example extends LinearOpMode
          * the RC phone). If no camera monitor is desired, use the alternate
          * single-parameter constructor instead (commented out below)
          */
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "cameraMonitorViewId",
+                "id",
+                hardwareMap.appContext.getPackageName()
+        );
+        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(
+                OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId
+        );
 
         // OR...  Do Not Activate the Camera Monitor View
         //phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK);
@@ -76,8 +83,7 @@ public class InternalCamera1Example extends LinearOpMode
          *
          * If you really want to open synchronously, the old method is still available.
          */
-        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened()
             {
@@ -104,17 +110,16 @@ public class InternalCamera1Example extends LinearOpMode
          */
         waitForStart();
 
-        while (opModeIsActive())
-        {
+        while (opModeIsActive()) {
             /*
              * Send some stats to the telemetry
              */
-            telemetry.addData("Frame Count", phoneCam.getFrameCount());
-            telemetry.addData("FPS", String.format("%.2f", phoneCam.getFps()));
-            telemetry.addData("Total frame time ms", phoneCam.getTotalFrameTimeMs());
-            telemetry.addData("Pipeline time ms", phoneCam.getPipelineTimeMs());
-            telemetry.addData("Overhead time ms", phoneCam.getOverheadTimeMs());
-            telemetry.addData("Theoretical max FPS", phoneCam.getCurrentPipelineMaxFps());
+            telemetry.addData("Frame Count", phoneCam.getFrameCount()                          );
+            telemetry.addData("FPS", String.format(  Locale.ENGLISH, "%.2f", phoneCam.getFps()));
+            telemetry.addData("Total frame time ms", phoneCam.getTotalFrameTimeMs()            );
+            telemetry.addData("Pipeline time ms", phoneCam.getPipelineTimeMs()                 );
+            telemetry.addData("Overhead time ms", phoneCam.getOverheadTimeMs()                 );
+            telemetry.addData("Theoretical max FPS", phoneCam.getCurrentPipelineMaxFps()       );
             telemetry.update();
 
             /*
@@ -122,8 +127,7 @@ public class InternalCamera1Example extends LinearOpMode
              * when it will be automatically stopped for you) *IS* supported. The "if" statement
              * below will stop streaming from the camera when the "A" button on gamepad 1 is pressed.
              */
-            if(gamepad1.a)
-            {
+            if (gamepad1.a) {
                 /*
                  * IMPORTANT NOTE: calling stopStreaming() will indeed stop the stream of images
                  * from the camera (and, by extension, stop calling your vision pipeline). HOWEVER,
@@ -171,8 +175,7 @@ public class InternalCamera1Example extends LinearOpMode
      * if you're doing something weird where you do need it synchronized with your OpMode thread,
      * then you will need to account for that accordingly.
      */
-    class SamplePipeline extends OpenCvPipeline
-    {
+    class SamplePipeline extends OpenCvPipeline {
         boolean viewportPaused = false;
 
         /*
@@ -185,8 +188,7 @@ public class InternalCamera1Example extends LinearOpMode
          */
 
         @Override
-        public Mat processFrame(Mat input)
-        {
+        public Mat processFrame(Mat input) {
             /*
              * IMPORTANT NOTE: the input Mat that is passed in as a parameter to this method
              * will only dereference to the same image for the duration of this particular
@@ -201,11 +203,11 @@ public class InternalCamera1Example extends LinearOpMode
             Imgproc.rectangle(
                     input,
                     new Point(
-                            input.cols()/4,
-                            input.rows()/4),
+                            input.cols() / 4,
+                            input.rows() / 4),
                     new Point(
-                            input.cols()*(3f/4f),
-                            input.rows()*(3f/4f)),
+                            input.cols() * (3f/4f),
+                            input.rows() * (3f/4f) ),
                     new Scalar(0, 255, 0), 4);
 
             /**
@@ -218,8 +220,7 @@ public class InternalCamera1Example extends LinearOpMode
         }
 
         @Override
-        public void onViewportTapped()
-        {
+        public void onViewportTapped() {
             /*
              * The viewport (if one was specified in the constructor) can also be dynamically "paused"
              * and "resumed". The primary use case of this is to reduce CPU, memory, and power load
@@ -234,12 +235,9 @@ public class InternalCamera1Example extends LinearOpMode
 
             viewportPaused = !viewportPaused;
 
-            if(viewportPaused)
-            {
+            if (viewportPaused) {
                 phoneCam.pauseViewport();
-            }
-            else
-            {
+            } else {
                 phoneCam.resumeViewport();
             }
         }
