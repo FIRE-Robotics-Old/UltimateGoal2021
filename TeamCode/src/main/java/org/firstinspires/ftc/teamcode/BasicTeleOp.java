@@ -26,8 +26,8 @@ public class BasicTeleOp extends LinearOpMode {
         bR = hardwareMap.dcMotor.get("backRightMotor");
 
         fL.setDirection(DcMotor.Direction.FORWARD);
-        fR.setDirection(DcMotor.Direction.FORWARD);
-        bL.setDirection(DcMotor.Direction.REVERSE);
+        fR.setDirection(DcMotor.Direction.REVERSE);
+        bL.setDirection(DcMotor.Direction.FORWARD);
         bR.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
