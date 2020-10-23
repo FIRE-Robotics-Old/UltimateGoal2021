@@ -65,8 +65,12 @@ public class Hardware {
         backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeftMotor.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //Turn off all motors
+        frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeftMotor.setZeroPowerBehavior (DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftMotor.setZeroPowerBehavior (DcMotor.ZeroPowerBehavior.BRAKE);
 
+        //Turn off all motors
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower (0);
         backRightMotor.setPower(0);
