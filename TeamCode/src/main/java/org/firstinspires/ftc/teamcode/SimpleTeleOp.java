@@ -16,15 +16,15 @@ public class SimpleTeleOp extends LinearOpMode {
     public DcMotor backLeftMotor;
     public DcMotor backRightMotor;
 
-           boolean up              = gamepad1.dpad_up;
-           boolean right           = gamepad1.dpad_right;
-           boolean down            = gamepad1.dpad_down;
-           boolean left            = gamepad1.dpad_left;
+           boolean up              = false;
+           boolean right           = false;
+           boolean down            = false;
+           boolean left            = false;
 
            double  speed           = 0.3;
            double  still           = 0;
 
-           int     currentButton   = 0;
+           int     currentButton   = 4; //none
 
     @Override
              public void runOpMode() throws InterruptedException {
@@ -33,10 +33,10 @@ public class SimpleTeleOp extends LinearOpMode {
         backLeftMotor   = hardwareMap.dcMotor.get("backLeftMotor"  );
         backRightMotor  = hardwareMap.dcMotor.get("backRightMotor" );
 
-        frontLeftMotor.setDirection (DcMotor.Direction.FORWARD);
-        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        backLeftMotor.setDirection (DcMotor.Direction.FORWARD);
-        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftMotor.setDirection (DcMotor.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        backLeftMotor.setDirection (DcMotor.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
 
 
         //Set Zero Power Behavior To All Motors
@@ -50,6 +50,10 @@ public class SimpleTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            up              = gamepad1.dpad_up;
+            right           = gamepad1.dpad_right;
+            down            = gamepad1.dpad_down;
+            left            = gamepad1.dpad_left;
 
             if (up) {
                 frontLeftMotor.setPower (speed);
@@ -57,19 +61,19 @@ public class SimpleTeleOp extends LinearOpMode {
                 backLeftMotor.setPower (speed);
                 backRightMotor.setPower(speed);
             } else if (right) {
-                frontLeftMotor.setPower (speed);
+                frontLeftMotor.setPower (-1*speed);
                 frontRightMotor.setPower(speed);
                 backLeftMotor.setPower (speed);
-                backRightMotor.setPower(speed);
+                backRightMotor.setPower(-1*speed);
             } else if (down) {
-                frontLeftMotor.setPower (speed);
-                frontRightMotor.setPower(speed);
-                backLeftMotor.setPower (speed);
-                backRightMotor.setPower(speed);
+                frontLeftMotor.setPower (-1*speed);
+                frontRightMotor.setPower(-1*speed);
+                backLeftMotor.setPower (-1*speed);
+                backRightMotor.setPower(-1*speed);
             } else if (left) {
                 frontLeftMotor.setPower (speed);
-                frontRightMotor.setPower(speed);
-                backLeftMotor.setPower (speed);
+                frontRightMotor.setPower(-1*speed);
+                backLeftMotor.setPower (-1*speed);
                 backRightMotor.setPower(speed);
             } else {
                 //Set Zero Power Behavior To All Motors
@@ -119,11 +123,13 @@ public class SimpleTeleOp extends LinearOpMode {
 }
 
              */
+    //Priorities latest button pressed in favor of left or in favor of up?
 
     public int directionPriority() {
 
         boolean[] status = {up, right, down, left};
         for(int num = 0; num < 3; num ++) {
+            //If currentButton does not = num and status index num is true reassign
 
         }
         return 0;
