@@ -33,15 +33,15 @@ public class Hardware {
      * @param hwMap is the hardware map
      */
 
-    public void init(HardwareMap hwMap){
+    public void init(HardwareMap hwMap) {
         this.hwMap = hwMap;
         //imu set up parameters
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.angleUnit                        = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit                        = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile              = "BNO055IMUCalibration.json";
+        parameters.loggingEnabled                   = true;
+        parameters.loggingTag                       = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         //Parts in hardware map
@@ -71,6 +71,32 @@ public class Hardware {
         frontLeftMotor.setPower(0);
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
+        frontLeftMotor  = hwMap.get(DcMotor.class, "frontLeftMotor" );
+        frontRightMotor = hwMap.get(DcMotor.class, "frontRightMotor");
+        backLeftMotor   = hwMap.get(DcMotor.class, "backLeftMotor"  );
+        backRightMotor  = hwMap.get(DcMotor.class, "backRightMotor" );
+
+        //Motor Directions
+        frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontLeftMotor.setDirection (DcMotorSimple.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeftMotor.setDirection (DcMotorSimple.Direction.REVERSE);
+
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeftMotor.setZeroPowerBehavior (DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftMotor.setZeroPowerBehavior (DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //Turn off all motors
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower (0);
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower (0);
     }
 
 }
