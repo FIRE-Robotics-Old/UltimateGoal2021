@@ -55,22 +55,24 @@ public class SimpleTeleOp extends LinearOpMode {
             down            = gamepad1.dpad_down;
             left            = gamepad1.dpad_left;
 
-            if (up) {
+            directionPriority(); //updates the current button
+
+            if (currentButton == 0) {
                 frontLeftMotor.setPower (speed);
                 frontRightMotor.setPower(speed);
                 backLeftMotor.setPower (speed);
                 backRightMotor.setPower(speed);
-            } else if (right) {
+            } else if (currentButton == 1) {
                 frontLeftMotor.setPower (-1*speed);
                 frontRightMotor.setPower(speed);
                 backLeftMotor.setPower (speed);
                 backRightMotor.setPower(-1*speed);
-            } else if (down) {
+            } else if (currentButton == 2) {
                 frontLeftMotor.setPower (-1*speed);
                 frontRightMotor.setPower(-1*speed);
                 backLeftMotor.setPower (-1*speed);
                 backRightMotor.setPower(-1*speed);
-            } else if (left) {
+            } else if (currentButton == 3) {
                 frontLeftMotor.setPower (speed);
                 frontRightMotor.setPower(-1*speed);
                 backLeftMotor.setPower (-1*speed);
@@ -125,14 +127,22 @@ public class SimpleTeleOp extends LinearOpMode {
              */
     //Priorities latest button pressed in favor of left or in favor of up?
 
-    public int directionPriority() {
+    public void directionPriority() {
 
         boolean[] status = {up, right, down, left};
-        for(int num = 0; num < 3; num ++) {
+        for (int num = 0; num < 4; num++) {
             //If currentButton does not = num and status index num is true reassign
+            if (currentButton != num && status[num] == true) {
+                currentButton = num;
+            }
+
 
         }
-        return 0;
+        if (status[0] == false && status[1] == false && status[2] == false && status[3] == false){
+            currentButton = 4;
+        }
+
+
     }
 
 }
