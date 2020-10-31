@@ -4,7 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -55,6 +58,50 @@ public class HeightDetector {
     }
 
     static class RingHeightPipeline extends OpenCvPipeline {
+
+        public enum Height {
+            A, // No Rings
+            B, // 1 Ring
+            C  // 3 Rings
+        }
+
+        /**
+         * This is the minimum threshold for HSV Yellow which we will detect
+         */
+        static final Scalar YELLOW_MINIMUM = new Scalar(20, 100, 100); // Needs to be Fine Tuned
+        /**
+         * This is the maximum threshold for HSV Yellow which we will detect
+         */
+        static final Scalar YELLOW_MAXIMUM = new Scalar(35, 255, 255); // Needs to be Fine Tuned
+
+        /**
+         * This will store the value of the height of the stack to allow us to know where to move the robot.
+         */
+        private volatile Height height = Height.A;
+
+        Mat main, hsv, yellow, threshold;
+
+        /**
+         * Converts an RGB image to HSV and Calculates the Threshold Image to allow for yellow detection
+         *
+         * @param input The Input Frame to be Calculated From
+         */
+        void inputToHSV(Mat input) {
+            Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
+            Core.inRange(input, YELLOW_MINIMUM, YELLOW_MAXIMUM, threshold);
+        }
+
+        /**
+         * ProcessFrame takes each frame in the video to find the height of the stack
+         * <p>
+         * It first converts to HSV and processes the image to find all colors in a certain threshold.
+         * After that is done, it calculates the area of the yellow in the frame to find out which
+         * range it fits it, determining the height of the stack of rings and the position the robot
+         * needs to move to.
+         *
+         * @param input The frame to make calculations off of.
+         * @return A processed frame to display on the screen.
+         */
         @Override
         public Mat processFrame(Mat input) {
             return null;
