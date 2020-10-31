@@ -65,6 +65,7 @@ public class HeightDetector {
             C  // 3 Rings
         }
 
+        // TODO: NEED TO CALIBRATE
         /**
          * This is the minimum threshold for HSV Yellow which we will detect
          */
@@ -80,6 +81,10 @@ public class HeightDetector {
         private volatile Height height = Height.A;
 
         Mat main, hsv, yellow, threshold;
+
+        // TODO: NEED TO CALIBRATE
+        static double bMin = 100;
+        static double cMin = 200;
 
         /**
          * Converts an RGB image to HSV and Calculates the Threshold Image to allow for yellow detection
@@ -104,7 +109,28 @@ public class HeightDetector {
          */
         @Override
         public Mat processFrame(Mat input) {
-            return null;
+            // The first thing that this does is that it converts the input to HSV. The HSV colorspace
+            // Works much better for color detection as we can isolate all effect of light and solely
+            // Look at the hue, making color easy to calculate.
+            inputToHSV(input);
+
+            // Need to test if this works
+            double area = Imgproc.contourArea(threshold);
+
+            // Compare Size with min and max
+            if (area > cMin) {
+                height = Height.C;
+            } else if (area > bMin) {
+                height = Height.B;
+            } else {
+                height = Height.A;
+            }
+
+            return threshold;
+        }
+
+        public Height getHeight() {
+            return height;
         }
     }
 }
