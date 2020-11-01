@@ -80,7 +80,7 @@ public class HeightDetector {
          */
         private volatile Height height = Height.A;
 
-        Mat main, hsv, yellow, threshold;
+        Mat hsv, threshold;
 
         // TODO: NEED TO CALIBRATE
         static double bMin = 100;
