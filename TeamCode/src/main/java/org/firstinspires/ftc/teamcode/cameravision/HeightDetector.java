@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -13,6 +15,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HeightDetector {
     /**
@@ -23,6 +28,7 @@ public class HeightDetector {
      * refactored to use the webcam.
      */
     private OpenCvInternalCamera camera;
+    private RingHeightPipeline pipeline;
 
     /**
      * A Simple constructor which creates a Ring Height Detector Instance
@@ -48,13 +54,22 @@ public class HeightDetector {
                 OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId
         );
 
+        pipeline = new RingHeightPipeline();
+
         // Sets up the Camera to use the pipeline which detects the height of the rings
-        camera.setPipeline(new RingHeightPipeline());
+        camera.setPipeline(pipeline);
+
+        camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
 
         // Starts Streaming the Camera Contents to the phone
         camera.openCameraDeviceAsync(() ->
-                camera.startStreaming(640 /*320*/, 480 /*240*/, OpenCvCameraRotation.UPRIGHT)
+                camera.startStreaming(320 /*320*/, 240 /*240*/, OpenCvCameraRotation.UPRIGHT)
         );
+
+    }
+
+    public RingHeightPipeline.Height getHeight() {
+        return pipeline.getHeight();
     }
 
     static class RingHeightPipeline extends OpenCvPipeline {
@@ -80,7 +95,7 @@ public class HeightDetector {
          */
         private volatile Height height = Height.A;
 
-        Mat hsv, threshold;
+        Mat hsv = new Mat(), threshold = new Mat();
 
         // TODO: NEED TO CALIBRATE
         static double bMin = 100;
@@ -114,9 +129,15 @@ public class HeightDetector {
             // Look at the hue, making color easy to calculate.
             inputToHSV(input);
 
-            // Need to test if this works
-            double area = Imgproc.contourArea(threshold);
-
+            // TODO Test if new implementation works
+            List<MatOfPoint> contours = new ArrayList<>();
+            Mat hierarchy = new Mat();
+            Imgproc.findContours(threshold, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+            MatOfPoint cnt = (contours.size() == 2 ? contours.get(0) : contours.get(1));
+            double area = 0;
+            if (cnt.toArray().length != 0) {
+                area = Imgproc.contourArea(cnt);
+            }
             // Compare Size with min and max
             if (area > cMin) {
                 height = Height.C;
@@ -126,7 +147,7 @@ public class HeightDetector {
                 height = Height.A;
             }
 
-            return threshold;
+            return input;
         }
 
         public Height getHeight() {
