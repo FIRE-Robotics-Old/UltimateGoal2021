@@ -27,7 +27,7 @@ public class SimpleTeleOp extends LinearOpMode {
            int     currentButton   = 4; //none
 
     @Override
-             public void runOpMode() throws InterruptedException {
+     public void runOpMode() throws InterruptedException {
         frontLeftMotor  = hardwareMap.dcMotor.get("frontLeftMotor" );
         frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         backLeftMotor   = hardwareMap.dcMotor.get("backLeftMotor"  );

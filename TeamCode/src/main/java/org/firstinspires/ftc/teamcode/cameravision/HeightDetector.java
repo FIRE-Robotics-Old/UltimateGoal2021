@@ -65,7 +65,10 @@ public class HeightDetector {
         camera.openCameraDeviceAsync(() ->
                 camera.startStreaming(320 /*320*/, 240 /*240*/, OpenCvCameraRotation.UPRIGHT)
         );
+    }
 
+    public void stopStreaming() {
+        camera.stopStreaming();
     }
 
     public RingHeightPipeline.Height getHeight() {
