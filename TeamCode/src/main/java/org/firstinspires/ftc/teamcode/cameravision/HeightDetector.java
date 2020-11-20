@@ -60,7 +60,9 @@ public class HeightDetector {
         camera.setPipeline(pipeline);
 
         camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
+    }
 
+    public void startStreaming() {
         // Starts Streaming the Camera Contents to the phone
         camera.openCameraDeviceAsync(() ->
                 camera.startStreaming(320 /*320*/, 240 /*240*/, OpenCvCameraRotation.UPRIGHT)
