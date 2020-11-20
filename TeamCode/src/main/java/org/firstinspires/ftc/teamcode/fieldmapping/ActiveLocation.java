@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode.fieldmapping;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
- * The RealTimeLocation uses odometry to find the real-time location of the robot. This,
+ * The ActiveLocation uses odometry to find the real-time location of the robot. This,
  * along with a PathFinder, helps create a Field Mapping to allow us to accurately move to specific
  * positions in autonomous.
  */
-public class ActiveLocation{ // add implements Runnable{
+public class ActiveLocation { // add implements Runnable{
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
     private DcMotor backLeftMotor;
@@ -21,8 +21,10 @@ public class ActiveLocation{ // add implements Runnable{
         this.backRightMotor = backRightMotor;
     }
 
-    /**Figures out distance based on current encoder position over total ticks per rotation and muliplies it by circumfernce
-      * @param ticks
+    //TODO Write JavaDoc Comment
+    /**
+     * Figures out distance based on current encoder position over total ticks per rotation and muliplies it by circumfernce
+     * @param ticks
      * @param encoder
      * @return
      */
@@ -35,7 +37,4 @@ public class ActiveLocation{ // add implements Runnable{
 
         return ((distance/wheelCircumference)*tickPerRotation);
     }
-
-
-
 }
