@@ -2,16 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 @TeleOp
-(name="Basic TeleOp  ", group="Linear Opmode")
-
-public class BasicTeleOp extends LinearOpMode {
+(name="Basic Omnidirectional TeleOp", group="Linear Opmode")
+public class BasicOmnidirectionalTeleOp extends LinearOpMode {
 
     public DcMotor fL;
     public DcMotor fR;
@@ -19,7 +14,7 @@ public class BasicTeleOp extends LinearOpMode {
     public DcMotor bR;
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         fL = hardwareMap.dcMotor.get("frontLeftMotor");
         fR = hardwareMap.dcMotor.get("frontRightMotor");
         bL = hardwareMap.dcMotor.get("backLeftMotor");
@@ -45,8 +40,8 @@ public class BasicTeleOp extends LinearOpMode {
             };
 
             double max = Math.abs(speeds [0]);
-            for (int i = 0; i < speeds.length; i++) {
-                if (max < Math.abs(speeds[i])) max = Math.abs(speeds[i]);
+            for (double speed : speeds) {
+                if (max < Math.abs(speed)) max = Math.abs(speed);
             }
 
             if (max > 1) {

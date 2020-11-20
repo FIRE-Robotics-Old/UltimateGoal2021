@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name = "Simple TeleOp", group = "Basic TeleOp")
-public class SimpleTeleOp extends LinearOpMode {
+@TeleOp(name = "Simple Four Directional TeleOp", group = "Basic TeleOp")
+public class FourDirectionalTeleOp extends LinearOpMode {
 
     public DcMotor frontRightMotor;
     public DcMotor frontLeftMotor;
