@@ -39,7 +39,7 @@ public class BasicOmnidirectionalTeleOp extends LinearOpMode {
                     (drive + strafe - twist)
             };
 
-            double max = Math.abs(speeds [0]);
+            double max = Math.abs((speeds [0])*2);
             for (double speed : speeds) {
                 if (max < Math.abs(speed)) max = Math.abs(speed);
             }
