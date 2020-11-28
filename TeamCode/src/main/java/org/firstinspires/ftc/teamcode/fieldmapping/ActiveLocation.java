@@ -132,7 +132,7 @@ public class ActiveLocation implements Runnable { // add implements Runnable{
     /**
      * Gets the Robot's Position on the field on the X-Axis
      * 
-     * @return returns X postion on the field (mm)
+     * @return returns X position on the field (mm)
      */
     public double getFieldXPosition() {
         updateSensors();
