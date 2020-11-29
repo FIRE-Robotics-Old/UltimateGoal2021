@@ -15,7 +15,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.har
  * This, along with a PathFinder, helps create a Field Mapping to allow us to
  * accurately move to specific positions in autonomous.
  */
-public class ActiveLocation implements Runnable { // add implements Runnable{
+public final class ActiveLocation implements Runnable { // add implements Runnable{
 
     // Hardware setup
     Hardware robot = new Hardware();
