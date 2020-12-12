@@ -39,7 +39,7 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
     double fieldYPosition;
 
     // For stopping the thread
-    private volatile boolean stop = false;
+    private volatile boolean isRunning = true;
 
     // Static values for calculations
     final static double tickPerRotation = 8192;
@@ -123,7 +123,7 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
      * 
      * @return Returns the robot's Y position on the field (mm)
      */
-    public double getFieldYPosition() {
+    public double getFieldY() {
         updateSensors();
         findFieldPosition();
         return fieldYPosition;
@@ -134,7 +134,7 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
      * 
      * @return returns X position on the field (mm)
      */
-    public double getFieldXPosition() {
+    public double getFieldX() {
         updateSensors();
         findFieldPosition();
         return fieldXPosition;
@@ -153,7 +153,7 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
      * Sets up the thread to stop
      */
     public void setStop() {
-        stop = true;
+        isRunning = false;
     }
 
     /**
@@ -171,7 +171,7 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
         backRightMotor = robot.backRightMotor;
 
         imu = robot.imu;
-        while (!stop) {
+        while (isRunning) {
             updateSensors();
             findFieldPosition();
         }

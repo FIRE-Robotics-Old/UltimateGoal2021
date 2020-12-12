@@ -687,7 +687,7 @@ Changes include:
      - Added support for copying blocks in one OpMode and pasting them in an other OpMode. The clipboard content is stored on the phone, so the programming mode server must be running.
      - Modified Utilities section of the toolbox.
      - In Programming Mode, display information about the active connections.
-     - Fixed paste location when workspace has been scrolled.
+     - Fixed paste coordinate when workspace has been scrolled.
      - Added blocks support for the android Accelerometer.
      - Fixed issue where Blocks Upload Op Mode truncated name at first dot.
      - Added blocks support for Android SoundPool.

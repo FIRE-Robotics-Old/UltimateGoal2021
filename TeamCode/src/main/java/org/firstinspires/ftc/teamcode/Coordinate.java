@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode;
 import java.util.Locale;
 import java.util.Objects;
 
-public final class Location {
+public final class Coordinate {
     private final double x;
     private final double y;
 
-    public Location(double x, double y) {
+    public Coordinate(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -29,9 +29,9 @@ public final class Location {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Location location = (Location) o;
-        return Double.compare(location.getX(), x) == 0 &&
-                Double.compare(location.getY(), y) == 0;
+        Coordinate coordinate = (Coordinate) o;
+        return Double.compare(coordinate.getX(), x) == 0 &&
+                Double.compare(coordinate.getY(), y) == 0;
     }
 
     @Override
