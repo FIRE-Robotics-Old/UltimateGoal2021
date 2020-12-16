@@ -51,8 +51,8 @@ public class PathFinder implements Runnable {
             final double deltaX = destination.getX() - activeLocation.getFieldX();
             final double deltaY = destination.getY() - activeLocation.getFieldY();
 
-            xToMove = deltaX * Math.cos(activeLocation.angle) + deltaX * Math.sin(activeLocation.angle);
-            yToMove = deltaY * Math.cos(activeLocation.angle) - deltaY * Math.sin(activeLocation.angle);
+            xToMove = deltaX * Math.cos(activeLocation.angle) + deltaY * Math.sin(activeLocation.angle);
+            yToMove = deltaY * Math.cos(activeLocation.angle) - deltaX * Math.sin(activeLocation.angle);
         }
     }
 

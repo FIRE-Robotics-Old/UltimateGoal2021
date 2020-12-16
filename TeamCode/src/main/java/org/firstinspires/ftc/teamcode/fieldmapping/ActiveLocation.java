@@ -17,6 +17,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.har
  * The ActiveLocation uses odometry to find the real-time location of the robot.
  * This, along with a PathFinder, helps create a Field Mapping to allow us to
  * accurately move to specific positions in autonomous.
+ *
  */
 public class ActiveLocation implements Runnable {
 
