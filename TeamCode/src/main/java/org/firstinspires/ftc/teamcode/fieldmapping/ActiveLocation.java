@@ -8,20 +8,25 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Hardware;
 
+import javax.net.ssl.HandshakeCompletedEvent;
+
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 
 /**
  * The ActiveLocation uses odometry to find the real-time location of the robot.
  * This, along with a PathFinder, helps create a Field Mapping to allow us to
  * accurately move to specific positions in autonomous.
  */
-public final class ActiveLocation implements Runnable { // add implements Runnable{
+public class ActiveLocation implements Runnable {
 
     // Hardware setup
-    Hardware robot = new Hardware();
+    Hardware robot;
     private BNO055IMU imu;
     private DcMotor frontLeftMotor;
     private DcMotor backRightMotor;
+    private DcMotor frontRightMotor;
+    private DcMotor backLeftMotor;
 
     //########## VARIABLE SET UP ##########\\
 
@@ -45,6 +50,15 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
     final static double tickPerRotation = 8192;
     final static double wheelCircumference = 90 * Math.PI;
 
+    public ActiveLocation(Hardware bot){
+        this.robot = bot;
+        frontLeftMotor = robot.frontLeftMotor;
+        backRightMotor = robot.backRightMotor;
+        frontRightMotor = robot.frontRightMotor;
+        imu = robot.imu;
+
+        isRunning = true;
+    }
     // TODO Write JavaDoc Comment
     /**
      * Converts Ticks to Distance
@@ -56,6 +70,7 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
      * @param ticks tick value
      * @return mm distance value
      */
+
     private static double tickToDistance(double ticks) {
         return ((ticks / tickPerRotation) * wheelCircumference);
     }
@@ -95,7 +110,7 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
     private void updateSensors() {
         yEncoder = frontLeftMotor.getCurrentPosition();
         xEncoder = backRightMotor.getCurrentPosition();
-        angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).thirdAngle;
+        angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
     }
 
     /**
@@ -111,10 +126,12 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
             internalCurrentY = tickToDistance(yEncoder);
             internalCurrentX = tickToDistance(xEncoder);
         }
-        double deltaY = internalCurrentY - internalPreviousY;
         // Change in internal x and y values
+        double deltaY = internalCurrentY - internalPreviousY;
         double deltaX = internalCurrentX - internalPreviousX;
         fieldXPosition += deltaX * Math.cos(Math.toRadians(angle)) - deltaY * Math.sin(Math.toRadians(angle));
+        //fieldXPosition = internalPreviousX;
+        //fieldYPosition = internalCurrentY;
         fieldYPosition += deltaX * Math.sin(Math.toRadians(angle)) + deltaY * Math.cos(Math.toRadians(angle));
     }
 
@@ -146,6 +163,7 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
      * @return returns angle
      */
     public double getAngle() {
+        updateSensors();
         return angle;
     }
 
@@ -165,12 +183,10 @@ public final class ActiveLocation implements Runnable { // add implements Runnab
      */
     @Override
     public void run() {
-        robot.init(hardwareMap);
+        //this.robot.init(hardwareMap);
 
-        frontLeftMotor = robot.frontLeftMotor;
-        backRightMotor = robot.backRightMotor;
 
-        imu = robot.imu;
+
         while (isRunning) {
             updateSensors();
             findFieldPosition();

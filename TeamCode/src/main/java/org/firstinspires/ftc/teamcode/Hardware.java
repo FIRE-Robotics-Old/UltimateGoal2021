@@ -60,10 +60,10 @@ public class Hardware {
         backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Turn off all motors
 
@@ -82,10 +82,10 @@ public class Hardware {
         backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeftMotor.setDirection (DcMotorSimple.Direction.REVERSE);
 
-        //frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeftMotor.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //backLeftMotor.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftMotor.setZeroPowerBehavior (DcMotor.ZeroPowerBehavior.BRAKE);
