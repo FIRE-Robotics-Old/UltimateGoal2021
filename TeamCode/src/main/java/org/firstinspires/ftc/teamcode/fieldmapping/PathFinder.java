@@ -8,9 +8,7 @@ import org.firstinspires.ftc.teamcode.Coordinate;
  */
 public class PathFinder implements Runnable {
 
-    // TODO: Needs to use a thread
-    // TODO: Need to use ActiveLocation
-    // TODO: Set Stop
+    //TODO: Implement angle calculations in PathFinder
 
     private final ActiveLocation activeLocation;
     private Coordinate destination;
@@ -41,8 +39,7 @@ public class PathFinder implements Runnable {
 
     /**
      * Calculates the positions that the robot encoders need to move to using the current position,
-     * allowing instantaneous calculation of
-     *
+     * allowing instantaneous calculation of the movement the robot needs to make.
      */
     public void updateEncoderPath() {
         synchronized (this) {
@@ -57,7 +54,6 @@ public class PathFinder implements Runnable {
     }
 
     /**
-     *
      * @return a @{link Coordinate} which contains the change values for Robot Encoders
      */
     public Coordinate getEncoderPath() {

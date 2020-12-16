@@ -17,7 +17,6 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.har
  * The ActiveLocation uses odometry to find the real-time location of the robot.
  * This, along with a PathFinder, helps create a Field Mapping to allow us to
  * accurately move to specific positions in autonomous.
- *
  */
 public class ActiveLocation implements Runnable {
 
@@ -26,8 +25,6 @@ public class ActiveLocation implements Runnable {
     private BNO055IMU imu;
     private DcMotor frontLeftMotor;
     private DcMotor backRightMotor;
-    private DcMotor frontRightMotor;
-    private DcMotor backLeftMotor;
 
     //########## VARIABLE SET UP ##########\\
 
@@ -55,12 +52,11 @@ public class ActiveLocation implements Runnable {
         this.robot = bot;
         frontLeftMotor = robot.frontLeftMotor;
         backRightMotor = robot.backRightMotor;
-        frontRightMotor = robot.frontRightMotor;
         imu = robot.imu;
 
         isRunning = true;
     }
-    // TODO Write JavaDoc Comment
+
     /**
      * Converts Ticks to Distance
      *
@@ -71,7 +67,6 @@ public class ActiveLocation implements Runnable {
      * @param ticks tick value
      * @return mm distance value
      */
-
     private static double tickToDistance(double ticks) {
         return ((ticks / tickPerRotation) * wheelCircumference);
     }
@@ -96,7 +91,6 @@ public class ActiveLocation implements Runnable {
      * @param internalCurrentX The current X position mm
      * @param internalCurrentY The current Y position mm
      */
-
     public void setStartPosition(double internalCurrentX, double internalCurrentY) {
         this.internalCurrentY = internalCurrentY;
         this.internalCurrentX = internalCurrentX;
