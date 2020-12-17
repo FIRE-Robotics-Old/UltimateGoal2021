@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.fieldmapping;
 
-import org.firstinspires.ftc.teamcode.Coordinate;
-
+import org.firstinspires.ftc.teamcode.models.Coordinate;
 
 /**
  * The PathFinder finds the correct path the Robot Needs to Take to move to a different point.
