@@ -15,25 +15,21 @@ import java.util.Locale;
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 public class Hardware{
-    /** Declare  the parts and verbals   */
 
     public BNO055IMU imu;
-
 
     public DcMotor frontLeftMotor= null;
     public DcMotor frontRightMotor = null;
     public DcMotor backLeftMotor = null;
     public DcMotor backRightMotor = null;
 
-    //Servos here
-
     HardwareMap hwMap = null;
     private ElapsedTime period = new ElapsedTime();
+
     /**
      * Sets up the HardwareMap
      * @param hwMap is the hardware map
      */
-
     public void init(HardwareMap hwMap) {
         this.hwMap = hwMap;
         //imu set up parameters
@@ -82,5 +78,4 @@ public class Hardware{
         backRightMotor.setPower(0);
         backLeftMotor.setPower (0);
     }
-
 }
