@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.tests;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -7,10 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
+import org.firstinspires.ftc.teamcode.models.Hardware;
 import org.firstinspires.ftc.teamcode.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.fieldmapping.PathFinder;
-
-import java.nio.file.Path;
 
 //To fix error perhaps flip the switch
 
@@ -72,15 +71,12 @@ public class ActiveLocationTest extends LinearOpMode {
             telemetry.addData("BL", backLeftMotor.getCurrentPosition());
             telemetry.update();
         }*/
-            double startTime = runtime.milliseconds();
-            double currentTime = 0;
             while (opModeIsActive()) {
                 telemetry.addData("X", AL.getFieldX());
                 telemetry.addData("Y", AL.getFieldY());
                 telemetry.addData("Angle", AL.getAngle());
                 telemetry.addData("Path: ", PF.getEncoderPath());
                 telemetry.update();
-                currentTime = runtime.milliseconds();
                 sleep(100);
             }
         }catch (Exception e){

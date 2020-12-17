@@ -3,14 +3,7 @@ package org.firstinspires.ftc.teamcode.fieldmapping;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.teamcode.Hardware;
-
-import javax.net.ssl.HandshakeCompletedEvent;
-
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import org.firstinspires.ftc.teamcode.models.Hardware;
 
 
 /**
@@ -42,7 +35,7 @@ public class ActiveLocation implements Runnable {
     double fieldYPosition;
 
     // For stopping the thread
-    private volatile boolean isRunning = true;
+    private volatile boolean isRunning;
 
     // Static values for calculations
     final static double tickPerRotation = 8192;

@@ -3,15 +3,11 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.models.Hardware;
 import org.firstinspires.ftc.teamcode.fieldmapping.ActiveLocation;
-import org.firstinspires.ftc.teamcode.fieldmapping.PathFinder;
 
 
 @Autonomous(name="BasicRemoteAuton", group="Backup")
@@ -60,9 +56,6 @@ public class BasicRemoteAuton extends LinearOpMode {
             sleep(3000);
 //comment
 
-            double startTime = runtime.milliseconds();
-            double currentTime = 0;
-
             AL.setStartPosition(304, 0);
             telemetry.addData("FL:", frontLeftMotor.getCurrentPosition());
 
@@ -73,7 +66,6 @@ public class BasicRemoteAuton extends LinearOpMode {
                 backRightMotor.setPower(0.3);
                 telemetry.addData("In Loop: ", 1);
                 telemetry.update();
-                currentTime = runtime.milliseconds();
             }
             telemetry.addData("In Loop: ", 0);
             telemetry.update();
