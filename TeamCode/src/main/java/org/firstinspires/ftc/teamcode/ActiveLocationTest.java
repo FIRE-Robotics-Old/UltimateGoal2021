@@ -19,9 +19,10 @@ import java.nio.file.Path;
 public class ActiveLocationTest extends LinearOpMode {
 
     // Declare OpMode members.
+    Hardware robot = new Hardware();
     private ElapsedTime runtime = new ElapsedTime();
 
-    Hardware robot = new Hardware();
+    //Hardware robot = new Hardware();
     private DcMotor frontRightMotor;
     private DcMotor frontLeftMotor;
     private DcMotor backLeftMotor;
@@ -58,6 +59,7 @@ public class ActiveLocationTest extends LinearOpMode {
 
         waitForStart();
         runtime.reset();
+
 
         // run until the end of the match (driver presses STOP)
         try{
