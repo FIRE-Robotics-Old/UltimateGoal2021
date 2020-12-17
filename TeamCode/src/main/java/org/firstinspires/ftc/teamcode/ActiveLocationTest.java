@@ -8,6 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 import org.firstinspires.ftc.teamcode.fieldmapping.ActiveLocation;
+import org.firstinspires.ftc.teamcode.fieldmapping.PathFinder;
+
+import java.nio.file.Path;
 
 //To fix error perhaps flip the switch
 
@@ -26,6 +29,8 @@ public class ActiveLocationTest extends LinearOpMode {
     private BNO055IMU imu;
     private ActiveLocation AL;
     private Thread locationThread;
+    private PathFinder PF;
+    private Thread pathThread;
     //private ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() {
@@ -43,6 +48,9 @@ public class ActiveLocationTest extends LinearOpMode {
         locationThread = new Thread(AL);
         locationThread.start();
 
+        PF = new PathFinder(AL);
+        pathThread = new Thread(PF);
+        pathThread.start();
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -54,6 +62,7 @@ public class ActiveLocationTest extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         try{
             AL.setStartPosition(0,0);
+            PF.setDestination(0,100);
             /*
             telemetry.addData("FL", frontLeftMotor.getCurrentPosition());
             telemetry.addData("BR", backRightMotor.getCurrentPosition());
@@ -63,12 +72,14 @@ public class ActiveLocationTest extends LinearOpMode {
         }*/
             double startTime = runtime.milliseconds();
             double currentTime = 0;
-            while (currentTime < startTime + 30000) {
+            while (opModeIsActive()) {
                 telemetry.addData("X", AL.getFieldX());
                 telemetry.addData("Y", AL.getFieldY());
                 telemetry.addData("Angle", AL.getAngle());
+                telemetry.addData("Path: ", PF.getEncoderPath());
                 telemetry.update();
                 currentTime = runtime.milliseconds();
+                sleep(100);
             }
         }catch (Exception e){
             telemetry.addData("error:",e.getStackTrace());

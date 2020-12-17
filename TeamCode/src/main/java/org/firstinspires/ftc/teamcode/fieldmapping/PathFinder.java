@@ -27,15 +27,23 @@ public class PathFinder implements Runnable {
     public PathFinder(ActiveLocation activeLocation, double x, double y) {
         this(activeLocation, new Coordinate(x, y));
     }
-
-    public Coordinate getDestination() {
-        return destination;
+    public PathFinder(ActiveLocation activeLocation){
+        this.activeLocation = activeLocation;
     }
 
+    public Coordinate getDestination() {
+        updateEncoderPath();
+        return destination;
+    }
     public void setDestination(Coordinate destination) {
         updateEncoderPath();
         this.destination = destination;
     }
+    public void setDestination(double x, double y){
+        this.setDestination(new Coordinate(x,y));
+    }
+
+
 
     /**
      * Calculates the positions that the robot encoders need to move to using the current position,
@@ -57,6 +65,7 @@ public class PathFinder implements Runnable {
      * @return a @{link Coordinate} which contains the change values for Robot Encoders
      */
     public Coordinate getEncoderPath() {
+        updateEncoderPath();
         return new Coordinate(xToMove, yToMove);
     }
 

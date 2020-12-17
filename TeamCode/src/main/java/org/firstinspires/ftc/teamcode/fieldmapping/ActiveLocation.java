@@ -105,7 +105,7 @@ public class ActiveLocation implements Runnable {
     private void updateSensors() {
         yEncoder = frontLeftMotor.getCurrentPosition();
         xEncoder = backRightMotor.getCurrentPosition();
-        angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        angle = imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle;
     }
 
     /**
@@ -124,10 +124,10 @@ public class ActiveLocation implements Runnable {
         // Change in internal x and y values
         double deltaY = internalCurrentY - internalPreviousY;
         double deltaX = internalCurrentX - internalPreviousX;
-        fieldXPosition += deltaX * Math.cos(Math.toRadians(angle)) - deltaY * Math.sin(Math.toRadians(angle));
+        fieldXPosition += deltaX * Math.cos(angle) - deltaY * Math.sin(angle);
         //fieldXPosition = internalPreviousX;
         //fieldYPosition = internalCurrentY;
-        fieldYPosition += deltaX * Math.sin(Math.toRadians(angle)) + deltaY * Math.cos(Math.toRadians(angle));
+        fieldYPosition += deltaX * Math.sin(angle) + deltaY * Math.cos(angle);
     }
 
     /**
@@ -160,6 +160,10 @@ public class ActiveLocation implements Runnable {
     public double getAngle() {
         updateSensors();
         return angle;
+    }
+    public double getAngleInDegrees(){
+        updateSensors();
+        return Math.toDegrees(angle);
     }
 
     /**
