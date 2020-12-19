@@ -41,8 +41,8 @@ public class ActiveLocation implements Runnable {
     final static double tickPerRotation = 8192;
     final static double wheelCircumference = 90 * Math.PI;
 
-    public ActiveLocation(Hardware bot){
-        this.robot = bot;
+    public ActiveLocation(Hardware robot){
+        this.robot = robot;
         frontLeftMotor = robot.frontLeftMotor;
         backRightMotor = robot.backRightMotor;
         imu = robot.imu;

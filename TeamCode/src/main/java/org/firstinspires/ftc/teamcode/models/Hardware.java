@@ -18,10 +18,11 @@ public class Hardware{
 
     public BNO055IMU imu;
 
-    public DcMotor frontLeftMotor= null;
-    public DcMotor frontRightMotor = null;
-    public DcMotor backLeftMotor = null;
-    public DcMotor backRightMotor = null;
+    public DcMotor frontLeftMotor,frontRightMotor,backLeftMotor,
+            backRightMotor,rightShooter,leftShooter,intakeAndDelivery= null;
+
+
+
 
     HardwareMap hwMap = null;
     private ElapsedTime period = new ElapsedTime();
@@ -51,11 +52,20 @@ public class Hardware{
         backLeftMotor   = hwMap.get(DcMotor.class, "backLeftMotor"  );
         backRightMotor  = hwMap.get(DcMotor.class, "backRightMotor" );
 
+        intakeAndDelivery  = hwMap.get(DcMotor.class, "intakeAndDelivery" );
+        rightShooter = hwMap.get(DcMotor.class, "rightShooter");
+        leftShooter = hwMap.get(DcMotor.class, "leftShooter");
+
+
         //Motor Directions
-        frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        frontLeftMotor.setDirection (DcMotorSimple.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        backLeftMotor.setDirection (DcMotorSimple.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftMotor.setDirection (DcMotor.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        backLeftMotor.setDirection (DcMotor.Direction.REVERSE);
+
+        intakeAndDelivery.setDirection(DcMotor.Direction.FORWARD);
+        rightShooter.setDirection(DcMotor.Direction.FORWARD);
+        leftShooter.setDirection(DcMotor.Direction.REVERSE);
 
         frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeftMotor.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -71,11 +81,17 @@ public class Hardware{
         frontLeftMotor.setZeroPowerBehavior (DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior (DcMotor.ZeroPowerBehavior.BRAKE);
+        rightShooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        leftShooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        intakeAndDelivery.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         //Turn off all motors
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower (0);
         backRightMotor.setPower(0);
         backLeftMotor.setPower (0);
+        intakeAndDelivery.setPower(0);
+        rightShooter.setPower(0);
+        leftShooter.setPower(0);
     }
 }
