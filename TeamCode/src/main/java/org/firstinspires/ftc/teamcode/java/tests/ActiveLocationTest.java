@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.tests;
+package org.firstinspires.ftc.teamcode.java.tests;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-import org.firstinspires.ftc.teamcode.models.Hardware;
-import org.firstinspires.ftc.teamcode.fieldmapping.ActiveLocation;
-import org.firstinspires.ftc.teamcode.fieldmapping.PathFinder;
+import org.firstinspires.ftc.teamcode.java.utils.Hardware;
+import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
+import org.firstinspires.ftc.teamcode.java.fieldmapping.PathFinder;
 
 //To fix error perhaps flip the switch
 

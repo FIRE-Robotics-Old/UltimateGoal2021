@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.fieldmapping;
+package org.firstinspires.ftc.teamcode.java.fieldmapping;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.models.Hardware;
+import org.firstinspires.ftc.teamcode.java.utils.Hardware;
 
 
 /**

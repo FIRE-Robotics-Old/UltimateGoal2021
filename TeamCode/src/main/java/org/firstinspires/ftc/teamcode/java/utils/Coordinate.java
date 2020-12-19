@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.models;
+package org.firstinspires.ftc.teamcode.java.utils;
 
 import java.util.Locale;
 import java.util.Objects;
