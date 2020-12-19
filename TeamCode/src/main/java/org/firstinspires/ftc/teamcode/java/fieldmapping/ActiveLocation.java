@@ -156,7 +156,7 @@ public class ActiveLocation implements Runnable {
     }
     public double getAngleInDegrees(){
         updateSensors();
-        return Math.toDegrees(angle);
+        return Math.toDegrees((angle+360)%360);
     }
 
     /**
