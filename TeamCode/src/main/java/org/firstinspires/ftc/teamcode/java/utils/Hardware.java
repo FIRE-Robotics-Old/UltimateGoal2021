@@ -18,8 +18,13 @@ public class Hardware{
 
     public BNO055IMU imu;
 
-    public DcMotor frontLeftMotor,frontRightMotor,backLeftMotor,
-            backRightMotor,rightShooter,leftShooter,intakeAndDelivery= null;
+    public DcMotor frontLeftMotor =null;
+    public DcMotor frontRightMotor = null;
+    public DcMotor backLeftMotor = null;
+    public DcMotor backRightMotor = null;
+    public DcMotor rightShooter = null;
+    public DcMotor leftShooter = null ;
+    public DcMotor intakeAndDelivery = null;
 
 
 
