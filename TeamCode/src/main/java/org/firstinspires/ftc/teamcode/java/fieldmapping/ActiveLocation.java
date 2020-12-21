@@ -29,6 +29,7 @@ public class ActiveLocation implements Runnable {
     private double yEncoder = 0;
     private double xEncoder = 0;
     double angle = 0;
+    double resetAngle =0;
 
     // Field location
     double fieldXPosition;
@@ -98,7 +99,7 @@ public class ActiveLocation implements Runnable {
     private void updateSensors() {
         yEncoder = frontLeftMotor.getCurrentPosition();
         xEncoder = backRightMotor.getCurrentPosition();
-        angle = imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle;
+        angle = (imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle -resetAngle);
     }
 
     /**
@@ -158,6 +159,10 @@ public class ActiveLocation implements Runnable {
         updateSensors();
         return Math.toDegrees((angle+360)%360);
     }
+    public void resetAngle(){
+        updateSensors();
+        resetAngle = angle;
+    }
 
     /**
      * Sets up the thread to stop
@@ -165,6 +170,7 @@ public class ActiveLocation implements Runnable {
     public void setStop() {
         isRunning = false;
     }
+
 
     /**
      * Sets up and starts the thread running in the background
