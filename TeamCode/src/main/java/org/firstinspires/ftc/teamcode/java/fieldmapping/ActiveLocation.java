@@ -99,7 +99,7 @@ public class ActiveLocation implements Runnable {
     private void updateSensors() {
         yEncoder = frontLeftMotor.getCurrentPosition();
         xEncoder = backRightMotor.getCurrentPosition();
-        angle = (imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle -resetAngle);
+        angle = ((imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle) -resetAngle);
     }
 
     /**

@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.utils.AutoAdjusting;
@@ -25,8 +26,8 @@ public class Teleop extends LinearOpMode {
     private DcMotor leftShooter;
     private DcMotor rightShooter;
     private Servo lowerWobble;
-    private RevTouchSensor wobbleDetector;
-    private RevTouchSensor ringCounter;
+    private TouchSensor wobbleDetector;
+    private TouchSensor ringCounter;
 
     Hardware robot = new Hardware();
 
@@ -40,6 +41,7 @@ public class Teleop extends LinearOpMode {
     private double twist = 0;
     private double intakeAndDeliveryPower = 0;
     private double shooterPower = 0;
+    private int rings =0;
 
     private boolean ifReversedIntakePressed = false;
     private boolean shooterIsPressed = false;
@@ -65,6 +67,7 @@ public class Teleop extends LinearOpMode {
         wobbleDetector =robot.wobbleDetector;
         ringCounter =robot.ringCounter;
 
+
         activeLocation = new ActiveLocation(robot);
         locationThread = new Thread(activeLocation);
         locationThread.start();
@@ -81,7 +84,7 @@ public class Teleop extends LinearOpMode {
                 strafe = gamepad1.left_stick_x * Math.cos(activeLocation.getAngle()) +
                         gamepad1.left_stick_y * Math.sin(activeLocation.getAngle());
                 twist = gamepad1.right_stick_x;
-                intakeAndDeliveryPower = gamepad2.left_trigger;
+
 
                 // wheel speed calculation
                 double[] speeds = {
@@ -118,6 +121,17 @@ public class Teleop extends LinearOpMode {
                 } else if (!gamepad1.a) {
                     slowModePressed = false;
                 }
+                if (rings<3){
+                    intakeAndDeliveryPower = gamepad2.left_trigger;
+                    if (ringCounter.isPressed()){
+                        rings++;
+                    }
+                }else if (gamepad2.right_bumper)
+                {
+                    rings=0;
+                }else {
+                    intakeAndDeliveryPower=0;
+                }
 
                 // Angle Resetting
                 if (gamepad1.start) {
@@ -151,11 +165,11 @@ public class Teleop extends LinearOpMode {
                 intakeAndDelivery.setPower(intakeAndDeliveryPower);
                 leftShooter.setPower(shooterPower);
                 rightShooter.setPower(shooterPower);
-                telemetry.addData("test",frontLeftMotor.getPower());
                 telemetry.addData("field X:",activeLocation.getFieldX());
                 telemetry.addData("field Y:",activeLocation.getFieldY());
                 telemetry.addData("potentiometer",autoAdjusting.getShooterAngle());
                 telemetry.addData("angle:",activeLocation.getAngleInDegrees());
+                telemetry.addData("rings",rings);
                 telemetry.update();
             }
         } catch (Exception e) {

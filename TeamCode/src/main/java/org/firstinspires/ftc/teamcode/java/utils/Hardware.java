@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
@@ -33,8 +34,8 @@ public class Hardware {
 
 
     public AnalogInput potentiometer =null;
-    public RevTouchSensor wobbleDetector = null;
-    public RevTouchSensor ringCounter = null;
+    public TouchSensor wobbleDetector = null;
+    public TouchSensor ringCounter = null;
 
 
 
@@ -64,8 +65,8 @@ public class Hardware {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         potentiometer = hardwareMap.get(AnalogInput.class, "potentiometer");
-        wobbleDetector = hardwareMap.get(RevTouchSensor.class, "wobbleDetector");
-        ringCounter = hardwareMap.get(RevTouchSensor.class, "ringCounter");
+        wobbleDetector = hardwareMap.get(TouchSensor.class, "wobbleDetector");
+        ringCounter = hardwareMap.get(TouchSensor.class, "ringCounter");
 
         lowerWobble = hardwareMap.get(Servo.class,"lowerWobble" );
 
