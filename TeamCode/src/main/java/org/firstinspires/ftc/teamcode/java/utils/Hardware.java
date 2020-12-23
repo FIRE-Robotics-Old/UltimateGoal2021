@@ -1,19 +1,20 @@
 package org.firstinspires.ftc.teamcode.java.utils;
 
+
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.rev.RevTouchSensor;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-
-import java.util.Locale;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 public class Hardware {
 
@@ -27,6 +28,16 @@ public class Hardware {
     public DcMotor rightShooter = null;
     public DcMotor leftShooter = null;
     public DcMotor intakeAndDelivery = null;
+
+    public Servo lowerWobble =null;
+
+
+    public AnalogInput potentiometer =null;
+    public RevTouchSensor wobbleDetector = null;
+    public RevTouchSensor ringCounter = null;
+
+
+
 
     HardwareMap hardwareMap = null;
     private ElapsedTime period = new ElapsedTime();
@@ -52,6 +63,13 @@ public class Hardware {
         imu.initialize(parameters);
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
+        potentiometer = hardwareMap.get(AnalogInput.class, "potentiometer");
+        wobbleDetector = hardwareMap.get(RevTouchSensor.class, "wobbleDetector");
+        ringCounter = hardwareMap.get(RevTouchSensor.class, "ringCounter");
+
+        lowerWobble = hardwareMap.get(Servo.class,"lowerWobble" );
+
+
         frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
@@ -60,7 +78,6 @@ public class Hardware {
         intakeAndDelivery = hardwareMap.get(DcMotor.class, "intakeAndDelivery");
         rightShooter = hardwareMap.get(DcMotor.class, "rightShooter");
         leftShooter = hardwareMap.get(DcMotor.class, "leftShooter");
-
         // Motor Directions
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -80,6 +97,10 @@ public class Hardware {
         frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+
+
 
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
