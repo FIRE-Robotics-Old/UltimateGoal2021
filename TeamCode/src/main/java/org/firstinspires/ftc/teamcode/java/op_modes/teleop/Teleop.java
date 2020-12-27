@@ -1,13 +1,9 @@
 package org.firstinspires.ftc.teamcode.java.op_modes.teleop;
 
-import android.util.Range;
-
-import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -167,7 +163,7 @@ public class Teleop extends LinearOpMode {
                 rightShooter.setPower(shooterPower);
                 telemetry.addData("field X:",activeLocation.getFieldX());
                 telemetry.addData("field Y:",activeLocation.getFieldY());
-                telemetry.addData("potentiometer",autoAdjusting.getShooterAngle());
+                telemetry.addData("potentiometer",autoAdjusting.getShooterPitchAngle());
                 telemetry.addData("angle:",activeLocation.getAngleInDegrees());
                 telemetry.addData("rings",rings);
                 telemetry.update();

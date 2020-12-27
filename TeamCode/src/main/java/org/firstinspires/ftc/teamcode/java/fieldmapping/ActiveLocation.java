@@ -32,8 +32,8 @@ public class ActiveLocation implements Runnable {
     double resetAngle =0;
 
     // Field location
-    double fieldXPosition;
-    double fieldYPosition;
+    double fieldXPosition =0;
+    double fieldYPosition =0;
 
     // For stopping the thread
     private volatile boolean isRunning;
@@ -157,7 +157,7 @@ public class ActiveLocation implements Runnable {
     }
     public double getAngleInDegrees(){
         updateSensors();
-        return Math.toDegrees((angle+360)%360);
+        return Math.toDegrees(angle);
     }
     public void resetAngle(){
         updateSensors();

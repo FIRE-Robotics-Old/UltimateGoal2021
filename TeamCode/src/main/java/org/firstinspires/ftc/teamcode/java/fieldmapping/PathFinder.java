@@ -60,6 +60,14 @@ public class PathFinder implements Runnable {
         }
     }
 
+
+    /**
+     *calculates the angle change that the robot gyro needs to do
+     */ //bad name
+    public void updateGyroPath(){
+
+    }
+
     /**
      * @return a @{link Coordinate} which contains the change values for Robot Encoders
      */
