@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 public class AutoAdjusting{
 
 
-    Hardware robot;
+    RobotHardware robot;
     private AnalogInput potentiometer;
-    public AutoAdjusting(Hardware robot){
+    public AutoAdjusting(RobotHardware robot){
         this.robot =robot;
         potentiometer = robot.potentiometer;
 

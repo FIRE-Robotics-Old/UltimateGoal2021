@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-import org.firstinspires.ftc.teamcode.java.utils.Hardware;
+import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
 import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.fieldmapping.PathFinder;
 
@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.java.fieldmapping.PathFinder;
 public class ActiveLocationTest extends LinearOpMode {
 
     // Declare OpMode members.
-    Hardware robot = new Hardware();
+    RobotHardware robot = new RobotHardware();
     private ElapsedTime runtime = new ElapsedTime();
 
     //Hardware robot = new Hardware();

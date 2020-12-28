@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.java.utils.Hardware;
+import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
 import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 
 
@@ -16,7 +16,7 @@ public class BasicRemoteAuton extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
-    Hardware robot = new Hardware();
+    RobotHardware robot = new RobotHardware();
     private DcMotor frontRightMotor;
     private DcMotor frontLeftMotor;
     private DcMotor backLeftMotor;

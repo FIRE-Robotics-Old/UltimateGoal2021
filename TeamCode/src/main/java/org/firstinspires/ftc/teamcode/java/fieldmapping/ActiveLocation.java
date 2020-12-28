@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.java.fieldmapping;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.java.utils.Hardware;
+import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
 
 
 /**
@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.java.utils.Hardware;
 public class ActiveLocation implements Runnable {
 
     // Hardware setup
-    Hardware robot;
+    RobotHardware robot;
     private BNO055IMU imu;
     private DcMotor frontLeftMotor;
     private DcMotor backRightMotor;
@@ -42,7 +42,7 @@ public class ActiveLocation implements Runnable {
     final static double tickPerRotation = 8192;
     final static double wheelCircumference = 90 * Math.PI;
 
-    public ActiveLocation(Hardware robot){
+    public ActiveLocation(RobotHardware robot){
         this.robot = robot;
         frontLeftMotor = robot.frontLeftMotor;
         backRightMotor = robot.backRightMotor;

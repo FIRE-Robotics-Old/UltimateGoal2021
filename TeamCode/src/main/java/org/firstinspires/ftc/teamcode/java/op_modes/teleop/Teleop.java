@@ -7,7 +7,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.utils.AutoAdjusting;
-import org.firstinspires.ftc.teamcode.java.utils.Hardware;
+import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 @TeleOp(name = "Final TeleOp", group = "TeleOp")
 public class Teleop extends LinearOpMode {
@@ -23,7 +27,7 @@ public class Teleop extends LinearOpMode {
     //private TouchSensor wobbleDetector;
     //private TouchSensor ringCounter;
 
-    Hardware robot = new Hardware();
+    RobotHardware robot = new RobotHardware();
 
     // TODO change the max speed to 1
 
@@ -89,24 +93,12 @@ public class Teleop extends LinearOpMode {
                 };
                 telemetry.speak("Hello World");
                 telemetry.update();
-                sleep(1000);
+                sleep(1000);// Finds the max after converting doubles to Doubles
 
-                //finding the biggest drive motor power
-                double max = Math.abs((speeds[0]));
-                for (double speed : speeds) {
-                    if (max < Math.abs(speed)) max = Math.abs(speed);
+                double max = Collections.max(Arrays.stream(speeds).boxed().collect(Collectors.toList()));
 
-
-                }
-
-
-
-                //setting the max speed while keeping the ratio
-                // change the number to change the max speed (0-1)
-
-                //TODO: This turns everything scaling speed to 1, not max speed. Quick Fix by Multiplying by max speed
                 if (max > maxSpeed) {
-                    for (int i = 0; i < speeds.length; i++) speeds[i] /= (1/maxSpeed)*max;
+                    for (int i = 0; i < speeds.length; i++) speeds[i] *= maxSpeed / max;
                 }
 
                 // slow mode
@@ -124,20 +116,19 @@ public class Teleop extends LinearOpMode {
                 telemetry.speak("I am groot");
                 telemetry.update();
                 sleep(1000);
-                /*
-                if (rings<3){
-                    intakeAndDeliveryPower = gamepad2.left_trigger;
-                    if (ringCounter.isPressed()){
-                        rings++;
-                    }
-                }else if (gamepad2.right_bumper)
-                {
-                    rings=0;
-                }else {
-                    intakeAndDeliveryPower=0;
-                }
 
-                 */
+//                if (rings<3){
+//                    intakeAndDeliveryPower = gamepad2.left_trigger;
+//                    if (ringCounter.isPressed()){
+//                        rings++;
+//                    }
+//                }else if (gamepad2.right_bumper)
+//                {
+//                    rings=0;
+//                }else {
+//                    intakeAndDeliveryPower=0;
+//                }
+
 
                 // Angle Resetting
                 if (gamepad1.start) {
@@ -171,11 +162,11 @@ public class Teleop extends LinearOpMode {
                 intakeAndDelivery.setPower(intakeAndDeliveryPower);
                 leftShooter.setPower(shooterPower);
                 rightShooter.setPower(shooterPower);
-                telemetry.addData("field X:",activeLocation.getFieldX());
-                telemetry.addData("field Y:",activeLocation.getFieldY());
-                telemetry.addData("potentiometer",autoAdjusting.getShooterPitchAngle());
-                telemetry.addData("angle:",activeLocation.getAngleInDegrees());
-                telemetry.addData("rings",rings);
+                telemetry.addData("field X:", activeLocation.getFieldX());
+                telemetry.addData("field Y:", activeLocation.getFieldY());
+                telemetry.addData("potentiometer", autoAdjusting.getShooterPitchAngle());
+                telemetry.addData("angle:", activeLocation.getAngleInDegrees());
+                telemetry.addData("rings", rings);
                 telemetry.update();
             }
         } catch (Exception e) {
