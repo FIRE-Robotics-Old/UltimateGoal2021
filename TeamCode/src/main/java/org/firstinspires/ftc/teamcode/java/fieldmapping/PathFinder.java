@@ -62,10 +62,10 @@ public class PathFinder implements Runnable {
 
 
     /**
-     *calculates the angle change that the robot gyro needs to do
-     */ //bad name
-    public void updateGyroPath(){
-
+     * calculates the angle change that the robot gyro needs to do
+     */
+    public void calculateTurn() {
+        //subtract angles to figure out direction?
     }
 
     /**
