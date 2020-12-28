@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
  * the PIDController class will be used for  all the different pid calculations
@@ -18,52 +19,48 @@ public class PIDFController {
     private final double kp;
     private final double kd;
     private final double f;
-    private final double maxI = 1;
-    private final double minI = -maxI;
-    private double xi = 0;
-    private double yi = 0;
-    private double ai = 0;
-    private double xd = 0;
-    private double yd = 0;
-    private double ad = 0;
 
-    public PIDFController(double previousTime, double kp, double ki, double kd, double f) {
+    private static final double maxI = 1;
+    private static final double minI = -maxI;
+
+    private double strafeIntegral = 0;
+    private double driveIntegral = 0;
+    private double twistIntegral = 0;
+
+    private double strafeDerivative = 0;
+    private double driveDerivative = 0;
+    private double twistDerivative = 0;
+
+    public PIDFController(double kp, double ki, double kd, double f) {
         elapsedTime = new ElapsedTime();
-        this.previousTime = elapsedTime.time();
+        this.previousTime = 0;
         this.kp = kp;
         this.ki = ki;
         this.kd = kd;
         this.f = f;
-
     }
 
     //TODO create object for x,y,angle and x,y
-    public Double[] calculateDrivePowers(double maxV, Coordinate error, double angleError) {
+    public double[] calculateDrivePowers(double maxV, Coordinate error, double angleError) {
         double xError = error.getX();
         double yError = error.getY();
         double strafe = calculateDrivePID(xError, Which.Strafe);
         double drive = calculateDrivePID(yError, Which.Drive);
         double twist = calculateDrivePID(angleError, Which.Twist);
-        Double[] speeds = {
+        double[] speeds = {
                 (drive + strafe + twist),
                 (drive - strafe - twist),
                 (drive - strafe + twist),
                 (drive + strafe - twist)
         };
 
-        //finding the biggest drive motor power
-        double max = Collections.max(Arrays.asList(speeds));
-
-
-        //setting the max speed while keeping the ratio
-        // change the number to change the max speed (0-1)
-
+        // Finds the max after converting doubles to Doubles
+        double max = Collections.max(Arrays.stream(speeds).boxed().collect(Collectors.toList()));
 
         if (max > maxV) {
-            for (int i = 0; i < speeds.length; i++) speeds[i] /= (1 / maxV) * max;
+            for (int i = 0; i < speeds.length; i++) speeds[i] *= maxV / max;
         }
         return speeds;
-
     }
 
     private double calculateDrivePID(double error, Which which) {
@@ -72,31 +69,31 @@ public class PIDFController {
         double i;
         switch (which) {
             case Strafe:
-                i = Range.clip(xi + ki * (error * (currentTime - previousTime)), minI, maxI);
-                xi = i;
+                i = Range.clip(strafeIntegral + ki * (error * (currentTime - previousTime)), minI, maxI);
+                strafeIntegral = i;
                 break;
             case Drive:
-                i = Range.clip(yi + ki * (error * (currentTime - previousTime)), minI, maxI);
-                yi = i;
+                i = Range.clip(driveIntegral + ki * (error * (currentTime - previousTime)), minI, maxI);
+                driveIntegral = i;
                 break;
             default:
-                i = Range.clip(ai + ki * (error * (currentTime - previousTime)), minI, maxI);
-                ai = i;
+                i = Range.clip(twistIntegral + ki * (error * (currentTime - previousTime)), minI, maxI);
+                twistIntegral = i;
         }
 
         double d;
         switch (which) {
             case Strafe:
-                d = kd * ((error - xd) / (currentTime - previousTime));
-                xd = error;
+                d = kd * ((error - strafeDerivative) / (currentTime - previousTime));
+                strafeDerivative = error;
                 break;
             case Drive:
-                d = kd * ((error - yd) / (currentTime - previousTime));
-                yd = error;
+                d = kd * ((error - driveDerivative) / (currentTime - previousTime));
+                driveDerivative = error;
                 break;
             default:
-                d = kd * ((error - ad) / (currentTime - previousTime));
-                ad = error;
+                d = kd * ((error - twistDerivative) / (currentTime - previousTime));
+                twistDerivative = error;
         }
         double output = p + i + d;
         return f + (1 - f) * output; //Scales
