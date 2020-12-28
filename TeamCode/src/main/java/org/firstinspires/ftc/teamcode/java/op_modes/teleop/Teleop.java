@@ -4,8 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.utils.AutoAdjusting;
@@ -21,9 +19,9 @@ public class Teleop extends LinearOpMode {
     private DcMotor intakeAndDelivery;
     private DcMotor leftShooter;
     private DcMotor rightShooter;
-    private Servo lowerWobble;
-    private TouchSensor wobbleDetector;
-    private TouchSensor ringCounter;
+    //private Servo lowerWobble;
+    //private TouchSensor wobbleDetector;
+    //private TouchSensor ringCounter;
 
     Hardware robot = new Hardware();
 
@@ -35,9 +33,9 @@ public class Teleop extends LinearOpMode {
     private double drive = 0;
     private double strafe = 0;
     private double twist = 0;
-    private double intakeAndDeliveryPower = 0;
+    private final double intakeAndDeliveryPower = 0;
     private double shooterPower = 0;
-    private int rings =0;
+    private final int rings = 0;
 
     private boolean ifReversedIntakePressed = false;
     private boolean shooterIsPressed = false;
@@ -56,12 +54,12 @@ public class Teleop extends LinearOpMode {
         frontRightMotor = robot.frontRightMotor;
         backLeftMotor = robot.backLeftMotor;
         backRightMotor = robot.backRightMotor;
-        intakeAndDelivery = robot.intakeAndDelivery;
-        rightShooter = robot.rightShooter;
-        leftShooter = robot.leftShooter;
-        lowerWobble =robot.lowerWobble;
-        wobbleDetector =robot.wobbleDetector;
-        ringCounter =robot.ringCounter;
+        //intakeAndDelivery = robot.intakeAndDelivery;
+        //rightShooter = robot.rightShooter;
+        //leftShooter = robot.leftShooter;
+        //lowerWobble =robot.lowerWobble;
+        //wobbleDetector =robot.wobbleDetector;
+        //ringCounter =robot.ringCounter;
 
 
         activeLocation = new ActiveLocation(robot);
@@ -89,12 +87,18 @@ public class Teleop extends LinearOpMode {
                         (drive - strafe + twist),
                         (drive + strafe - twist)
                 };
+                telemetry.speak("Hello World");
+                telemetry.update();
+                sleep(1000);
 
                 //finding the biggest drive motor power
                 double max = Math.abs((speeds[0]));
                 for (double speed : speeds) {
                     if (max < Math.abs(speed)) max = Math.abs(speed);
+
+
                 }
+
 
 
                 //setting the max speed while keeping the ratio
@@ -117,6 +121,10 @@ public class Teleop extends LinearOpMode {
                 } else if (!gamepad1.a) {
                     slowModePressed = false;
                 }
+                telemetry.speak("I am groot");
+                telemetry.update();
+                sleep(1000);
+                /*
                 if (rings<3){
                     intakeAndDeliveryPower = gamepad2.left_trigger;
                     if (ringCounter.isPressed()){
@@ -128,6 +136,8 @@ public class Teleop extends LinearOpMode {
                 }else {
                     intakeAndDeliveryPower=0;
                 }
+
+                 */
 
                 // Angle Resetting
                 if (gamepad1.start) {
@@ -170,6 +180,8 @@ public class Teleop extends LinearOpMode {
             }
         } catch (Exception e) {
             telemetry.addData("error:", e.getStackTrace());
+            telemetry.update();
+            sleep(2000);
             activeLocation.setStop();
         }
     }
