@@ -12,12 +12,21 @@ public final class Coordinate {
         this.y = y;
     }
 
+    public Coordinate(Coordinate coordinate) {
+        this.x = coordinate.getX();
+        this.y = coordinate.getY();
+    }
+
     public double getX() {
         return x;
     }
 
     public double getY() {
         return y;
+    }
+
+    public MovementData withAngle(double angle) {
+        return new MovementData(this, angle);
     }
 
     @Override
