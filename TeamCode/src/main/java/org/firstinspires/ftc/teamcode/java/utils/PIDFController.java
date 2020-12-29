@@ -42,9 +42,12 @@ public class PIDFController {
     }
 
     public double[] calculateDrivePowers(double maxV, double xError, double yError, double angleError) {
-        double strafe = calculateDrivePID(xError, MovementType.Strafe);
-        double drive = calculateDrivePID(yError, MovementType.Drive);
-        double twist = calculateDrivePID(angleError, MovementType.Twist);
+        double currentTime = elapsedTime.time();
+
+        double strafe = calculateDrivePID(xError,     MovementType.Strafe, currentTime);
+        double drive  = calculateDrivePID(yError,     MovementType.Drive,  currentTime);
+        double twist  = calculateDrivePID(angleError, MovementType.Twist,  currentTime);
+
         double[] speeds = {
                 (drive + strafe + twist),
                 (drive - strafe - twist),
@@ -55,9 +58,11 @@ public class PIDFController {
         // Finds the max after converting doubles to Doubles
         double max = Collections.max(Arrays.stream(speeds).boxed().collect(Collectors.toList()));
 
-        if (max > maxV) {
-            for (int i = 0; i < speeds.length; i++) speeds[i] *= maxV / max;
-        }
+        if (max > maxV)
+            for (int i = 0; i < speeds.length; i++) {
+                speeds[i] *= maxV / max;
+            }
+
         return speeds;
     }
 
@@ -65,25 +70,19 @@ public class PIDFController {
         return calculateDrivePowers(maxV, errors.getX(), errors.getY(), errors.getAngle());
     }
 
-    private double calculateDrivePID(double error, MovementType movementType) {
-        double currentTime = elapsedTime.time();
+    private double calculateDrivePID(double error, MovementType movementType, double currentTime) {
         double p = kp * error;
-        double i;
-        switch (movementType) {
-            case Strafe:
-                i = Range.clip(strafeIntegral + ki * (error * (currentTime - previousTime)), minI, maxI);
-                strafeIntegral = i;
-                break;
-            case Drive:
-                i = Range.clip(driveIntegral + ki * (error * (currentTime - previousTime)), minI, maxI);
-                driveIntegral = i;
-                break;
-            default:
-                i = Range.clip(twistIntegral + ki * (error * (currentTime - previousTime)), minI, maxI);
-                twistIntegral = i;
-        }
+        double i = updateIntegral(error, movementType, currentTime);
+        double d = updateDerivative(error, movementType, currentTime);
 
+        return f + (1 - f) * (p + i + d); //Scales
+    }
+
+    private double updateDerivative(double error, MovementType movementType, double currentTime) {
         double d;
+
+        // TODO decide to use single line and faster but harder to read or easier to read but slower
+        // double errorDiff = error - (movementType == MovementType.Strafe ? (strafeDerivative + (0 * (strafeDerivative = error))) : (movementType == MovementType.Drive ? (driveDerivative + (0 * (driveDerivative = error))) : twistDerivative + (0 * (twistDerivative = error))));
         switch (movementType) {
             case Strafe:
                 d = kd * ((error - strafeDerivative) / (currentTime - previousTime));
@@ -97,10 +96,27 @@ public class PIDFController {
                 d = kd * ((error - twistDerivative) / (currentTime - previousTime));
                 twistDerivative = error;
         }
-        double output = p + i + d;
-        return f + (1 - f) * output; //Scales
-
+        return d;
     }
+
+    private double updateIntegral(double error, MovementType movementType, double currentTime) {
+        double integral;
+        switch (movementType) {
+            case Strafe:
+                integral = Range.clip(strafeIntegral + ki * (error * (currentTime - previousTime)), minI, maxI);
+                strafeIntegral = integral;
+                break;
+            case Drive:
+                integral = Range.clip(driveIntegral + ki * (error * (currentTime - previousTime)), minI, maxI);
+                driveIntegral = integral;
+                break;
+            default:
+                integral = Range.clip(twistIntegral + ki * (error * (currentTime - previousTime)), minI, maxI);
+                twistIntegral = integral;
+        }
+        return integral;
+    }
+
 
     enum MovementType {
         Drive,
