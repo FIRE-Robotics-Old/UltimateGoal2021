@@ -13,6 +13,10 @@ import java.util.stream.Collectors;
  */
 //P is main power, I looks at the sum of error and gives final push, D is how much the error is changing
 public class PIDFController {
+    private static final double maxI = 1;
+    private static final double minI = -1;
+
+    //TODO look at using System instead of ElapsedTime
     private final ElapsedTime elapsedTime;
     private final double previousTime;
     private final double ki;
@@ -20,16 +24,13 @@ public class PIDFController {
     private final double kd;
     private final double f;
 
-    private static final double maxI = 1;
-    private static final double minI = -maxI;
+    double strafeIntegral = 0;
+    double driveIntegral = 0;
+    double twistIntegral = 0;
 
-    private double strafeIntegral = 0;
-    private double driveIntegral = 0;
-    private double twistIntegral = 0;
-
-    private double strafeDerivative = 0;
-    private double driveDerivative = 0;
-    private double twistDerivative = 0;
+    double strafeDerivative = 0;
+    double driveDerivative = 0;
+    double twistDerivative = 0;
 
     public PIDFController(double kp, double ki, double kd, double f) {
         elapsedTime = new ElapsedTime();
@@ -40,13 +41,10 @@ public class PIDFController {
         this.f = f;
     }
 
-    //TODO create object for x,y,angle and x,y
-    public double[] calculateDrivePowers(double maxV, Coordinate error, double angleError) {
-        double xError = error.getX();
-        double yError = error.getY();
-        double strafe = calculateDrivePID(xError, Which.Strafe);
-        double drive = calculateDrivePID(yError, Which.Drive);
-        double twist = calculateDrivePID(angleError, Which.Twist);
+    public double[] calculateDrivePowers(double maxV, double xError, double yError, double angleError) {
+        double strafe = calculateDrivePID(xError, MovementType.Strafe);
+        double drive = calculateDrivePID(yError, MovementType.Drive);
+        double twist = calculateDrivePID(angleError, MovementType.Twist);
         double[] speeds = {
                 (drive + strafe + twist),
                 (drive - strafe - twist),
@@ -63,11 +61,15 @@ public class PIDFController {
         return speeds;
     }
 
-    private double calculateDrivePID(double error, Which which) {
+    public double[] calculateDrivePowers(double maxV, MovementData errors) {
+        return calculateDrivePowers(maxV, errors.getX(), errors.getY(), errors.getAngle());
+    }
+
+    private double calculateDrivePID(double error, MovementType movementType) {
         double currentTime = elapsedTime.time();
         double p = kp * error;
         double i;
-        switch (which) {
+        switch (movementType) {
             case Strafe:
                 i = Range.clip(strafeIntegral + ki * (error * (currentTime - previousTime)), minI, maxI);
                 strafeIntegral = i;
@@ -82,7 +84,7 @@ public class PIDFController {
         }
 
         double d;
-        switch (which) {
+        switch (movementType) {
             case Strafe:
                 d = kd * ((error - strafeDerivative) / (currentTime - previousTime));
                 strafeDerivative = error;
@@ -100,11 +102,9 @@ public class PIDFController {
 
     }
 
-    enum Which {
+    enum MovementType {
         Drive,
         Strafe,
         Twist
     }
-
-
 }
