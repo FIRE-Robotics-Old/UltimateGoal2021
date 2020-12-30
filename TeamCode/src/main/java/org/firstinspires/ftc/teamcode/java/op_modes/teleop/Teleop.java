@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.java.op_modes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.utils.AutoAdjusting;
@@ -38,11 +37,11 @@ public class Teleop extends LinearOpMode {
     private double strafe = 0;
     private double twist = 0;
     private final double intakeAndDeliveryPower = 0;
-    private double shooterPower = 0;
+    private final double shooterPower = 0;
     private final int rings = 0;
 
-    private boolean ifReversedIntakePressed = false;
-    private boolean shooterIsPressed = false;
+    private final boolean ifReversedIntakePressed = false;
+    private final boolean shooterIsPressed = false;
     private boolean slowModePressed = false;
     private boolean slowMode = false;
 
@@ -83,7 +82,6 @@ public class Teleop extends LinearOpMode {
                         gamepad1.left_stick_y * Math.sin(activeLocation.getAngle());
                 twist = gamepad1.right_stick_x;
 
-
                 // wheel speed calculation
                 double[] speeds = {
                         (drive + strafe + twist),
@@ -91,9 +89,8 @@ public class Teleop extends LinearOpMode {
                         (drive - strafe + twist),
                         (drive + strafe - twist)
                 };
-                telemetry.speak("Hello World");
-                telemetry.update();
-                sleep(1000);// Finds the max after converting doubles to Doubles
+
+                // Finds the max after converting doubles to Doubles
 
                 double max = Collections.max(Arrays.stream(speeds).boxed().collect(Collectors.toList()));
 
@@ -113,9 +110,6 @@ public class Teleop extends LinearOpMode {
                 } else if (!gamepad1.a) {
                     slowModePressed = false;
                 }
-                telemetry.speak("I am groot");
-                telemetry.update();
-                sleep(1000);
 
 //                if (rings<3){
 //                    intakeAndDeliveryPower = gamepad2.left_trigger;
@@ -134,7 +128,7 @@ public class Teleop extends LinearOpMode {
                 if (gamepad1.start) {
                     activeLocation.resetAngle();
                 }
-
+                /*
                 // reversing the intake and delivery
                 if (gamepad2.back && !ifReversedIntakePressed) {
                     intakeAndDelivery.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -143,7 +137,9 @@ public class Teleop extends LinearOpMode {
                     ifReversedIntakePressed = false;
                     intakeAndDelivery.setDirection(DcMotorSimple.Direction.FORWARD);
                 }
-
+                telemetry.speak("I am g");
+                telemetry.update();
+                sleep(1000);
                 //turning on the shooter
 
                 if (gamepad2.a && !shooterIsPressed) {
@@ -153,15 +149,18 @@ public class Teleop extends LinearOpMode {
                     shooterIsPressed = false;
                     shooterPower = 0;
                 }
-
+                telemetry.speak("I am root");
+                telemetry.update();
+                sleep(1000);
+                */
                 //setting the speed to the motors
                 frontLeftMotor.setPower(speeds[0]);
                 frontRightMotor.setPower(speeds[1]);
                 backLeftMotor.setPower(speeds[2]);
                 backRightMotor.setPower(speeds[3]);
-                intakeAndDelivery.setPower(intakeAndDeliveryPower);
-                leftShooter.setPower(shooterPower);
-                rightShooter.setPower(shooterPower);
+                //intakeAndDelivery.setPower(intakeAndDeliveryPower);
+                //leftShooter.setPower(shooterPower);
+                // rightShooter.setPower(shooterPower);
                 telemetry.addData("field X:", activeLocation.getFieldX());
                 telemetry.addData("field Y:", activeLocation.getFieldY());
                 telemetry.addData("potentiometer", autoAdjusting.getShooterPitchAngle());

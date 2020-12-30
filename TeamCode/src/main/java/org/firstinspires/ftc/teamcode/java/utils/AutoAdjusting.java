@@ -9,7 +9,7 @@ public class AutoAdjusting{
 
 
     RobotHardware robot;
-    private AnalogInput potentiometer;
+    private final AnalogInput potentiometer;
     public AutoAdjusting(RobotHardware robot){
         this.robot =robot;
         potentiometer = robot.potentiometer;
@@ -20,6 +20,7 @@ public class AutoAdjusting{
      * adjusting the pitch angle (using PIDF)
      */
     public void adjustPitch(){
+
     }
 
     /**
