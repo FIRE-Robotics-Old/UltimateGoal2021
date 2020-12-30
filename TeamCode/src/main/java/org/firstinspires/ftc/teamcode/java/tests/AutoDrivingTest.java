@@ -48,12 +48,18 @@ public class AutoDrivingTest extends LinearOpMode {
         backLeftMotor = robot.backLeftMotor;
 
 
-        AL = new ActiveLocation(robot);
+        /*AL = new ActiveLocation(robot);
         locationThread = new Thread(AL);
         locationThread.start();
 
-        PIDF = new PIDFController(.5, 0, 0, 0);
-        autoDriving = new AutoDriving(PIDF);
+        PF = new PathFinder(AL);
+        pathThread = new Thread(PF);
+        pathThread.start();
+
+         */
+
+        PIDF = new PIDFController(.7, 0, 0.1, 0);
+        autoDriving = new AutoDriving(PIDF, robot);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -61,17 +67,12 @@ public class AutoDrivingTest extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-
+        //while (opModeIsActive()) {
         // run until the end of the match (driver presses STOP)
         try {
-            telemetry.speak("World");
-            telemetry.update();
-            sleep(1000);
-            AL.setStartPosition(0, 0);
-            //PF.setDestination(0,100);
-            telemetry.speak("Hello");
-            telemetry.update();
-            sleep(1000);
+
+            //AL.setStartPosition(0, 0);
+            //PF.setDestination(600,600);
             /*
             telemetry.addData("FL", frontLeftMotor.getCurrentPosition());
             telemetry.addData("BR", backRightMotor.getCurrentPosition());
@@ -79,26 +80,31 @@ public class AutoDrivingTest extends LinearOpMode {
             telemetry.addData("BL", backLeftMotor.getCurrentPosition());
             telemetry.update();
         }*/
+            //telemetry.addData("X", AL.getFieldX());
+            //telemetry.addData("Y", AL.getFieldY());
+            //telemetry.addData("Angle", AL.getAngle());
+            //telemetry.addData("Path: ", PF.getEncoderPath());
+            telemetry.update();
+            boolean stat = autoDriving.stopAt(new MovementData(600, 600, 0), .3);
+            telemetry.speak("Hello" + stat);
+            telemetry.addData("FL", frontLeftMotor.getPower());
+            telemetry.addData("FR", frontRightMotor.getPower());
+            telemetry.addData("BL", backLeftMotor.getPower());
+            telemetry.addData("BR", backRightMotor.getPower());
+            telemetry.update();
+            if (runtime.milliseconds() >= 2900 || stat) {
+                frontRightMotor.setPower(0);
+                frontLeftMotor.setPower(0);
+                backRightMotor.setPower(0);
+                backLeftMotor.setPower(0);
+            }
 
-            telemetry.speak("Hello World");
-            telemetry.update();
-            sleep(1000);
-            telemetry.addData("X", AL.getFieldX());
-            telemetry.addData("Y", AL.getFieldY());
-            telemetry.addData("Angle", AL.getAngle());
-            telemetry.addData("Path: ", PF.getEncoderPath());
-            telemetry.update();
-            sleep(3000);
-
-            autoDriving.stopAt(new MovementData(0, 100, 0), .3);
-            telemetry.speak("Hello");
-            telemetry.update();
-            sleep(1000);
 
         } catch (Exception e) {
             telemetry.addData("error:", e.getStackTrace());
             telemetry.update();
             sleep(3000);
         }
+        //}
     }
 }

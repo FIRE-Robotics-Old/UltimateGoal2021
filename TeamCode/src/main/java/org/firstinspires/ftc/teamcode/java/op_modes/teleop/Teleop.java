@@ -8,10 +8,6 @@ import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.utils.AutoAdjusting;
 import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.stream.Collectors;
-
 @TeleOp(name = "Final TeleOp", group = "TeleOp")
 public class Teleop extends LinearOpMode {
     private DcMotor frontLeftMotor;
@@ -76,10 +72,10 @@ public class Teleop extends LinearOpMode {
 
             while (opModeIsActive()) {
                 //motors powers calculation
-                drive = gamepad1.left_stick_y * Math.cos(activeLocation.getAngle()) -
+                drive = -gamepad1.left_stick_y * Math.cos(activeLocation.getAngle()) -
                         gamepad1.left_stick_x * Math.sin(activeLocation.getAngle());
                 strafe = gamepad1.left_stick_x * Math.cos(activeLocation.getAngle()) +
-                        gamepad1.left_stick_y * Math.sin(activeLocation.getAngle());
+                        -gamepad1.left_stick_y * Math.sin(activeLocation.getAngle());
                 twist = gamepad1.right_stick_x;
 
                 // wheel speed calculation
@@ -91,8 +87,13 @@ public class Teleop extends LinearOpMode {
                 };
 
                 // Finds the max after converting doubles to Doubles
-
-                double max = Collections.max(Arrays.stream(speeds).boxed().collect(Collectors.toList()));
+                double max = Math.abs(speeds[0]);
+                for (double speed : speeds) {
+                    if (Math.abs(speed) > max) {
+                        max = Math.abs(speed);
+                    }
+                }
+                //double max = Math.abs(Collections.max(Arrays.stream(speeds).boxed().collect(Collectors.toList())));
 
                 if (max > maxSpeed) {
                     for (int i = 0; i < speeds.length; i++) speeds[i] *= maxSpeed / max;
@@ -161,12 +162,17 @@ public class Teleop extends LinearOpMode {
                 //intakeAndDelivery.setPower(intakeAndDeliveryPower);
                 //leftShooter.setPower(shooterPower);
                 // rightShooter.setPower(shooterPower);
-                telemetry.addData("field X:", activeLocation.getFieldX());
-                telemetry.addData("field Y:", activeLocation.getFieldY());
-                telemetry.addData("potentiometer", autoAdjusting.getShooterPitchAngle());
-                telemetry.addData("angle:", activeLocation.getAngleInDegrees());
-                telemetry.addData("rings", rings);
+                telemetry.addData("FL", frontLeftMotor.getPower());
+                telemetry.addData("FR", frontRightMotor.getPower());
+                telemetry.addData("BL", backLeftMotor.getPower());
+                telemetry.addData("BR", backRightMotor.getPower());
                 telemetry.update();
+                //telemetry.addData("field X:", activeLocation.getFieldX());
+                //telemetry.addData("field Y:", activeLocation.getFieldY());
+                //telemetry.addData("potentiometer", autoAdjusting.getShooterPitchAngle());
+                //telemetry.addData("angle:", activeLocation.getAngleInDegrees());
+                //telemetry.addData("rings", rings);
+                //telemetry.update();
             }
         } catch (Exception e) {
             telemetry.addData("error:", e.getStackTrace());

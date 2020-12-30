@@ -3,10 +3,6 @@ package org.firstinspires.ftc.teamcode.java.utils;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.stream.Collectors;
-
 /**
  * the PIDController class will be used for  all the different pid calculations
  * for example AutoDriving ,autoAdjusting , controlling the shooter speed
@@ -44,9 +40,9 @@ public class PIDFController {
     public double[] calculateDrivePowers(double maxV, double xError, double yError, double angleError) {
         double currentTime = elapsedTime.time();
 
-        double strafe = calculateDrivePID(xError,     MovementType.Strafe, currentTime);
-        double drive  = calculateDrivePID(yError,     MovementType.Drive,  currentTime);
-        double twist  = calculateDrivePID(angleError, MovementType.Twist,  currentTime);
+        double strafe = calculateDrivePID(xError, MovementType.Strafe, currentTime);
+        double drive = calculateDrivePID(yError, MovementType.Drive, currentTime);
+        double twist = calculateDrivePID(angleError, MovementType.Twist, currentTime);
 
         double[] speeds = {
                 (drive + strafe + twist),
@@ -54,9 +50,16 @@ public class PIDFController {
                 (drive - strafe + twist),
                 (drive + strafe - twist)
         };
+        double max = Math.abs(speeds[0]);
+        for (double speed : speeds) {
+            if (Math.abs(speed) > max) {
+                max = Math.abs(speed);
+            }
+        }
 
         // Finds the max after converting doubles to Doubles
-        double max = Collections.max(Arrays.stream(speeds).boxed().collect(Collectors.toList()));
+        //double max = Collections.max(Arrays.stream(speeds).boxed().collect(Collectors.toList()));
+
 
         if (max > maxV)
             for (int i = 0; i < speeds.length; i++) {

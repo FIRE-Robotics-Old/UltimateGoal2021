@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.java.fieldmapping;
 
-import org.firstinspires.ftc.teamcode.java.utils.Coordinate;
+import org.firstinspires.ftc.teamcode.java.utils.MovementData;
 
 /**
  * The PathFinder finds the correct path the Robot Needs to Take to move to a different point.
@@ -10,7 +10,7 @@ public class PathFinder implements Runnable {
     //TODO: Implement angle calculations in PathFinder
 
     private final ActiveLocation activeLocation;
-    private Coordinate destination;
+    private MovementData destination;
 
     private double xToMove;
     private double yToMove;
@@ -18,28 +18,30 @@ public class PathFinder implements Runnable {
     private volatile boolean isRunning = true;
 
 
-    public PathFinder(ActiveLocation activeLocation, Coordinate destination) {
+    public PathFinder(ActiveLocation activeLocation, MovementData destination) {
         this.activeLocation = activeLocation;
         this.destination = destination;
     }
 
     public PathFinder(ActiveLocation activeLocation, double x, double y) {
-        this(activeLocation, new Coordinate(x, y));
+        this(activeLocation, new MovementData(x, y, 0));
     }
     public PathFinder(ActiveLocation activeLocation){
         this.activeLocation = activeLocation;
     }
 
-    public Coordinate getDestination() {
+    public MovementData getDestination() {
         updateEncoderPath();
         return destination;
     }
-    public void setDestination(Coordinate destination) {
+
+    public void setDestination(MovementData destination) {
         updateEncoderPath();
         this.destination = destination;
     }
-    public void setDestination(double x, double y){
-        this.setDestination(new Coordinate(x,y));
+
+    public void setDestination(double x, double y) {
+        this.setDestination(new MovementData(x, y, 0));
     }
 
 
@@ -71,9 +73,9 @@ public class PathFinder implements Runnable {
     /**
      * @return a @{link Coordinate} which contains the change values for Robot Encoders
      */
-    public Coordinate getEncoderPath() {
+    public MovementData getEncoderPath() {
         updateEncoderPath();
-        return new Coordinate(xToMove, yToMove);
+        return new MovementData(xToMove, yToMove, 0);
     }
 
     public void stop() {
