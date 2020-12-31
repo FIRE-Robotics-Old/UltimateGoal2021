@@ -28,6 +28,8 @@ public class PIDFController {
     double driveDerivative = 0;
     double twistDerivative = 0;
 
+    private double aError;
+
     public PIDFController(double kp, double ki, double kd, double f) {
         elapsedTime = new ElapsedTime();
         this.previousTime = 0;
@@ -39,7 +41,8 @@ public class PIDFController {
 
     public double[] calculateDrivePowers(double maxV, double xError, double yError, double angleError) {
         double currentTime = elapsedTime.time();
-
+        aError = angleError;
+        angleError = ((Math.toDegrees(angleError) + 360) % 360);
         double strafe = calculateDrivePID(xError, MovementType.Strafe, currentTime);
         double drive = calculateDrivePID(yError, MovementType.Drive, currentTime);
         double twist = calculateDrivePID(angleError, MovementType.Twist, currentTime);
@@ -125,5 +128,10 @@ public class PIDFController {
         Drive,
         Strafe,
         Twist
+    }
+
+
+    public double getAngleErrorDegrees() {
+        return ((Math.toDegrees(aError) + 360) % 360);
     }
 }

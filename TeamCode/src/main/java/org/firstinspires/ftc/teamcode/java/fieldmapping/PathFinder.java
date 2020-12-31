@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.java.fieldmapping;
 
+import org.firstinspires.ftc.teamcode.java.utils.Coordinate;
 import org.firstinspires.ftc.teamcode.java.utils.MovementData;
 
 /**
@@ -14,6 +15,7 @@ public class PathFinder implements Runnable {
 
     private double xToMove;
     private double yToMove;
+    private double aToMove;
 
     private volatile boolean isRunning = true;
 
@@ -26,8 +28,13 @@ public class PathFinder implements Runnable {
     public PathFinder(ActiveLocation activeLocation, double x, double y) {
         this(activeLocation, new MovementData(x, y, 0));
     }
-    public PathFinder(ActiveLocation activeLocation){
+
+    public PathFinder(ActiveLocation activeLocation) {
         this.activeLocation = activeLocation;
+    }
+
+    public PathFinder(ActiveLocation activeLocation, double x, double y, double alpha) {
+        this(activeLocation, new MovementData(x, y, alpha));
     }
 
     public MovementData getDestination() {
@@ -44,6 +51,13 @@ public class PathFinder implements Runnable {
         this.setDestination(new MovementData(x, y, 0));
     }
 
+    public void setDestination(double x, double y, double alpha) {
+        this.setDestination(new MovementData(x, y, alpha));
+    }
+
+    public void setDestination(Coordinate coordinate, double alpha) {
+        this.setDestination(new MovementData(coordinate, alpha));
+    }
 
 
     /**
@@ -59,6 +73,7 @@ public class PathFinder implements Runnable {
 
             xToMove = deltaX * Math.cos(activeLocation.angle) + deltaY * Math.sin(activeLocation.angle);
             yToMove = deltaY * Math.cos(activeLocation.angle) - deltaX * Math.sin(activeLocation.angle);
+            calculateTurn();
         }
     }
 
@@ -68,6 +83,10 @@ public class PathFinder implements Runnable {
      */
     public void calculateTurn() {
         //subtract angles to figure out direction?
+        synchronized (this) {
+            if (activeLocation == null || destination == null) return;
+            aToMove = (destination.getAngleInRadians() - activeLocation.getAngle());
+        }
     }
 
     /**
@@ -75,7 +94,8 @@ public class PathFinder implements Runnable {
      */
     public MovementData getEncoderPath() {
         updateEncoderPath();
-        return new MovementData(xToMove, yToMove, 0);
+        //calculateTurn();
+        return new MovementData(xToMove, yToMove, aToMove);
     }
 
     public void stop() {
@@ -90,6 +110,7 @@ public class PathFinder implements Runnable {
     public void run() {
         while (isRunning) {
             updateEncoderPath();
+
         }
     }
 }

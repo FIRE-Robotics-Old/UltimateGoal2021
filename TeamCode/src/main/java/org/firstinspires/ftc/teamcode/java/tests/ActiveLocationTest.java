@@ -6,10 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
-import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
 import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.fieldmapping.PathFinder;
+import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
 
 //To fix error perhaps flip the switch
 
@@ -19,7 +18,7 @@ public class ActiveLocationTest extends LinearOpMode {
 
     // Declare OpMode members.
     RobotHardware robot = new RobotHardware();
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
 
     //Hardware robot = new Hardware();
     private DcMotor frontRightMotor;
@@ -63,7 +62,7 @@ public class ActiveLocationTest extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         try{
             AL.setStartPosition(0,0);
-            PF.setDestination(0,100);
+            //PF.setDestination(0,100);
             /*
             telemetry.addData("FL", frontLeftMotor.getCurrentPosition());
             telemetry.addData("BR", backRightMotor.getCurrentPosition());
@@ -74,10 +73,11 @@ public class ActiveLocationTest extends LinearOpMode {
             while (opModeIsActive()) {
                 telemetry.addData("X", AL.getFieldX());
                 telemetry.addData("Y", AL.getFieldY());
-                telemetry.addData("Angle", AL.getAngle());
-                telemetry.addData("Path: ", PF.getEncoderPath());
+                telemetry.addData("Angle", AL.getAngleInDegrees());
+                telemetry.addData("Pain", AL.getAngle());
+                //telemetry.addData("Path: ", PF.getEncoderPath());
                 telemetry.update();
-                sleep(100);
+                sleep(200);
             }
         }catch (Exception e){
             telemetry.addData("error:",e.getStackTrace());

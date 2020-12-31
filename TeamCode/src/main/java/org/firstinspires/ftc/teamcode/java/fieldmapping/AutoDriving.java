@@ -54,7 +54,7 @@ public class AutoDriving {
             MovementData error = PF.getEncoderPath();
             double[] speeds = PIDF.calculateDrivePowers(Vmax, error);
             setMotorPowers(speeds);
-            if ((Math.abs(AL.getFieldX() - goal.getX()) < 50) && (Math.abs(AL.getFieldY() - goal.getY()) < 50)) {
+            if ((Math.abs(goal.getX() - AL.getFieldX()) < 50) && (Math.abs(goal.getY() - AL.getFieldY()) < 50) && (Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees()) <= 15)) {
                 arrived = true;
             }
         }

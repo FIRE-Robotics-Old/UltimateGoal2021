@@ -58,7 +58,7 @@ public class AutoDrivingTest extends LinearOpMode {
 
          */
 
-        PIDF = new PIDFController(.7, 0, 0.1, 0);
+        PIDF = new PIDFController(.75, 0.007, 0.25, 0);
         autoDriving = new AutoDriving(PIDF, robot);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -85,13 +85,18 @@ public class AutoDrivingTest extends LinearOpMode {
             //telemetry.addData("Angle", AL.getAngle());
             //telemetry.addData("Path: ", PF.getEncoderPath());
             telemetry.update();
-            boolean stat = autoDriving.stopAt(new MovementData(600, 600, 0), .3);
+            boolean stat = autoDriving.stopAt(new MovementData(600, 600, 90), .3);
+            telemetry.addData("Angle", PIDF.getAngleErrorDegrees());
             telemetry.speak("Hello" + stat);
+            /*telemetry.addData("Angle", PIDF.getAngleErrorDegrees());
             telemetry.addData("FL", frontLeftMotor.getPower());
             telemetry.addData("FR", frontRightMotor.getPower());
             telemetry.addData("BL", backLeftMotor.getPower());
             telemetry.addData("BR", backRightMotor.getPower());
+
+             */
             telemetry.update();
+            sleep(4000);
             if (runtime.milliseconds() >= 2900 || stat) {
                 frontRightMotor.setPower(0);
                 frontLeftMotor.setPower(0);

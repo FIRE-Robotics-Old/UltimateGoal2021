@@ -15,9 +15,9 @@ public class ActiveLocation implements Runnable {
 
     // Hardware setup
     RobotHardware robot;
-    private BNO055IMU imu;
-    private DcMotor frontLeftMotor;
-    private DcMotor backRightMotor;
+    private final BNO055IMU imu;
+    private final DcMotor frontLeftMotor;
+    private final DcMotor backRightMotor;
 
     //########## VARIABLE SET UP ##########\\
 
@@ -99,7 +99,8 @@ public class ActiveLocation implements Runnable {
     private void updateSensors() {
         yEncoder = frontLeftMotor.getCurrentPosition();
         xEncoder = backRightMotor.getCurrentPosition();
-        angle = ((imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle) -resetAngle);
+        angle = ((imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle) - resetAngle);
+        angle = ((angle + (2 * Math.PI)) % (2 * Math.PI));
     }
 
     /**
@@ -157,7 +158,7 @@ public class ActiveLocation implements Runnable {
     }
     public double getAngleInDegrees(){
         updateSensors();
-        return Math.toDegrees(angle);
+        return ((Math.toDegrees(angle) + 360) % 360);
     }
     public void resetAngle(){
         updateSensors();
