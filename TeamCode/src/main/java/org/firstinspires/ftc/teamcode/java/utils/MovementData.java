@@ -27,17 +27,29 @@ public final class MovementData {
         this.angle = angle;
     }
 
-    private MovementData(double x, double y, double angle, boolean inDegrees) {
-        this.coordinate = new Coordinate(x, y);
+    private MovementData(Coordinate coordinate, double angle, boolean inDegrees) {
+        this.coordinate = coordinate;
         this.angle = (inDegrees ? Math.toRadians(angle) : angle);
+    }
+
+    private MovementData(double x, double y, double angle, boolean inDegrees) {
+        this(new Coordinate(x, y), angle, inDegrees);
     }
 
     public static MovementData withDegrees(double x, double y, double angle) {
         return new MovementData(x, y, angle, true);
     }
 
+    public static MovementData withDegrees(Coordinate coordinate, double angle) {
+        return new MovementData(coordinate, angle, true);
+    }
+
     public static MovementData withRadians(double x, double y, double angle) {
         return new MovementData(x, y, angle, false);
+    }
+
+    public static MovementData withRadians(Coordinate coordinate, double angle) {
+        return new MovementData(coordinate, angle, false);
     }
 
     public double getAngleInRadians() {
