@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.java.utils;
 
+import java.util.Locale;
+
 public final class MovementData {
     private final Coordinate coordinate;
     private final double angle;
@@ -80,5 +82,10 @@ public final class MovementData {
         temp = Double.doubleToLongBits(getAngle());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(Locale.ENGLISH, "%s at %.2f", coordinate, angle);
     }
 }
