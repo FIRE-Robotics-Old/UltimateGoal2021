@@ -44,11 +44,11 @@ public final class MovementData {
     }
 
     public double getAngleInRadians() {
-        return ((Math.toRadians(angle) + (2 * Math.PI)) % (2 * Math.PI));
+        return ((angle + (2 * Math.PI)) % (2 * Math.PI));
     }
 
     public double getAngleInDegrees() {
-        return ((angle + 360) % 360);
+        return ((Math.toDegrees(angle) + 360) % 360);
     }
 
     public double getX() {
