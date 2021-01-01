@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode.java.utils;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
 /**
  * the PIDController class will be used for  all the different pid calculations
  * for example AutoDriving ,autoAdjusting , controlling the shooter speed
@@ -53,20 +57,13 @@ public class PIDFController {
                 (drive - strafe + twist),
                 (drive + strafe - twist)
         };
-        double max = Math.abs(speeds[0]);
-        for (double speed : speeds) {
-            if (Math.abs(speed) > max) {
-                max = Math.abs(speed);
-            }
-        }
 
-        // Finds the max after converting doubles to Doubles
-        //double max = Collections.max(Arrays.stream(speeds).boxed().collect(Collectors.toList()));
+        AtomicReference<Double> max = new AtomicReference<>(0.0);
+        Arrays.stream(speeds).boxed().collect(Collectors.toList()).forEach((speed) -> max.set(Math.abs(speed)));
 
-
-        if (max > maxV)
+        if (max.get() > maxV)
             for (int i = 0; i < speeds.length; i++) {
-                speeds[i] *= maxV / max;
+                speeds[i] *= maxV / max.get();
             }
 
         return speeds;
