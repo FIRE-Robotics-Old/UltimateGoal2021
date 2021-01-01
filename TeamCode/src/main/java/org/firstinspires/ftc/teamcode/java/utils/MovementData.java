@@ -39,9 +39,6 @@ public final class MovementData {
     public static MovementData withRadians(double x, double y, double angle) {
         return new MovementData(x, y, angle, false);
     }
-    public double getAngle() {
-        return this.angle;
-    }
 
     public double getAngleInRadians() {
         return ((angle + (2 * Math.PI)) % (2 * Math.PI));
@@ -70,7 +67,7 @@ public final class MovementData {
 
         MovementData that = (MovementData) o;
 
-        if (Double.compare(that.getAngle(), getAngle()) != 0) return false;
+        if (Double.compare(that.getAngleInRadians(), getAngleInRadians()) != 0) return false;
         return coordinate.equals(that.coordinate);
     }
 
@@ -79,13 +76,13 @@ public final class MovementData {
         int result;
         long temp;
         result = coordinate.hashCode();
-        temp = Double.doubleToLongBits(getAngle());
+        temp = Double.doubleToLongBits(getAngleInRadians());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "%s at %.2f", coordinate, angle);
+        return String.format(Locale.ENGLISH, "%s at %.2f Degrees", coordinate, getAngleInDegrees());
     }
 }
