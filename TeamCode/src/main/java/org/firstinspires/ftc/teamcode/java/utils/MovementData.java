@@ -4,16 +4,39 @@ public final class MovementData {
     private final Coordinate coordinate;
     private final double angle;
 
+    /**
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param angle the angle
+     * @deprecated
+     */
     public MovementData(double x, double y, double angle) {
         this.coordinate = new Coordinate(x, y);
         this.angle = angle;
     }
 
+    /**
+     * @param coordinate the coordinate to move to
+     * @param angle the angle
+     * @deprecated
+     */
     public MovementData(Coordinate coordinate, double angle) {
         this.coordinate = coordinate;
         this.angle = angle;
     }
 
+    private MovementData(double x, double y, double angle, boolean inDegrees) {
+        this.coordinate = new Coordinate(x, y);
+        this.angle = (inDegrees ? Math.toRadians(angle) : angle);
+    }
+
+    public static MovementData withDegrees(double x, double y, double angle) {
+        return new MovementData(x, y, angle, true);
+    }
+
+    public static MovementData withRadians(double x, double y, double angle) {
+        return new MovementData(x, y, angle, false);
+    }
     public double getAngle() {
         return this.angle;
     }
@@ -58,5 +81,4 @@ public final class MovementData {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
-
 }
