@@ -31,7 +31,7 @@ public final class Coordinate {
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "(%f, %f)", x, y);
+        return String.format(Locale.ENGLISH, "(%.2f, %.2f)", x, y);
     }
 
     @Override
