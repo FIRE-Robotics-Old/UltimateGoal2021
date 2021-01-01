@@ -23,7 +23,7 @@ public final class MovementData {
     }
 
     public double getAngleInDegrees() {
-        return ((Math.toDegrees(angle) + 360) % 360);
+        return ((angle + 360) % 360);
     }
 
     public double getX() {
@@ -58,4 +58,5 @@ public final class MovementData {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
+
 }
