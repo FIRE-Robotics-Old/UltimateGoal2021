@@ -27,10 +27,10 @@ public class RobotHardware {
     public DcMotor leftShooter = null;
     public DcMotor intakeAndDelivery = null;
 
-    public Servo lowerWobble =null;
+    public Servo lowerWobble = null;
 
 
-    public AnalogInput potentiometer =null;
+    public AnalogInput potentiometer = null;
     public TouchSensor wobbleDetector = null;
     public TouchSensor ringCounter = null;
 

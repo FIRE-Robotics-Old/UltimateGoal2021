@@ -72,6 +72,7 @@ public class Teleop extends LinearOpMode {
 
             while (opModeIsActive()) {
                 //motors powers calculation
+
                 drive = -gamepad1.left_stick_y * Math.cos(activeLocation.getAngle()) -
                         gamepad1.left_stick_x * Math.sin(activeLocation.getAngle());
                 strafe = gamepad1.left_stick_x * Math.cos(activeLocation.getAngle()) +
@@ -178,7 +179,7 @@ public class Teleop extends LinearOpMode {
             telemetry.addData("error:", e.getStackTrace());
             telemetry.update();
             sleep(2000);
-            activeLocation.setStop();
+            activeLocation.Stop();
         }
     }
 }

@@ -168,7 +168,7 @@ public class ActiveLocation implements Runnable {
     /**
      * Sets up the thread to stop
      */
-    public void setStop() {
+    public void Stop() {
         isRunning = false;
     }
 
