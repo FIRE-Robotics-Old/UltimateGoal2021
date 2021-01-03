@@ -26,7 +26,7 @@ public class PathFinder implements Runnable {
     }
 
     public PathFinder(ActiveLocation activeLocation, double x, double y) {
-        this(activeLocation, new MovementData(x, y, 0));
+        this(activeLocation, MovementData.withDegrees(x, y, 0));
     }
 
     public PathFinder(ActiveLocation activeLocation) {
@@ -34,7 +34,7 @@ public class PathFinder implements Runnable {
     }
 
     public PathFinder(ActiveLocation activeLocation, double x, double y, double alpha) {
-        this(activeLocation, new MovementData(x, y, alpha));
+        this(activeLocation, MovementData.withDegrees(x, y, alpha));
     }
 
     public MovementData getDestination() {
@@ -48,15 +48,16 @@ public class PathFinder implements Runnable {
     }
 
     public void setDestination(double x, double y) {
-        this.setDestination(new MovementData(x, y, 0));
+        this.setDestination(MovementData.withDegrees(x, y, 0));
     }
 
     public void setDestination(double x, double y, double alpha) {
-        this.setDestination(new MovementData(x, y, alpha));
+        this.setDestination(MovementData.withDegrees(x, y, alpha));
     }
 
+
     public void setDestination(Coordinate coordinate, double alpha) {
-        this.setDestination(new MovementData(coordinate, alpha));
+        this.setDestination(MovementData.withDegrees(coordinate, alpha));
     }
 
 
@@ -86,6 +87,11 @@ public class PathFinder implements Runnable {
         synchronized (this) {
             if (activeLocation == null || destination == null) return;
             aToMove = (destination.getAngleInRadians() - activeLocation.getAngle());
+            if (aToMove > Math.PI) {
+                aToMove = -1 * ((Math.PI * 2) - aToMove);
+            } else if (aToMove < -Math.PI) {
+                aToMove = (Math.PI * 2) - Math.abs(aToMove);
+            }
         }
     }
 
@@ -95,8 +101,9 @@ public class PathFinder implements Runnable {
     public MovementData getEncoderPath() {
         updateEncoderPath();
         //calculateTurn();
-        return new MovementData(xToMove, yToMove, aToMove);
+        return MovementData.withRadians(xToMove, yToMove, aToMove);
     }
+
 
     public void stop() {
         this.isRunning = false;
