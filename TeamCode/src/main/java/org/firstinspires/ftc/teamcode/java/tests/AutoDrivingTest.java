@@ -33,11 +33,16 @@ public class AutoDrivingTest extends LinearOpMode {
     private PathFinder PF;
     private Thread pathThread;
     private AutoDriving autoDriving;
-    private PIDFController PIDF;
+    private PIDFController PIDFDrive;
+    private PIDFController PIDFStrafe;
+    private PIDFController PIDFTurn;
+
+    private boolean location;
 
     //private ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() {
+        location = true;
         robot.init(hardwareMap);
 
         imu = robot.imu;
@@ -58,15 +63,18 @@ public class AutoDrivingTest extends LinearOpMode {
 
          */
 
-        PIDF = new PIDFController(.75, 0.007, 0.25, 0);
-        autoDriving = new AutoDriving(PIDF, robot);
+        PIDFDrive = new PIDFController(0.0030, 0.000001, 0.003705, 0);
+        PIDFStrafe = new PIDFController(0.0030, 0.000001, 0.003705, 0);
+        PIDFTurn = new PIDFController(0.0030, 0.000001, 0.003705, 0);
+
+        autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
 
         waitForStart();
         runtime.reset();
-
+        boolean stat = false;
         //while (opModeIsActive()) {
         // run until the end of the match (driver presses STOP)
         try {
@@ -84,10 +92,24 @@ public class AutoDrivingTest extends LinearOpMode {
             //telemetry.addData("Y", AL.getFieldY());
             //telemetry.addData("Angle", AL.getAngle());
             //telemetry.addData("Path: ", PF.getEncoderPath());
-            telemetry.update();
-            boolean stat = autoDriving.stopAt(new MovementData(600, 600, 90), .3);
-            telemetry.addData("Angle", PIDF.getAngleErrorDegrees());
-            telemetry.speak("Hello" + stat);
+            //telemetry.update();
+
+            while (opModeIsActive()) {
+                if (!stat) {
+                    location = true;
+                    stat = autoDriving.stopAt(MovementData.withDegrees(0, 600, 0), .3);
+                    String report = autoDriving.errorReport(MovementData.withDegrees(1200, 600, 0));
+                    telemetry.addData("Error Report", report);
+                    telemetry.addData("FL", frontLeftMotor.getPower());
+                    telemetry.addData("BR", backRightMotor.getPower());
+                    telemetry.addData("FR", frontRightMotor.getPower());
+                    telemetry.addData("BL", backLeftMotor.getPower());
+                    telemetry.update();
+                }
+
+                //String report = autoDriving.errorReport(new MovementData(600, 600, 90));
+                //telemetry.addData("Error Report", report);
+                //telemetry.speak("Hello" + stat);
             /*telemetry.addData("Angle", PIDF.getAngleErrorDegrees());
             telemetry.addData("FL", frontLeftMotor.getPower());
             telemetry.addData("FR", frontRightMotor.getPower());
@@ -95,20 +117,34 @@ public class AutoDrivingTest extends LinearOpMode {
             telemetry.addData("BR", backRightMotor.getPower());
 
              */
-            telemetry.update();
-            sleep(4000);
-            if (runtime.milliseconds() >= 2900 || stat) {
-                frontRightMotor.setPower(0);
-                frontLeftMotor.setPower(0);
-                backRightMotor.setPower(0);
-                backLeftMotor.setPower(0);
+                //telemetry.update();
+                //sleep(200);
+
+                if (runtime.milliseconds() >= 29000 || stat) {
+                    location = false;
+                    frontRightMotor.setPower(0);
+                    frontLeftMotor.setPower(0);
+                    backRightMotor.setPower(0);
+                    backLeftMotor.setPower(0);
+                    //frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    //backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    telemetry.speak("Done");
+                    telemetry.update();
+                    //AL.Stop();
+                    //PF.stop();
+
+                }
+
             }
-
-
+            //AL.Stop();
+            //PF.stop();
         } catch (Exception e) {
             telemetry.addData("error:", e.getStackTrace());
+            telemetry.addData("bob", location);
             telemetry.update();
-            sleep(3000);
+            //AL.Stop();
+            //PF.stop();
+            sleep(10000);
         }
         //}
     }

@@ -12,7 +12,9 @@ import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
  */
 public class AutoDriving {
 
-    private final PIDFController PIDF;
+    private final PIDFController PIDFDrive;
+    private final PIDFController PIDStrafe;
+    private final PIDFController PIDFTurn;
     private final ActiveLocation AL;
     private final DcMotor frontRightMotor;
     private final DcMotor frontLeftMotor;
@@ -22,11 +24,13 @@ public class AutoDriving {
     private final PathFinder PF;
     private final Thread pathThread;
     RobotHardware robot;
-    private AutoDriving autoDriving;
+    //private AutoDriving autoDriving;
 
 
-    public AutoDriving(PIDFController PIDF, RobotHardware robot) {
-        this.PIDF = PIDF;
+    public AutoDriving(PIDFController PIDFDrive, PIDFController PIDFStrafe, PIDFController PIDFTurn, RobotHardware robot) {
+        this.PIDFDrive = PIDFDrive;
+        this.PIDStrafe = PIDFStrafe;
+        this.PIDFTurn = PIDFTurn;
         this.robot = robot;
         frontLeftMotor = robot.frontLeftMotor;
         frontRightMotor = robot.frontRightMotor;
@@ -49,18 +53,51 @@ public class AutoDriving {
      */
     public boolean stopAt(MovementData goal, double Vmax) {
         boolean arrived = false;
-        while (!arrived) {
-            PF.setDestination(goal);
-            MovementData error = PF.getEncoderPath();
-            double[] speeds = PIDF.calculateDrivePowers(Vmax, error);
-            setMotorPowers(speeds);
-            if ((Math.abs(goal.getX() - AL.getFieldX()) < 50) && (Math.abs(goal.getY() - AL.getFieldY()) < 50) && (Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees()) <= 15)) {
-                arrived = true;
-            }
-        }
-        return true;
+        //while (!arrived) {
+        PF.setDestination(goal);
+        MovementData error = PF.getEncoderPath();
+        double[] speeds = calculateDrivePowers(Vmax, error);//PIDFDrive.calculateDrivePowers(Vmax, error);
+        setMotorPowers(speeds);
+        //arrived = true;
+        return (Math.abs(goal.getX() - AL.getFieldX()) < 25) && (Math.abs(goal.getY() - AL.getFieldY()) < 25) && /*(Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees())*/ (PF.getEncoderPath().getAngleInDegrees() <= 15);
+        //}
     }
 
+    public double[] calculateDrivePowers(double maxV, MovementData errors) {
+        return calculateDrivePowers(maxV, errors.getX(), errors.getY(), errors.getAngleInRadians());
+    }
+
+    public double[] calculateDrivePowers(double maxV, double xError, double yError, double angleError) {
+        //aError = angleError;
+        //angleError = ((Math.toDegrees(angleError) + 360) % 360);
+        double strafe = PIDStrafe.calculateDrivePID(xError);
+        double drive = PIDFDrive.calculateDrivePID(yError);
+        double twist = PIDFTurn.calculateDrivePID(angleError);
+        //double twist = 0;
+
+        double[] speeds = {
+                (drive + strafe + twist),
+                (drive - strafe - twist),
+                (drive - strafe + twist),
+                (drive + strafe - twist)
+        };
+
+        //AtomicReference<Double> max = new AtomicReference<>(0.0);
+        //Arrays.stream(speeds).boxed().collect(Collectors.toList()).forEach((speed) -> max.set(Math.abs(speed)));
+        double max = Math.abs(speeds[0]);
+        for (double speed : speeds) {
+            if (Math.abs(speed) > max) {
+                max = Math.abs(speed);
+            }
+        }
+        if (max > maxV) {
+            for (int i = 0; i < speeds.length; i++) {
+                speeds[i] *= maxV / max;
+            }
+        }
+
+        return speeds;
+    }
     /**
      * drives through a point without stopping
      */
@@ -77,6 +114,15 @@ public class AutoDriving {
      * uses all the above functions for combination of driving and tuning
      */
     public void drive() {
+
+    }
+
+    public String errorReport(MovementData goal) {
+        return String.format("X: %.2f Y: %.2f A: %.2f", Math.abs(goal.getX() - AL.getFieldX()), Math.abs(goal.getY() - AL.getFieldY()), PF.getEncoderPath().getAngleInDegrees());
+        //return "X: "+Math.abs(goal.getX() - AL.getFieldX())+" Y: "+Math.abs(goal.getY() - AL.getFieldY())+" A: "+Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees());
+        //return "A: Math.abs("+goal.getAngleInDegrees()+"-"+AL.getAngleInDegrees()+") = "+(Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees()));
+        //double[] speeds = PIDF.calculateDrivePowers(Vmax, goal);
+        //return String.format("1: %.2f 2: %.2f 3: %.2f 4: %.2f", speeds[0], speeds[1])
 
     }
 

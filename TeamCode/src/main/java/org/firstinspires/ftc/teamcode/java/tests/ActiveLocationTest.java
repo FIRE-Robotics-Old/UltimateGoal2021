@@ -7,7 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
+import org.firstinspires.ftc.teamcode.java.fieldmapping.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.fieldmapping.PathFinder;
+import org.firstinspires.ftc.teamcode.java.utils.PIDFController;
 import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
 
 //To fix error perhaps flip the switch
@@ -30,6 +32,9 @@ public class ActiveLocationTest extends LinearOpMode {
     private Thread locationThread;
     private PathFinder PF;
     private Thread pathThread;
+    private AutoDriving autoDriving;
+    private PIDFController PIDF;
+
     //private ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() {
@@ -51,6 +56,9 @@ public class ActiveLocationTest extends LinearOpMode {
         pathThread = new Thread(PF);
         pathThread.start();
 
+        PIDF = new PIDFController(.75, 0.007, 0.25, 0);
+        //autoDriving = new AutoDriving(PIDF, robot);
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -61,8 +69,8 @@ public class ActiveLocationTest extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         try{
-            AL.setStartPosition(0,0);
-            //PF.setDestination(0,100);
+            AL.setStartPosition(0, 0);
+            PF.setDestination(600, 600, 90);
             /*
             telemetry.addData("FL", frontLeftMotor.getCurrentPosition());
             telemetry.addData("BR", backRightMotor.getCurrentPosition());
@@ -71,16 +79,23 @@ public class ActiveLocationTest extends LinearOpMode {
             telemetry.update();
         }*/
             while (opModeIsActive()) {
-                telemetry.addData("X", AL.getFieldX());
-                telemetry.addData("Y", AL.getFieldY());
-                telemetry.addData("Angle", AL.getAngleInDegrees());
-                telemetry.addData("Pain", AL.getAngle());
-                //telemetry.addData("Path: ", PF.getEncoderPath());
+                //telemetry.addData("X", AL.getFieldX());
+                //telemetry.addData("Y", AL.getFieldY());
+                telemetry.addData("Angle", Math.toDegrees(imu.getAngularOrientation().firstAngle));
+                telemetry.addData("Pain", AL.getAngleInDegrees());
+                telemetry.addData("Path: ", PF.getEncoderPath());
+                //telemetry.addData("Error",autoDriving.errorReport(MovementData.withDegrees(600,600,90)));
                 telemetry.update();
-                sleep(200);
+                sleep(300);
             }
-        }catch (Exception e){
-            telemetry.addData("error:",e.getStackTrace());
+
+            AL.Stop();
+            PF.stop();
+        }catch (Exception e) {
+            telemetry.addData("error:", e.getStackTrace());
+            //AL.Stop();
+            //PF.stop();
+            telemetry.update();
         }
     }
 }
