@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
-import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
+import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 
 
 @Autonomous(name="BasicRemoteAuton", group="Backup")

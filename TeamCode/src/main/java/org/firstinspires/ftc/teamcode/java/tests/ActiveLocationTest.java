@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
-import org.firstinspires.ftc.teamcode.java.fieldmapping.AutoDriving;
-import org.firstinspires.ftc.teamcode.java.fieldmapping.PathFinder;
+import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
+import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
+import org.firstinspires.ftc.teamcode.java.movement.PathFinder;
 import org.firstinspires.ftc.teamcode.java.util.PIDFController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
