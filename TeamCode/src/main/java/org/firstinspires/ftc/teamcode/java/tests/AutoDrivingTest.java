@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.fieldmapping.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.fieldmapping.PathFinder;
-import org.firstinspires.ftc.teamcode.java.utils.MovementData;
-import org.firstinspires.ftc.teamcode.java.utils.PIDFController;
-import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
+import org.firstinspires.ftc.teamcode.java.util.MovementData;
+import org.firstinspires.ftc.teamcode.java.util.PIDFController;
+import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 //To fix error perhaps flip the switch
 

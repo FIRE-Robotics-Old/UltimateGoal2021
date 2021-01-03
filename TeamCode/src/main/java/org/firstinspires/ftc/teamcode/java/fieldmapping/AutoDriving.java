@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.java.fieldmapping;
 
+import android.annotation.SuppressLint;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.java.utils.MovementData;
-import org.firstinspires.ftc.teamcode.java.utils.PIDFController;
-import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
+import org.firstinspires.ftc.teamcode.java.util.MovementData;
+import org.firstinspires.ftc.teamcode.java.util.PIDFController;
+import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 /**
  * The AutoDriving class allows the robot to move to specified locations after calculating with

@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.java.fieldmapping;
 
-import org.firstinspires.ftc.teamcode.java.utils.Coordinate;
-import org.firstinspires.ftc.teamcode.java.utils.MovementData;
+import org.firstinspires.ftc.teamcode.java.util.Coordinate;
+import org.firstinspires.ftc.teamcode.java.util.MovementData;
 
 /**
  * The PathFinder finds the correct path the Robot Needs to Take to move to a different point.

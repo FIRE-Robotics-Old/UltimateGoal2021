@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.java.utils;
+package org.firstinspires.ftc.teamcode.java.util;
 
 import java.util.Locale;
 

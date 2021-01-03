@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.java.fieldmapping;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
+import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 
 /**
@@ -168,7 +168,7 @@ public class ActiveLocation implements Runnable {
     /**
      * Sets up the thread to stop
      */
-    public void Stop() {
+    public void stop() {
         isRunning = false;
     }
 

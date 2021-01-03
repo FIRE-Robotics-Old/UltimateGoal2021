@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
+import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 
 
@@ -73,7 +73,7 @@ public class BasicRemoteAuton extends LinearOpMode {
             frontRightMotor.setPower(0);
             backLeftMotor.setPower(0);
             backRightMotor.setPower(0);
-            AL.setStop();
+            AL.stop();
 
 
             // Show the elapsed game time and wheel power.
@@ -84,7 +84,7 @@ public class BasicRemoteAuton extends LinearOpMode {
 
         } catch (Exception e) {
             telemetry.addData("error:", e.getStackTrace());
-            AL.setStop();
+            AL.stop();
         }
     }
 

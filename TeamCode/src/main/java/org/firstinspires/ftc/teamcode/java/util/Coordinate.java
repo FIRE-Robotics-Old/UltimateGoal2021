@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.java.utils;
+package org.firstinspires.ftc.teamcode.java.util;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -25,8 +25,12 @@ public final class Coordinate {
         return y;
     }
 
-    public MovementData withAngle(double angle) {
-        return new MovementData(this, angle);
+    public MovementData withAngleInRadians(double angle) {
+        return MovementData.withRadians(this, angle);
+    }
+
+    public MovementData withAngleInDegrees(double angle) {
+        return MovementData.withDegrees(this, angle);
     }
 
     @Override
