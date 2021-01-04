@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.java.movement;
 
-import org.firstinspires.ftc.teamcode.java.util.Coordinate;
+import org.firstinspires.ftc.teamcode.java.util.Vector2D;
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
 
 /**
@@ -56,8 +56,8 @@ public class PathFinder implements Runnable {
     }
 
 
-    public void setDestination(Coordinate coordinate, double alpha) {
-        this.setDestination(MovementData.withDegrees(coordinate, alpha));
+    public void setDestination(Vector2D vector2D, double alpha) {
+        this.setDestination(MovementData.withDegrees(vector2D, alpha));
     }
 
 

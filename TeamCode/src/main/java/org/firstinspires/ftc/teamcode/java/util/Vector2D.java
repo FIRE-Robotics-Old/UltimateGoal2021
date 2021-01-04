@@ -3,18 +3,18 @@ package org.firstinspires.ftc.teamcode.java.util;
 import java.util.Locale;
 import java.util.Objects;
 
-public final class Coordinate {
+public final class Vector2D {
     private final double x;
     private final double y;
 
-    public Coordinate(double x, double y) {
+    public Vector2D(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public Coordinate(Coordinate coordinate) {
-        this.x = coordinate.getX();
-        this.y = coordinate.getY();
+    public Vector2D(Vector2D vector2D) {
+        this.x = vector2D.getX();
+        this.y = vector2D.getY();
     }
 
     public double getX() {
@@ -42,9 +42,9 @@ public final class Coordinate {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Coordinate coordinate = (Coordinate) o;
-        return Double.compare(coordinate.getX(), x) == 0 &&
-                Double.compare(coordinate.getY(), y) == 0;
+        Vector2D vector2D = (Vector2D) o;
+        return Double.compare(vector2D.getX(), x) == 0 &&
+                Double.compare(vector2D.getY(), y) == 0;
     }
 
     @Override
