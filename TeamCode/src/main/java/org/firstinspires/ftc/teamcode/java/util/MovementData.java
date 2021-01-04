@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.java.util;
 import java.util.Locale;
 
 public final class MovementData {
-    private final Vector2D vector2D;
+    private final Vector2D translationalMovement;
     private final double angle;
 
     /**
@@ -13,22 +13,22 @@ public final class MovementData {
      * @deprecated
      */
     public MovementData(double x, double y, double angle) {
-        this.vector2D = new Vector2D(x, y);
+        this.translationalMovement = new Vector2D(x, y);
         this.angle = angle;
     }
 
     /**
-     * @param vector2D the coordinate to move to
+     * @param translationalMovement the coordinate to move to
      * @param angle the angle
      * @deprecated
      */
-    public MovementData(Vector2D vector2D, double angle) {
-        this.vector2D = vector2D;
+    public MovementData(Vector2D translationalMovement, double angle) {
+        this.translationalMovement = translationalMovement;
         this.angle = angle;
     }
 
-    private MovementData(Vector2D vector2D, double angle, boolean inDegrees) {
-        this.vector2D = vector2D;
+    private MovementData(Vector2D translationalMovement, double angle, boolean inDegrees) {
+        this.translationalMovement = translationalMovement;
         this.angle = (inDegrees ? Math.toRadians(angle) : angle);
     }
 
@@ -61,15 +61,15 @@ public final class MovementData {
     }
 
     public double getX() {
-        return vector2D.getX();
+        return translationalMovement.getX();
     }
 
     public double getY() {
-        return vector2D.getY();
+        return translationalMovement.getY();
     }
 
     public Vector2D Coordinate() {
-        return vector2D;
+        return translationalMovement;
     }
 
     @Override
@@ -80,14 +80,14 @@ public final class MovementData {
         MovementData that = (MovementData) o;
 
         if (Double.compare(that.getAngleInRadians(), getAngleInRadians()) != 0) return false;
-        return vector2D.equals(that.vector2D);
+        return translationalMovement.equals(that.translationalMovement);
     }
 
     @Override
     public int hashCode() {
         int result;
         long temp;
-        result = vector2D.hashCode();
+        result = translationalMovement.hashCode();
         temp = Double.doubleToLongBits(getAngleInRadians());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
@@ -95,6 +95,6 @@ public final class MovementData {
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "%s at %.2f Degrees", vector2D, getAngleInDegrees());
+        return String.format(Locale.ENGLISH, "%s at %.2f Degrees", translationalMovement, getAngleInDegrees());
     }
 }
