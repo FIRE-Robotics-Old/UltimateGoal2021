@@ -25,6 +25,20 @@ public final class Vector2D {
         return y;
     }
 
+    public Vector2D rotateBy(double angle) {
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+
+        double x = this.x * cos - this.y * sin;
+        double y = this.x * sin + this.y * cos;
+
+        return new Vector2D(x, y);
+    }
+
+    public Vector2D rotateByDegrees(double degrees) {
+        return rotateBy(Math.toRadians(degrees));
+    }
+
     public MovementData withAngleInRadians(double angle) {
         return MovementData.withRadians(this, angle);
     }
