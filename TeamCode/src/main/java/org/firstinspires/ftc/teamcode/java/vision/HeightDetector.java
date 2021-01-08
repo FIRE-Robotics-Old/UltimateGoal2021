@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.java.cameravision;
+package org.firstinspires.ftc.teamcode.java.vision;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 

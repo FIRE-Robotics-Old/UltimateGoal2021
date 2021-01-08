@@ -6,15 +6,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
+import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 
 
 @Autonomous(name="BasicRemoteAuton", group="Backup")
 public class BasicRemoteAuton extends LinearOpMode {
 
     // Declare OpMode members.
-    private final ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
 
     RobotHardware robot = new RobotHardware();
     private DcMotor frontRightMotor;

@@ -1,10 +1,12 @@
-package org.firstinspires.ftc.teamcode.java.fieldmapping;
+package org.firstinspires.ftc.teamcode.java.movement;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.java.utils.MovementData;
-import org.firstinspires.ftc.teamcode.java.utils.PIDFController;
-import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
+import org.firstinspires.ftc.teamcode.java.util.MovementData;
+import org.firstinspires.ftc.teamcode.java.util.PIDFController;
+import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
+
+import java.util.Locale;
 
 /**
  * The AutoDriving class allows the robot to move to specified locations after calculating with
@@ -119,7 +121,13 @@ public class AutoDriving {
     }
 
     public String errorReport(MovementData goal) {
-        return String.format("X: %.2f Y: %.2f A: %.2f", Math.abs(goal.getX() - AL.getFieldX()), Math.abs(goal.getY() - AL.getFieldY()), PF.getEncoderPath().getAngleInDegrees());
+        return String.format(
+                Locale.ENGLISH,
+                "X: %.2f Y: %.2f A: %.2f",
+                Math.abs(goal.getX() - AL.getFieldX()),
+                Math.abs(goal.getY() - AL.getFieldY()),
+                PF.getEncoderPath().getAngleInDegrees()
+        );
         //return "X: "+Math.abs(goal.getX() - AL.getFieldX())+" Y: "+Math.abs(goal.getY() - AL.getFieldY())+" A: "+Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees());
         //return "A: Math.abs("+goal.getAngleInDegrees()+"-"+AL.getAngleInDegrees()+") = "+(Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees()));
         //double[] speeds = PIDF.calculateDrivePowers(Vmax, goal);

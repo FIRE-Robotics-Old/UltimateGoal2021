@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.java.utils;
+package org.firstinspires.ftc.teamcode.java.util;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -43,5 +43,4 @@ public class PIDFController {
 
         return f + (1 - f) * (p + i + d); //Scales
     }
-
 }

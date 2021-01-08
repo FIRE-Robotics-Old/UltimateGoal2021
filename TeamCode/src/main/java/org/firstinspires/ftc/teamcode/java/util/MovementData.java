@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.java.utils;
+package org.firstinspires.ftc.teamcode.java.util;
 
 import java.util.Locale;
 
 public final class MovementData {
-    private final Coordinate coordinate;
+    private final Vector2D translationalMovement;
     private final double angle;
 
     /**
@@ -13,43 +13,43 @@ public final class MovementData {
      * @deprecated
      */
     public MovementData(double x, double y, double angle) {
-        this.coordinate = new Coordinate(x, y);
+        this.translationalMovement = new Vector2D(x, y);
         this.angle = angle;
     }
 
     /**
-     * @param coordinate the coordinate to move to
+     * @param translationalMovement the coordinate to move to
      * @param angle the angle
      * @deprecated
      */
-    public MovementData(Coordinate coordinate, double angle) {
-        this.coordinate = coordinate;
+    public MovementData(Vector2D translationalMovement, double angle) {
+        this.translationalMovement = translationalMovement;
         this.angle = angle;
     }
 
-    private MovementData(Coordinate coordinate, double angle, boolean inDegrees) {
-        this.coordinate = coordinate;
+    private MovementData(Vector2D translationalMovement, double angle, boolean inDegrees) {
+        this.translationalMovement = translationalMovement;
         this.angle = (inDegrees ? Math.toRadians(angle) : angle);
     }
 
     private MovementData(double x, double y, double angle, boolean inDegrees) {
-        this(new Coordinate(x, y), angle, inDegrees);
+        this(new Vector2D(x, y), angle, inDegrees);
     }
 
     public static MovementData withDegrees(double x, double y, double angle) {
         return new MovementData(x, y, angle, true);
     }
 
-    public static MovementData withDegrees(Coordinate coordinate, double angle) {
-        return new MovementData(coordinate, angle, true);
+    public static MovementData withDegrees(Vector2D vector2D, double angle) {
+        return new MovementData(vector2D, angle, true);
     }
 
     public static MovementData withRadians(double x, double y, double angle) {
         return new MovementData(x, y, angle, false);
     }
 
-    public static MovementData withRadians(Coordinate coordinate, double angle) {
-        return new MovementData(coordinate, angle, false);
+    public static MovementData withRadians(Vector2D vector2D, double angle) {
+        return new MovementData(vector2D, angle, false);
     }
 
     //TODO fix naming
@@ -70,15 +70,15 @@ public final class MovementData {
     }
 
     public double getX() {
-        return coordinate.getX();
+        return translationalMovement.getX();
     }
 
     public double getY() {
-        return coordinate.getY();
+        return translationalMovement.getY();
     }
 
-    public Coordinate Coordinate() {
-        return coordinate;
+    public Vector2D Coordinate() {
+        return translationalMovement;
     }
 
     @Override
@@ -89,14 +89,14 @@ public final class MovementData {
         MovementData that = (MovementData) o;
 
         if (Double.compare(that.getAngleInRadians(), getAngleInRadians()) != 0) return false;
-        return coordinate.equals(that.coordinate);
+        return translationalMovement.equals(that.translationalMovement);
     }
 
     @Override
     public int hashCode() {
         int result;
         long temp;
-        result = coordinate.hashCode();
+        result = translationalMovement.hashCode();
         temp = Double.doubleToLongBits(getAngleInRadians());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
@@ -104,6 +104,6 @@ public final class MovementData {
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "%s at %.2f Degrees", coordinate, getAngleInDegrees());
+        return String.format(Locale.ENGLISH, "%s at %.2f Degrees", translationalMovement, getAngleInDegrees());
     }
 }

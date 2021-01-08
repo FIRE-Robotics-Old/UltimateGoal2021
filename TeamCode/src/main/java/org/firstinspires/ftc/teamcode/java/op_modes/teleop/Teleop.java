@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
-import org.firstinspires.ftc.teamcode.java.utils.AutoAdjusting;
-import org.firstinspires.ftc.teamcode.java.utils.RobotHardware;
+import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
+import org.firstinspires.ftc.teamcode.java.util.AutoAdjusting;
+import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 @TeleOp(name = "Final TeleOp", group = "TeleOp")
 public class Teleop extends LinearOpMode {
@@ -180,7 +180,7 @@ public class Teleop extends LinearOpMode {
             telemetry.addData("error:", e.getStackTrace());
             telemetry.update();
             sleep(2000);
-            activeLocation.Stop();
+            activeLocation.stop();
         }
     }
 }
