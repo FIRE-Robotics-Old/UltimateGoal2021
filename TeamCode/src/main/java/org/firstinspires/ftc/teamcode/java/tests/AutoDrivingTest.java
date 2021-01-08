@@ -76,6 +76,7 @@ public class AutoDrivingTest extends LinearOpMode {
         waitForStart();
         runtime.reset();
         boolean stat = false;
+
         //while (opModeIsActive()) {
         // run until the end of the match (driver presses STOP)
         try {
