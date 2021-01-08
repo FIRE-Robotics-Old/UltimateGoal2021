@@ -167,6 +167,7 @@ public class Teleop extends LinearOpMode {
                 telemetry.addData("FR", frontRightMotor.getPower());
                 telemetry.addData("BL", backLeftMotor.getPower());
                 telemetry.addData("BR", backRightMotor.getPower());
+                telemetry.addData("sPAIN", activeLocation.getAngleInDegrees());
                 telemetry.update();
                 //telemetry.addData("field X:", activeLocation.getFieldX());
                 //telemetry.addData("field Y:", activeLocation.getFieldY());

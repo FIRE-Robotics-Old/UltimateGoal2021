@@ -52,12 +52,21 @@ public final class MovementData {
         return new MovementData(coordinate, angle, false);
     }
 
+    //TODO fix naming
     public double getAngleInRadians() {
         return ((angle + (2 * Math.PI)) % (2 * Math.PI));
     }
 
     public double getAngleInDegrees() {
         return ((Math.toDegrees(angle) + 360) % 360);
+    }
+
+    public double getRawAngleInRadians() {
+        return (angle);
+    }
+
+    public double getRawAngleInDegrees() {
+        return (Math.toDegrees(angle));
     }
 
     public double getX() {

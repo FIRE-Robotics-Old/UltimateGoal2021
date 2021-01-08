@@ -62,10 +62,11 @@ public class AutoDrivingTest extends LinearOpMode {
         pathThread.start();
 
          */
-
-        PIDFDrive = new PIDFController(0.0030, 0.000001, 0.003705, 0);
-        PIDFStrafe = new PIDFController(0.0030, 0.000001, 0.003705, 0);
-        PIDFTurn = new PIDFController(0.0030, 0.000001, 0.003705, 0);
+        //12096
+        //PIDFDrive = new PIDFController(0.0011844/*96004999*/, 0.000000, 0.00150719/*423*/, 0); //003,000001,003705
+        PIDFDrive = new PIDFController(0.00, 0.000000, 0.00, 0);
+        PIDFStrafe = new PIDFController(0.000, 0.000000, 0.0000, 0);
+        PIDFTurn = new PIDFController(0.35, 0.00000, 0.36, 0);
 
         autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
         telemetry.addData("Status", "Initialized");
@@ -94,16 +95,15 @@ public class AutoDrivingTest extends LinearOpMode {
             //telemetry.addData("Path: ", PF.getEncoderPath());
             //telemetry.update();
 
-            while (opModeIsActive()) {
+            while (opModeIsActive() && !isStopRequested()) {
+                //frontLeftMotor.setPower(.29);
+
+
                 if (!stat) {
                     location = true;
-                    stat = autoDriving.stopAt(MovementData.withDegrees(0, 600, 0), .3);
-                    String report = autoDriving.errorReport(MovementData.withDegrees(1200, 600, 0));
+                    String report = autoDriving.stopAt(MovementData.withDegrees(0, 0, 90), .3);
+                    //String report = autoDriving.errorReport(MovementData.withDegrees(0, 600, 0));
                     telemetry.addData("Error Report", report);
-                    telemetry.addData("FL", frontLeftMotor.getPower());
-                    telemetry.addData("BR", backRightMotor.getPower());
-                    telemetry.addData("FR", frontRightMotor.getPower());
-                    telemetry.addData("BL", backLeftMotor.getPower());
                     telemetry.update();
                 }
 
@@ -126,6 +126,8 @@ public class AutoDrivingTest extends LinearOpMode {
                     frontLeftMotor.setPower(0);
                     backRightMotor.setPower(0);
                     backLeftMotor.setPower(0);
+                    String report = autoDriving.errorReport(MovementData.withDegrees(0, 600, 0));
+                    telemetry.addData("Error Report", report);
                     //frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     //backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     telemetry.speak("Done");

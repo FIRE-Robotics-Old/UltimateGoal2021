@@ -25,8 +25,9 @@ public final class Coordinate {
         return y;
     }
 
+
     public MovementData withAngle(double angle) {
-        return new MovementData(this, angle);
+        return MovementData.withRadians(this, angle);
     }
 
     @Override

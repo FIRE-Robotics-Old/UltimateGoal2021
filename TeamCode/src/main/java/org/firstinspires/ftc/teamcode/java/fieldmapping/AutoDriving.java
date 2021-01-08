@@ -51,7 +51,7 @@ public class AutoDriving {
     /**
      * drives to a point and stops using PID
      */
-    public boolean stopAt(MovementData goal, double Vmax) {
+    public String stopAt(MovementData goal, double Vmax) {
         boolean arrived = false;
         //while (!arrived) {
         PF.setDestination(goal);
@@ -59,12 +59,13 @@ public class AutoDriving {
         double[] speeds = calculateDrivePowers(Vmax, error);//PIDFDrive.calculateDrivePowers(Vmax, error);
         setMotorPowers(speeds);
         //arrived = true;
-        return (Math.abs(goal.getX() - AL.getFieldX()) < 25) && (Math.abs(goal.getY() - AL.getFieldY()) < 25) && /*(Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees())*/ (PF.getEncoderPath().getAngleInDegrees() <= 15);
+        //return (Math.abs(goal.getX() - AL.getFieldX()) < 10) && (Math.abs(goal.getY() - AL.getFieldY()) < 31415) && /*(Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees())*/ (PF.getEncoderPath().getAngleInDegrees() <= 15);
         //}
+        return String.format("Y: %.2f", PF.getEncoderPath().getRawAngleInDegrees());
     }
 
     public double[] calculateDrivePowers(double maxV, MovementData errors) {
-        return calculateDrivePowers(maxV, errors.getX(), errors.getY(), errors.getAngleInRadians());
+        return calculateDrivePowers(maxV, errors.getX(), errors.getY(), errors.getRawAngleInRadians());
     }
 
     public double[] calculateDrivePowers(double maxV, double xError, double yError, double angleError) {

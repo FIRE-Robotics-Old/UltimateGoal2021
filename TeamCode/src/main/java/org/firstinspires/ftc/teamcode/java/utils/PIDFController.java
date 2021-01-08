@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.util.Range;
  */
 //P is main power, I looks at the sum of error and gives final push, D is how much the error is changing
 public class PIDFController {
-    private static final double maxI = 1;
-    private static final double minI = -1;
+    private static final double maxI = .1;
+    private static final double minI = -.1;
 
     //TODO look at using System instead of ElapsedTime
     private final ElapsedTime elapsedTime;

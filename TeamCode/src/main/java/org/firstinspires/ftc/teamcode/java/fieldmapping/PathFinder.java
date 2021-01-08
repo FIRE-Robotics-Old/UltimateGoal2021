@@ -16,6 +16,7 @@ public class PathFinder implements Runnable {
     private double xToMove;
     private double yToMove;
     private double aToMove;
+    private static final double TWOPI = Math.PI;
 
     private volatile boolean isRunning = true;
 
@@ -88,10 +89,11 @@ public class PathFinder implements Runnable {
             if (activeLocation == null || destination == null) return;
             aToMove = (destination.getAngleInRadians() - activeLocation.getAngle());
             if (aToMove > Math.PI) {
-                aToMove = -1 * ((Math.PI * 2) - aToMove);
+                aToMove = -1 * (TWOPI - aToMove);
             } else if (aToMove < -Math.PI) {
-                aToMove = (Math.PI * 2) - Math.abs(aToMove);
+                aToMove = TWOPI - Math.abs(aToMove);
             }
+            aToMove *= -1;
         }
     }
 
