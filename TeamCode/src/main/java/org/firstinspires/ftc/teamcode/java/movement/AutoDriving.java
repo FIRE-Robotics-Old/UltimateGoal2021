@@ -42,12 +42,14 @@ public class AutoDriving {
         AL = new ActiveLocation(robot);
         locationThread = new Thread(AL);
         locationThread.start();
+        AL.setStartPosition(0, 0, 270);
 
         PF = new PathFinder(AL);
         pathThread = new Thread(PF);
         pathThread.start();
 
     }
+
     //TODO fill blank functions write aPID controller  add more functionality
 
     /**
@@ -61,9 +63,15 @@ public class AutoDriving {
         double[] speeds = calculateDrivePowers(Vmax, error);//PIDFDrive.calculateDrivePowers(Vmax, error);
         setMotorPowers(speeds);
         //arrived = true;
-        //return (Math.abs(goal.getX() - AL.getFieldX()) < 10) && (Math.abs(goal.getY() - AL.getFieldY()) < 31415) && /*(Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees())*/ (PF.getEncoderPath().getAngleInDegrees() <= 15);
+        /*
+        if ((Math.abs(goal.getX() - AL.getFieldX()) < 10) && (Math.abs(goal.getY() - AL.getFieldY()) < 15) &&  (PF.getEncoderPath().getAngleInDegrees() <= 5)){
+            return true;
+        }
+
+        return false;
+*/
         //}
-        return String.format("Y: %.2f", PF.getEncoderPath().getRawAngleInDegrees());
+        return String.format("X: %.2f", (Math.abs(goal.getX() - AL.getFieldX())));
     }
 
     public double[] calculateDrivePowers(double maxV, MovementData errors) {

@@ -29,7 +29,8 @@ public class ActiveLocation implements Runnable {
     private double yEncoder = 0;
     private double xEncoder = 0;
     double angle = 0;
-    double resetAngle =0;
+    double resetAngle = 0;
+    double startAngle;
 
     // Field location
     double fieldXPosition =0;
@@ -81,13 +82,16 @@ public class ActiveLocation implements Runnable {
 
     /**
      * Sets the start position
-     * 
+     *
      * @param internalCurrentX The current X position mm
      * @param internalCurrentY The current Y position mm
+     * @param startAngle       The starting angle in degrees
      */
-    public void setStartPosition(double internalCurrentX, double internalCurrentY) {
-        this.internalCurrentY = internalCurrentY;
-        this.internalCurrentX = internalCurrentX;
+    public void setStartPosition(double internalCurrentX, double internalCurrentY, double startAngle) {
+        this.startAngle = Math.toRadians(startAngle);
+        this.internalCurrentY = internalCurrentX * Math.sin(startAngle) + internalCurrentY * Math.cos(startAngle);
+        this.internalCurrentX = internalCurrentX * Math.cos(startAngle) - internalCurrentY * Math.sin(startAngle);
+
     }
 
     /**
@@ -97,9 +101,10 @@ public class ActiveLocation implements Runnable {
      * of the robot using the built in IMU on the Rev Hub.
      */
     private void updateSensors() {
+
         yEncoder = frontLeftMotor.getCurrentPosition();
         xEncoder = backRightMotor.getCurrentPosition();
-        angle = ((imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle) - resetAngle);
+        angle = ((imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle) + startAngle - resetAngle);
         angle = ((angle + (2 * Math.PI)) % (2 * Math.PI));
     }
 
