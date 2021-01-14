@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.java.movement;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
 import org.firstinspires.ftc.teamcode.java.util.PIDFController;
@@ -18,10 +18,10 @@ public class AutoDriving {
     private final PIDFController PIDStrafe;
     private final PIDFController PIDFTurn;
     private final ActiveLocation AL;
-    private final DcMotor frontRightMotor;
-    private final DcMotor frontLeftMotor;
-    private final DcMotor backLeftMotor;
-    private final DcMotor backRightMotor;
+    private final DcMotorEx frontRightMotor;
+    private final DcMotorEx frontLeftMotor;
+    private final DcMotorEx backLeftMotor;
+    private final DcMotorEx backRightMotor;
     private final Thread locationThread;
     private final PathFinder PF;
     private final Thread pathThread;
@@ -71,7 +71,7 @@ public class AutoDriving {
         return false;
 */
         //}
-        return String.format("X: %.2f", (Math.abs(goal.getX() - AL.getFieldX())));
+        return String.format(Locale.ENGLISH, "X: %.2f", (Math.abs(goal.getX() - AL.getFieldX())));
     }
 
     public double[] calculateDrivePowers(double maxV, MovementData errors) {
