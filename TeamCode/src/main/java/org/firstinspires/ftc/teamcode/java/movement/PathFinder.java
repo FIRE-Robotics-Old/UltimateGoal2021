@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.java.movement;
 
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
-import org.firstinspires.ftc.teamcode.java.util.Vector2D;
+import org.firstinspires.ftc.teamcode.java.util.Vector2d;
 
 /**
  * The PathFinder finds the correct path the Robot Needs to Take to move to a different point.
@@ -52,13 +52,13 @@ public class PathFinder implements Runnable {
         this.setDestination(MovementData.withDegrees(x, y, 0));
     }
 
-    public void setDestination(double x, double y, double alpha) {
-        this.setDestination(MovementData.withDegrees(x, y, alpha));
+    public void setDestination(double x, double y, double rotation) {
+        this.setDestination(MovementData.withDegrees(x, y, rotation));
     }
 
 
-    public void setDestination(Vector2D vector2D, double alpha) {
-        this.setDestination(MovementData.withDegrees(vector2D, alpha));
+    public void setDestination(Vector2d translation, double rotation) {
+        this.setDestination(MovementData.withDegrees(translation, rotation));
     }
 
 

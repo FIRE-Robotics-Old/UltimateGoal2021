@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.java.util;
 import java.util.Locale;
 
 public final class MovementData {
-    private final Vector2D translationalMovement;
+    private final Vector2d translationalMovement;
     private final double angle;
 
     /**
@@ -13,7 +13,7 @@ public final class MovementData {
      * @deprecated
      */
     public MovementData(double x, double y, double angle) {
-        this.translationalMovement = new Vector2D(x, y);
+        this.translationalMovement = new Vector2d(x, y);
         this.angle = angle;
     }
 
@@ -22,34 +22,34 @@ public final class MovementData {
      * @param angle the angle
      * @deprecated
      */
-    public MovementData(Vector2D translationalMovement, double angle) {
+    public MovementData(Vector2d translationalMovement, double angle) {
         this.translationalMovement = translationalMovement;
         this.angle = angle;
     }
 
-    private MovementData(Vector2D translationalMovement, double angle, boolean inDegrees) {
+    private MovementData(Vector2d translationalMovement, double angle, boolean inDegrees) {
         this.translationalMovement = translationalMovement;
         this.angle = (inDegrees ? Math.toRadians(angle) : angle);
     }
 
     private MovementData(double x, double y, double angle, boolean inDegrees) {
-        this(new Vector2D(x, y), angle, inDegrees);
+        this(new Vector2d(x, y), angle, inDegrees);
     }
 
     public static MovementData withDegrees(double x, double y, double angle) {
         return new MovementData(x, y, angle, true);
     }
 
-    public static MovementData withDegrees(Vector2D vector2D, double angle) {
-        return new MovementData(vector2D, angle, true);
+    public static MovementData withDegrees(Vector2d translation, double angle) {
+        return new MovementData(translation, angle, true);
     }
 
     public static MovementData withRadians(double x, double y, double angle) {
         return new MovementData(x, y, angle, false);
     }
 
-    public static MovementData withRadians(Vector2D vector2D, double angle) {
-        return new MovementData(vector2D, angle, false);
+    public static MovementData withRadians(Vector2d translation, double angle) {
+        return new MovementData(translation, angle, false);
     }
 
     //TODO fix naming
@@ -77,7 +77,7 @@ public final class MovementData {
         return translationalMovement.getY();
     }
 
-    public Vector2D Coordinate() {
+    public Vector2d getTranslationalMovement() {
         return translationalMovement;
     }
 
