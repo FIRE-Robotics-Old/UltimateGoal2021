@@ -86,10 +86,10 @@ public class MecanumDrive extends Drivetrain {
         int blp = MotorPosition.backLeft.position;
         int brp = MotorPosition.backRight.position;
 
-        wheelSpeeds[flp] = Math.sin(theta + Math.PI / 4);
-        wheelSpeeds[frp] = Math.sin(theta - Math.PI / 4);
-        wheelSpeeds[blp] = Math.sin(theta - Math.PI / 4);
-        wheelSpeeds[brp] = Math.sin(theta + Math.PI / 4);
+        wheelSpeeds[flp] = Math.sin(theta + PI4);
+        wheelSpeeds[frp] = Math.sin(theta - PI4);
+        wheelSpeeds[blp] = Math.sin(theta - PI4);
+        wheelSpeeds[brp] = Math.sin(theta + PI4);
 
         scaleSpeeds(wheelSpeeds, translation.magnitude());
 

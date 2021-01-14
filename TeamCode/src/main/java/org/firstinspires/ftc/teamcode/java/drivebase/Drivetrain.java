@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.java.drivebase;
 
 public abstract class Drivetrain {
+
+    protected static final double PI4 = Math.PI / 4;
+
     public static final double defaultMaxSpeed = 1.0;
 
-                        double maxSpeed        = defaultMaxSpeed;
+    double maxSpeed = defaultMaxSpeed;
 
     public Drivetrain() {
 

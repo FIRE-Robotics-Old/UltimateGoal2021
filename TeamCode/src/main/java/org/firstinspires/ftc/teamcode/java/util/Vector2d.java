@@ -55,6 +55,31 @@ public final class Vector2d {
         return Math.hypot(x, y);
     }
 
+    public double vectorLength() {
+        return magnitude();
+    }
+
+    public Vector2d plus(Vector2d other){
+        return new  Vector2d(x + other.x, y + other.y);
+    }
+
+    public Vector2d minus(Vector2d other){
+        return plus(other.unaryMinus());
+    }
+
+    public Vector2d unaryMinus() {
+        return new  Vector2d(-x, -y);
+    }
+
+    public Vector2d times(double scalar) {
+        return new  Vector2d(x * scalar, y * scalar);
+    }
+
+    public Vector2d div(double scalar) {
+        return new  Vector2d(x / scalar, y / scalar);
+    }
+
+
     @Override
     public String toString() {
         return String.format(Locale.ENGLISH, "(%.2f, %.2f)", x, y);
