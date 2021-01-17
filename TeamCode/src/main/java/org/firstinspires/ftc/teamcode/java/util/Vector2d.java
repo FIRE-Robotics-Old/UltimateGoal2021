@@ -79,7 +79,6 @@ public final class Vector2d {
         return new  Vector2d(x / scalar, y / scalar);
     }
 
-
     @Override
     public String toString() {
         return String.format(Locale.ENGLISH, "(%.2f, %.2f)", x, y);
