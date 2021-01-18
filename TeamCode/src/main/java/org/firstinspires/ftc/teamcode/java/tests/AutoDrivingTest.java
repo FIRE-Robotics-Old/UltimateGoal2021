@@ -104,7 +104,7 @@ public class AutoDrivingTest extends LinearOpMode {
 
                 if (!stat) {
                     location = true;
-                    String report = autoDriving.stopAt(MovementData.withDegrees(00, 600, 0), .3);
+                    String report = autoDriving.stopAt(MovementData.withDegrees(69, 420, 69), .3);
                     //String report = autoDriving.errorReport(MovementData.withDegrees(600, 0, 0));
                     telemetry.addData("Error Report", report);
                     telemetry.update();
