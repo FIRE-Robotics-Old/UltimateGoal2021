@@ -9,9 +9,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.movement.PathFinder;
-import org.firstinspires.ftc.teamcode.java.util.MovementData;
-import org.firstinspires.ftc.teamcode.java.util.PIDFController;
-import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
+import org.firstinspires.ftc.teamcode.java.util.*;
+
 
 //To fix error perhaps flip the switch
 
@@ -28,10 +27,10 @@ public class AutoDrivingTest extends LinearOpMode {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
     private BNO055IMU imu;
-    private ActiveLocation AL;
-    private Thread locationThread;
-    private PathFinder PF;
-    private Thread pathThread;
+//    private ActiveLocation AL;
+//    private Thread locationThread;
+//    private PathFinder PF;
+//    private Thread pathThread;
     private AutoDriving autoDriving;
     private PIDFController PIDFDrive;
     private PIDFController PIDFStrafe;
@@ -105,7 +104,7 @@ public class AutoDrivingTest extends LinearOpMode {
 
                 if (!stat) {
                     location = true;
-                    String report = autoDriving.stopAt(MovementData.withDegrees(00, 00, 0), .3);
+                    String report = autoDriving.stopAt(MovementData.withDegrees(00, 600, 0), .3);
                     //String report = autoDriving.errorReport(MovementData.withDegrees(600, 0, 0));
                     telemetry.addData("Error Report", report);
                     telemetry.update();

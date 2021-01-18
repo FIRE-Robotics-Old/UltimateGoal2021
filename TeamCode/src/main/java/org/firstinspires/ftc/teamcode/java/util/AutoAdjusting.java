@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.java.util;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import org.firstinspires.ftc.teamcode.java.util.*;
 
 /**
  * the AutoAdjusting class will be used to adjust the angle in two axis of the shooter

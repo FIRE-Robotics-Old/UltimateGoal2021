@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.java.tests;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
@@ -23,14 +23,14 @@ public class ActiveLocationTest extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
     //Hardware robot = new Hardware();
-    private DcMotor frontRightMotor;
-    private DcMotor frontLeftMotor;
-    private DcMotor backLeftMotor;
-    private DcMotor backRightMotor;
+    private DcMotorEx frontRightMotor;
+    private DcMotorEx frontLeftMotor;
+    private DcMotorEx backLeftMotor;
+    private DcMotorEx backRightMotor;
     private BNO055IMU imu;
-    private ActiveLocation AL;
+    private ActiveLocation activeLocation;
     private Thread locationThread;
-    private PathFinder PF;
+    private PathFinder pathFinder;
     private Thread pathThread;
     private AutoDriving autoDriving;
     private PIDFController PIDF;
@@ -47,17 +47,13 @@ public class ActiveLocationTest extends LinearOpMode {
         backRightMotor = robot.backRightMotor;
         backLeftMotor = robot.backLeftMotor;
 
-
-        AL = new ActiveLocation(robot);
-        locationThread = new Thread(AL);
+        activeLocation = new ActiveLocation(robot);
+        locationThread = new Thread(activeLocation);
         locationThread.start();
 
-        PF = new PathFinder(AL);
-        pathThread = new Thread(PF);
+        pathFinder = new PathFinder(activeLocation);
+        pathThread = new Thread(pathFinder);
         pathThread.start();
-
-        PIDF = new PIDFController(.75, 0.007, 0.25, 0);
-        //autoDriving = new AutoDriving(PIDF, robot);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -68,9 +64,9 @@ public class ActiveLocationTest extends LinearOpMode {
 
 
         // run until the end of the match (driver presses STOP)
-        try{
-            AL.setStartPosition(0, 0);
-            PF.setDestination(600, 600, 90);
+        try {
+            //AL.setStartPosition(0.0, 0.0);
+            pathFinder.setDestination(600, 600, 90);
             /*
             telemetry.addData("FL", frontLeftMotor.getCurrentPosition());
             telemetry.addData("BR", backRightMotor.getCurrentPosition());
@@ -79,19 +75,21 @@ public class ActiveLocationTest extends LinearOpMode {
             telemetry.update();
         }*/
             while (opModeIsActive()) {
-                //telemetry.addData("X", AL.getFieldX());
-                //telemetry.addData("Y", AL.getFieldY());
+                telemetry.addData("X", activeLocation.getFieldX());
+                telemetry.addData("Y", activeLocation.getFieldY());
                 telemetry.addData("Angle", Math.toDegrees(imu.getAngularOrientation().firstAngle));
-                telemetry.addData("Pain", AL.getAngleInDegrees());
-                telemetry.addData("Path: ", PF.getEncoderPath());
+                telemetry.addData("Pain", activeLocation.getAngleInDegrees());
+                telemetry.addData("Path: ", pathFinder.getEncoderPath());
+                telemetry.addData("Raw SPain", pathFinder.getEncoderPath().getRawAngleInDegrees());
+
                 //telemetry.addData("Error",autoDriving.errorReport(MovementData.withDegrees(600,600,90)));
                 telemetry.update();
                 sleep(300);
             }
 
-            AL.stop();
-            PF.stop();
-        }catch (Exception e) {
+            activeLocation.stop();
+            pathFinder.stop();
+        } catch (Exception e) {
             telemetry.addData("error:", e.getStackTrace());
             //AL.Stop();
             //PF.stop();

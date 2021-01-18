@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 
+
 /**
  * The ActiveLocation uses odometry to find the real-time location of the robot.
  * This, along with a PathFinder, helps create a Field Mapping to allow us to
@@ -66,6 +67,7 @@ public class ActiveLocation implements Runnable {
         return ((ticks / tickPerRotation) * wheelCircumference);
     }
 
+
     /**
      * Converts Distance to Ticks
      *
@@ -101,7 +103,6 @@ public class ActiveLocation implements Runnable {
      * of the robot using the built in IMU on the Rev Hub.
      */
     private void updateSensors() {
-
         yEncoder = frontLeftMotor.getCurrentPosition();
         xEncoder = backRightMotor.getCurrentPosition();
         angle = ((imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle) + startAngle - resetAngle);
@@ -161,6 +162,7 @@ public class ActiveLocation implements Runnable {
         updateSensors();
         return angle;
     }
+
     public double getAngleInDegrees(){
         updateSensors();
         return ((Math.toDegrees(angle) + 360) % 360);
@@ -188,8 +190,6 @@ public class ActiveLocation implements Runnable {
     @Override
     public void run() {
         //this.robot.init(hardwareMap);
-
-
 
         while (isRunning) {
             updateSensors();
