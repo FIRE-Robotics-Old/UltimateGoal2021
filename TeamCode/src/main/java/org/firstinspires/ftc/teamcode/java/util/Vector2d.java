@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.java.util;
 import java.util.Locale;
 import java.util.Objects;
 
+
 public final class Vector2d {
 	private final double x;
 	private final double y;

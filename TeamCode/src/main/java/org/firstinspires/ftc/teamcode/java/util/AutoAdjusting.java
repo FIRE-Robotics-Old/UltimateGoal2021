@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.java.util;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import org.firstinspires.ftc.teamcode.java.util.*;
 
 /**
  * Allows the automatic adjustment of the Robot towards the shooter
