@@ -54,29 +54,29 @@ public class AutoDriving {
     /**
      * drives to a point and stops using PID
      */
-    public String stopAt(MovementData goal, double Vmax) {
+    public boolean stopAt(MovementData goal, double Vmax) {
         boolean arrived = false;
-        //while (!arrived) {
-        pathFinder.setDestination(goal);
-        MovementData error = pathFinder.getEncoderPath();
-        double[] speeds = calculateDrivePowers(Vmax, error);//PIDFDrive.calculateDrivePowers(Vmax, error);
-        setMotorPowers(speeds);
-        //arrived = true;
-        /*
-        if ((Math.abs(goal.getX() - AL.getFieldX()) < 10) && (Math.abs(goal.getY() - AL.getFieldY()) < 15) &&  (PF.getEncoderPath().getAngleInDegrees() <= 5)){
-            return true;
+        while (!arrived) {
+            pathFinder.setDestination(goal);
+            MovementData error = pathFinder.getEncoderPath();
+            double[] speeds = calculateDrivePowers(Vmax, error);//PIDFDrive.calculateDrivePowers(Vmax, error);
+            setMotorPowers(speeds);
+            if ((Math.abs(goal.getX() - activeLocation.getFieldX()) < 30) && (Math.abs(goal.getY() - activeLocation.getFieldY()) < 30) && (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 15)) {
+                arrived = true;
+            }
         }
+        turnOff();
+        //arrived = true;
+        return arrived;
 
-        return false;
-*/
         //}
-        return String.format(
-                Locale.ENGLISH,
-                "X: %.2f Y: %.2f A: %.2f",
-                Math.abs(goal.getX() - activeLocation.getFieldX()),
-                Math.abs(goal.getY() - activeLocation.getFieldY()),
-                -pathFinder.getEncoderPath().getRawAngleInDegrees()
-        );
+//        return String.format(
+//                Locale.ENGLISH,
+//                "X: %.2f Y: %.2f A: %.2f",
+//                Math.abs(goal.getX() - activeLocation.getFieldX()),
+//                Math.abs(goal.getY() - activeLocation.getFieldY()),
+//                -pathFinder.getEncoderPath().getRawAngleInDegrees()
+//        );
         //return String.format(Locale.ENGLISH, "X: %.2f", (Math.abs(goal.getX() - AL.getFieldX())));
     }
 
@@ -133,6 +133,13 @@ public class AutoDriving {
 
     }
 
+    public void turnOff(){
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+    }
+
     public String errorReport(MovementData goal) {
         return String.format(
                 Locale.ENGLISH,
@@ -147,6 +154,10 @@ public class AutoDriving {
         // return String.format("1: %.2f 2: %.2f 3: %.2f 4: %.2f", speeds[0], speeds[1])
 
     }
+    public String errorReport(double x,double y,double z){
+        return this.errorReport(MovementData.withDegrees(x,y,z));
+    }
+
 
     private void setMotorPowers(double[] speeds) {
         frontLeftMotor.setPower(speeds[0]);
