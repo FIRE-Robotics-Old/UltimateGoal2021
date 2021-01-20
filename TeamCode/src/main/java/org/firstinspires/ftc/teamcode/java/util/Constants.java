@@ -31,7 +31,7 @@ public final class Constants {
     public static final double kilometerToMillimeter  = 10E06;
 
     public static final double inchToMillimeter = 25.4;
-    public static final double feetToMillimeter = 304.8;
+    public static final double footToMillimeter = 304.8;
     public static final double yardToMillimeter = 914.4;
     public static final double mileToMillimeter = 4828032;
 }

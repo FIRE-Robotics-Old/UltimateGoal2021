@@ -11,7 +11,7 @@ public enum Units {
     HECTOMETER  (Constants.hectometerToMillimeter),
     KILOMETERS  (Constants.kilometerToMillimeter),
     INCHES      (Constants.inchToMillimeter),
-    FEET        (Constants.feetToMillimeter),
+    FEET        (Constants.footToMillimeter),
     YARDS       (Constants.yardToMillimeter),
     MILES       (Constants.mileToMillimeter);
 
