@@ -16,7 +16,7 @@ public class Angle {
     }
 
     public static Angle fromDegree(double angle) {
-        return fromDegrees(angle, false);
+        return fromDegrees(angle, true);
     }
 
     public static Angle fromRadians(double angle, boolean reflectDirection) {
@@ -24,7 +24,7 @@ public class Angle {
     }
 
     public static Angle fromRadians(double angle) {
-        return fromRadians(angle, false);
+        return fromRadians(angle, true);
     }
 
     public double getAngleInRadians() {
