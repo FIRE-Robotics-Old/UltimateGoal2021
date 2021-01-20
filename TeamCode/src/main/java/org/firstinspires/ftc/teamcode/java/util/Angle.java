@@ -8,15 +8,23 @@ public class Angle {
     private final double angle;
 
     private Angle(double angle) {
-        this.angle = -angle;
+        this.angle = angle;
     }
 
-    public static Angle fromDegrees(double angle) {
-        return new Angle(Math.toRadians(angle % 360));
+    public static Angle fromDegrees(double angle, boolean reflectDirection) {
+        return new Angle((reflectDirection ? -1 : 1) * Math.toRadians(angle % 360));
+    }
+
+    public static Angle fromDegree(double angle) {
+        return fromDegrees(angle, false);
+    }
+
+    public static Angle fromRadians(double angle, boolean reflectDirection) {
+        return new Angle((reflectDirection ? -1 : 1) * (angle % 360));
     }
 
     public static Angle fromRadians(double angle) {
-        return new Angle(angle % 360);
+        return fromRadians(angle, false);
     }
 
     public double getAngleInRadians() {
