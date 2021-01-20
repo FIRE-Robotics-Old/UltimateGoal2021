@@ -8,7 +8,7 @@ public class Angle {
     private final double angle;
 
     private Angle(double angle) {
-        this.angle = angle;
+        this.angle = -angle;
     }
 
     public static Angle fromDegrees(double angle) {
