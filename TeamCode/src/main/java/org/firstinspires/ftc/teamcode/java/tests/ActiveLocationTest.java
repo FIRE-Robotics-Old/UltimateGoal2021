@@ -65,7 +65,7 @@ public class ActiveLocationTest extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         try {
-            //AL.setStartPosition(0.0, 0.0);
+            activeLocation.setStartPosition(600,600, 90);
             pathFinder.setDestination(600, 600, 90);
             /*
             telemetry.addData("FL", frontLeftMotor.getCurrentPosition());

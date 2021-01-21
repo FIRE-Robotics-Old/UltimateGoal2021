@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.java.op_modes.teleop;
 
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,6 +19,7 @@ public class Teleop extends LinearOpMode {
     private DcMotor intakeAndDelivery;
     private DcMotor leftShooter;
     private DcMotor rightShooter;
+    public RevColorSensorV3 colorSensor;
     //private Servo lowerWobble;
     //private TouchSensor wobbleDetector;
     //private TouchSensor ringCounter;
@@ -46,6 +48,8 @@ public class Teleop extends LinearOpMode {
     private ActiveLocation activeLocation;
     Thread locationThread;
 
+    int red;
+
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
@@ -53,6 +57,8 @@ public class Teleop extends LinearOpMode {
         frontRightMotor = robot.frontRightMotor;
         backLeftMotor = robot.backLeftMotor;
         backRightMotor = robot.backRightMotor;
+
+        colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
         //intakeAndDelivery = robot.intakeAndDelivery;
         //rightShooter = robot.rightShooter;
         //leftShooter = robot.leftShooter;
@@ -112,6 +118,16 @@ public class Teleop extends LinearOpMode {
                 } else if (!gamepad1.a) {
                     slowModePressed = false;
                 }
+                red = colorSensor.red();
+
+                if (red > 200){
+                    telemetry.speak("Zone Owen");
+                }else if (red > 55){
+                    telemetry.speak("Zone Bri");
+                }else{
+                    telemetry.speak("Zone Daniel");
+                }
+                sleep(1000);
 
 //                if (rings<3){
 //                    intakeAndDeliveryPower = gamepad2.left_trigger;
@@ -163,6 +179,7 @@ public class Teleop extends LinearOpMode {
                 //intakeAndDelivery.setPower(intakeAndDeliveryPower);
                 //leftShooter.setPower(shooterPower);
                 // rightShooter.setPower(shooterPower);
+                telemetry.addData("Red", red);
                 telemetry.addData("FL", frontLeftMotor.getPower());
                 telemetry.addData("FR", frontRightMotor.getPower());
                 telemetry.addData("BL", backLeftMotor.getPower());
@@ -181,6 +198,7 @@ public class Teleop extends LinearOpMode {
             telemetry.update();
             sleep(2000);
             activeLocation.stop();
+            requestOpModeStop();
         }
     }
 }

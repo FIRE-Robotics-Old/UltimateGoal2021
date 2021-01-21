@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.java.movement;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.java.util.MovementData;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 
@@ -43,6 +44,8 @@ public class ActiveLocation implements Runnable {
     // Static values for calculations
     final static double tickPerRotation = 8192;
     final static double wheelCircumference = 90 * Math.PI;
+
+    double startX;
 
     public ActiveLocation(RobotHardware robot){
         this.robot = robot;
@@ -85,14 +88,19 @@ public class ActiveLocation implements Runnable {
     /**
      * Sets the start position
      *
-     * @param internalCurrentX The current X position mm
-     * @param internalCurrentY The current Y position mm
+     * @param startX The current X position mm
+     * @param startY The current Y position mm
      * @param startAngle       The starting angle in degrees
      */
-    public void setStartPosition(double internalCurrentX, double internalCurrentY, double startAngle) {
+    public void setStartPosition(double startX, double startY, double startAngle) {
         this.startAngle = Math.toRadians(startAngle);
-        this.internalCurrentY = internalCurrentX * Math.sin(startAngle) + internalCurrentY * Math.cos(startAngle);
-        this.internalCurrentX = internalCurrentX * Math.cos(startAngle) - internalCurrentY * Math.sin(startAngle);
+        this.internalCurrentX = startX * Math.cos(this.startAngle) - startY * Math.sin(this.startAngle);
+        this.internalCurrentY = startX * Math.sin(this.startAngle) + startY * Math.cos(this.startAngle);
+
+
+    }
+    public void setStartPosition(MovementData location){
+        this.setStartPosition(location.getX(),location.getY(),location.getAngleInDegrees());
 
     }
 
@@ -150,6 +158,7 @@ public class ActiveLocation implements Runnable {
     public double getFieldX() {
         updateSensors();
         findFieldPosition();
+        //return startX;
         return fieldXPosition;
     }
 

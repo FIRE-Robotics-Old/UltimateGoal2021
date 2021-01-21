@@ -61,7 +61,7 @@ public class AutoDriving {
             MovementData error = pathFinder.getEncoderPath();
             double[] speeds = calculateDrivePowers(Vmax, error);//PIDFDrive.calculateDrivePowers(Vmax, error);
             setMotorPowers(speeds);
-            if ((Math.abs(goal.getX() - activeLocation.getFieldX()) < 30) && (Math.abs(goal.getY() - activeLocation.getFieldY()) < 30) && (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 15)) {
+            if ((Math.abs(goal.getX() - activeLocation.getFieldX()) < 40) && (Math.abs(goal.getY() - activeLocation.getFieldY()) < 40) && (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 25)) {
                 arrived = true;
             }
         }
@@ -139,6 +139,19 @@ public class AutoDriving {
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
     }
+
+    /**
+     * Sets start location in mm and degrees
+     * @param location location you are starting at a MovementData
+     */
+    public void setStartLocation(MovementData location){
+        activeLocation.setStartPosition(location);
+
+    }
+    public void setStartLocation(double x, double y, double angle){
+        this.setStartLocation(MovementData.withDegrees(x,y,angle));
+    }
+
 
     public String errorReport(MovementData goal) {
         return String.format(

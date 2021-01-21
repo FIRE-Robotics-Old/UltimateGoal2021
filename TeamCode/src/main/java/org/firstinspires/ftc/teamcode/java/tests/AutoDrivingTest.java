@@ -101,13 +101,13 @@ public class AutoDrivingTest extends LinearOpMode {
 
             if (opModeIsActive() && !isStopRequested()) {
                 //frontLeftMotor.setPower(.29);
-                autoDriving.stopAt(MovementData.withDegrees(00, 600,90), .3);
-                //autoDriving.turnOff();
+                autoDriving.setStartLocation(600,00,90);
+                //autoDriving.setStartLocation(600,00,0);
+                autoDriving.stopAt(MovementData.withDegrees(-600, 00,0), .3);
                 sleep(1000);
-                autoDriving.stopAt(MovementData.withDegrees(00, 00,-90), .3);
-                //autoDriving.turnOff();
+                autoDriving.stopAt(MovementData.withDegrees(600, 00,0), .3);
                 sleep(1000);
-                autoDriving.stopAt(MovementData.withDegrees(300, 00,-90), .3);
+                autoDriving.stopAt(MovementData.withDegrees(0, 00,0), .3);
                 movement = 2;
                 //autoDriving.turnOff();
 
