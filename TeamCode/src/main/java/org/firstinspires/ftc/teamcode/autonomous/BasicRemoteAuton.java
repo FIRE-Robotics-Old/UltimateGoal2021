@@ -173,8 +173,8 @@ public class BasicRemoteAuton extends LinearOpMode {
     }
     public void moveY(double y){
         int direct = 1;
-        while (Math.abs(AL.getFieldYAbs()-y)>5){
-            if (AL.getFieldYAbs()>y){
+        while (Math.abs(AL.getFieldY()-y)>5){
+            if (AL.getFieldY()>y){
                 direct =-1;
             }else{
                 direct = 1;
@@ -193,8 +193,8 @@ public class BasicRemoteAuton extends LinearOpMode {
     }
     public void moveX(double x){
         int direct = 1;
-        while (Math.abs(AL.getFieldXAbs()-x)>50){
-            if (AL.getFieldXAbs()>x){
+        while (Math.abs(AL.getFieldX()-x)>50){
+            if (AL.getFieldX()>x){
                 direct =-1;
             }else{
                 direct = 1;
@@ -227,7 +227,7 @@ public class BasicRemoteAuton extends LinearOpMode {
         off();
     }
     public void adjustErrorY(double angle, double Y){
-        if (Math.abs(AL.getAngleInDegreesAbs()-angle)>5){
+        if (Math.abs(AL.getAngleInDegrees()-angle)>5){
             turn(angleGoal);
         }
         sleep(1000);
