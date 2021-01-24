@@ -4,6 +4,7 @@ import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 //import org.firstinspires.ftc.teamcode.java.util.AutoAdjusting;
@@ -20,7 +21,7 @@ public class Teleop extends LinearOpMode {
     private DcMotor leftShooter;
     private DcMotor rightShooter;
     public RevColorSensorV3 colorSensor;
-    //private Servo lowerWobble;
+    private Servo lowerWobble;
     //private TouchSensor wobbleDetector;
     //private TouchSensor ringCounter;
 
@@ -59,10 +60,10 @@ public class Teleop extends LinearOpMode {
         backRightMotor = robot.backRightMotor;
 
         colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
-        //intakeAndDelivery = robot.intakeAndDelivery;
+        intakeAndDelivery = robot.intakeAndDelivery;
         //rightShooter = robot.rightShooter;
         //leftShooter = robot.leftShooter;
-        //lowerWobble =robot.lowerWobble;
+        lowerWobble =robot.lowerWobble;
         //wobbleDetector =robot.wobbleDetector;
         //ringCounter =robot.ringCounter;
 

@@ -101,7 +101,7 @@ public class AutoDrivingTest extends LinearOpMode {
 
             if (opModeIsActive() && !isStopRequested()) {
                 //frontLeftMotor.setPower(.29);
-                autoDriving.setStartLocation(600,00,90);
+                autoDriving.setStartLocation(00,00,0);
                 //autoDriving.setStartLocation(600,00,0);
                 autoDriving.stopAt(MovementData.withDegrees(-600, 00,0), .3);
                 sleep(1000);
