@@ -84,13 +84,34 @@ public class HeightDetector {
 
         // TODO: NEED TO CALIBRATE
         /**
-         * This is the minimum threshold for HSV Yellow which we will detect
+         * This is the minimum threshold for Yellow/Orange which we will detect
          */
-        static final Scalar YELLOW_MINIMUM = new Scalar(20, 100, 100); // Needs to be Fine Tuned
+        static final Scalar YELLOW_MINIMUM = new Scalar(0, 141, 0); //TODO: Fine Tune
+
         /**
-         * This is the maximum threshold for HSV Yellow which we will detect
+         * This is the maximum threshold for Yellow/Orange which we will detect
          */
-        static final Scalar YELLOW_MAXIMUM = new Scalar(35, 255, 255); // Needs to be Fine Tuned
+        static final Scalar YELLOW_MAXIMUM = new Scalar(255, 230, 95); //TODO: Fine Tune
+
+        /**
+         * The Width of the Camera, defaulted to 320 pixels
+         */
+        static final int CAMERA_WIDTH = 320;
+
+        /**
+         * The Divider is used to divide the portion of the area considered and not considered
+         */
+        static final int DIVIDER = (int) (100. / 320. * CAMERA_WIDTH);
+
+        /**
+         * A Calibration Factor to ensure that a full ring is detected
+         */
+        static final int MINIMUM_WIDTH = (int) (50. / 320. * CAMERA_WIDTH);
+
+        /**
+         * A Factor Used to determine the height of a stack of rings
+         */
+        static final double HEIGHT_FACTOR = 0.7;
 
         /**
          * This will store the value of the height of the stack to allow us to know where to move the robot.
