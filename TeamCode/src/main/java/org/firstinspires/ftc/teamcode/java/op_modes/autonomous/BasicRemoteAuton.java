@@ -78,7 +78,7 @@ public class BasicRemoteAuton extends LinearOpMode {
             double startTime = runtime.milliseconds();
             double currentTime = 0;
 
-            AL.setStartPosition(0, 0);
+            AL.setStartPosition(0, 0,0);
             telemetry.addData("FL:", AL.getAngleInDegrees());
             telemetry.update();
             //moveY(600);//1193
