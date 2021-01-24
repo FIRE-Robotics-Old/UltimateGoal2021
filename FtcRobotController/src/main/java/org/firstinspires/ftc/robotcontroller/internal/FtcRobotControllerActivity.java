@@ -603,6 +603,7 @@ public class FtcRobotControllerActivity extends Activity
         }
       }
 
+
       //Finally, nuke the VM from orbit
       AppUtil.getInstance().exitApplication();
 
