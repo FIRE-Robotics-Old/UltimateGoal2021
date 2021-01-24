@@ -2,35 +2,70 @@ package org.firstinspires.ftc.teamcode.java.util;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
+enum Side {
+    BLUE,
+    RED,
+}
+
+enum Position {
+    LOW_GOAL,
+    MEDIUM_GOAL,
+    HIGH_GOAL,
+    POWER_SHOTS;
+
+    private int height;
+    Position() {
+    }
+}
+
 /**
- * the AutoAdjusting class will be used to adjust the angle in two axis of the shooter
+ * Allows the automatic adjustment of the Robot towards the shooter
  */
-public class AutoAdjusting{
-
-
+public class AutoAdjusting implements Runnable {
     RobotHardware robot;
     private final AnalogInput potentiometer;
-    public AutoAdjusting(RobotHardware robot){
-        this.robot =robot;
-        potentiometer = robot.potentiometer;
 
+    public AutoAdjusting(RobotHardware robot) {
+        this.robot = robot;
+        potentiometer = robot.potentiometer;
     }
 
     /**
      * adjusting the pitch angle (using PIDF)
      */
-    public void adjustPitch(){
+    public void adjustPitch() {
 
     }
 
     /**
      * adjusting the yaw angle (using PID)
+     *      X
+     *     — — — — — — — S
+     *    |
+     *    |
+     * Y  |
+     *    |
+     *    |
+     *    R
+     * <p>
+     * Calculates the angle between the Robot and the Shooter and returns the Necessary Adjustment
      */
+    public void adjustYaw() {
 
-    public void adjustYaw (){
     }
 
     public double getShooterPitchAngle() {
-        return (potentiometer.getVoltage()*81.8);
+        return (potentiometer.getVoltage() * 81.8);
+    }
+
+    private boolean isRunning() {
+        return true;
+    }
+
+    @Override
+    public void run() {
+        //this.robot.init(hardwareMap);
+        while (isRunning()) {
+        }
     }
 }
