@@ -15,41 +15,10 @@ public class CameraVisionTest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-		RingHeightPipeline pipeline = new RingHeightPipeline(telemetry);
-
-	    OpenCvInternalCamera camera;
-	    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-			    "cameraMonitorViewId",
-			    "id",
-			    hardwareMap.appContext.getPackageName()
-	    );
-	    camera = OpenCvCameraFactory.getInstance().createInternalCamera(
-			    OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId
-	    );
-
-	    camera.setPipeline(pipeline);
-
-	    camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
-
-	    camera.openCameraDeviceAsync(() ->
-			    camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
-	    );
-
-	    waitForStart();
-
-	    while (opModeIsActive()) {
-
-	    }
-
-	    camera.stopStreaming();
-//
-//        HeightDetector heightDetector = new HeightDetector(hardwareMap);
-//        waitForStart();
-//
-//        while (opModeIsActive()) {
-//            telemetry.addData("Height Position", heightDetector.getHeight());
-//            telemetry.update();
-//            sleep(50);
-//        }
+        while (opModeIsActive()) {
+            telemetry.addData("Height Position", heightDetector.getHeight());
+            telemetry.update();
+            sleep(50);
+        }
     }
 }
