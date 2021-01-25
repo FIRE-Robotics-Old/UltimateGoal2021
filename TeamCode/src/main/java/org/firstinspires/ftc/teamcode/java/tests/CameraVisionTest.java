@@ -9,9 +9,9 @@ import org.firstinspires.ftc.teamcode.java.vision.HeightDetector;
 public class CameraVisionTest extends LinearOpMode {
     @Override
     public void runOpMode() {
+
         HeightDetector heightDetector = new HeightDetector(hardwareMap);
         waitForStart();
-
 
         while (opModeIsActive()) {
             telemetry.addData("Height Position", heightDetector.getHeight());

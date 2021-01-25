@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.java.vision;
 
+import androidx.annotation.NonNull;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.opencv.core.Core;
@@ -83,7 +85,22 @@ public class HeightDetector {
         public enum Height {
             A, // No Rings
             B, // 1 Ring
-            C  // 3 Rings
+            C;  // 3 Rings
+
+            @NonNull
+            @Override
+            public String toString() {
+                switch (this) {
+                    case A:
+                        return "A: No Rings";
+                    case B:
+                        return "B: 1 Ring";
+                    case C:
+                        return "C: 3 Rings";
+                    default:
+                        return "No Height Selected";
+                }
+            }
         }
 
         /**
