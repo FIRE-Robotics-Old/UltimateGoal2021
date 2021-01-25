@@ -2,6 +2,15 @@ package org.firstinspires.ftc.teamcode.java.vision;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -73,7 +82,6 @@ public class HeightDetector {
 			C  // 3 Rings
 		}
 
-        // TODO: NEED TO CALIBRATE
         /**
          * This is the minimum threshold for Yellow/Orange which we will detect
          */
@@ -109,60 +117,92 @@ public class HeightDetector {
          */
         private volatile Height height = Height.A;
 
-		Mat hsv = new Mat(), threshold = new Mat();
+        Mat yCrCb = new Mat();
 
-		// TODO: NEED TO CALIBRATE
-		static double bMin = 100;
-		static double cMin = 200;
+        /**
+         * ProcessFrame takes each frame in the video to find the height of the stack
+         * <p>
+         * It first converts to YCrCb and processes the image to find all colors in a certain threshold.
+         * After that is done, it calculates the area of the yellow in the frame to find out which
+         * range it fits it, determining the height of the stack of rings and the position the robot
+         * needs to move to.
+         *
+         * @param input The frame to make calculations off of.
+         * @return A processed frame to display on the screen.
+         */
+        @Override
+        public Mat processFrame(Mat input) {
+            // The first thing that this does is that it converts the input to YCrCb. The YCrCb colorspace
+            // works much better in this situation because it will help significantly with
+            // calculating thresholds
+            Imgproc.cvtColor(input, yCrCb, Imgproc.COLOR_RGB2YCrCb);
 
-		/**
-		 * Converts an RGB image to HSV and Calculates the Threshold Image to allow for yellow detection
-		 *
-		 * @param input The Input Frame to be Calculated From
-		 */
-		void inputToHSV(Mat input) {
-			Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
-			Core.inRange(input, YELLOW_MINIMUM, YELLOW_MAXIMUM, threshold);
-		}
+            // Creates a mask mat, which finds all the images within the range of colors. The mat
+            // divides the data into black and white, with white being the pixels in the threshold
+            Mat mask = new Mat(yCrCb.rows(), yCrCb.cols(), CvType.CV_8UC1);
+            Core.inRange(yCrCb, YELLOW_MINIMUM, YELLOW_MAXIMUM, mask);
 
-		/**
-		 * ProcessFrame takes each frame in the video to find the height of the stack
-		 * <p>
-		 * It first converts to HSV and processes the image to find all colors in a certain threshold.
-		 * After that is done, it calculates the area of the yellow in the frame to find out which
-		 * range it fits it, determining the height of the stack of rings and the position the robot
-		 * needs to move to.
-		 *
-		 * @param input The frame to make calculations off of.
-		 * @return A processed frame to display on the screen.
-		 */
-		@Override
-		public Mat processFrame(Mat input) {
-			// The first thing that this does is that it converts the input to HSV. The HSV colorspace
-			// Works much better for color detection as we can isolate all effect of light and solely
-			// Look at the hue, making color easy to calculate.
-			inputToHSV(input);
+            // Use a Blur to remove noise in the frame, such as slight gaps in the rings, shadows,
+            // lighting, and just make calculations easier.
+            Imgproc.GaussianBlur(mask, mask, new Size(5., 15.), 0);
 
-			// TODO Test if new implementation works
-			List<MatOfPoint> contours = new ArrayList<>();
-			Mat hierarchy = new Mat();
-			Imgproc.findContours(threshold, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-			MatOfPoint cnt = (contours.size() == 2 ? contours.get(0) : contours.get(1));
-			double area = 0;
-			if (cnt.toArray().length != 0) {
-				area = Imgproc.contourArea(cnt);
-			}
-			// Compare Size with min and max
-			if (area > cMin) {
-				height = Height.C;
-			} else if (area > bMin) {
-				height = Height.B;
-			} else {
-				height = Height.A;
-			}
+            // Now, after blurring, we can proceed to find the contours in the image
+            List<MatOfPoint> contours = new ArrayList<>();
+            Mat hierarchy = new Mat();
+            Imgproc.findContours(
+                    mask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE
+            );
 
-			return input;
-		}
+            // Since there might be multiple rectangles within the camera scan, we find the
+            // widest rectangle, the one most probably equated to the rings. We also factor in the
+            // Minimum Ring Width to factor out objects not relevant in the scan, including other
+            // robots and rings not on the primary stack.
+            int maximumWidth = 0;
+            Rect maximumRectangle = new Rect();
+            for (MatOfPoint contour : contours) {
+                MatOfPoint2f copy = new MatOfPoint2f(contour.toArray());
+                Rect rectangle = Imgproc.boundingRect(copy);
+
+                int width = rectangle.width;
+                // Makes sure that the Rectangle is above the Horizontal Divider (a.k.a. Horizon)
+                if (width > maximumWidth && rectangle.y + rectangle.height > DIVIDER) {
+                    maximumWidth = width;
+                    maximumRectangle = rectangle;
+                }
+
+                // Release buffers of the contour and the copy MatOfPoint to optimize memory usage,
+                // since after the preceding comparisons and checks, we will not use this instance
+                // of the variables
+                contour.release();
+                copy.release();
+            }
+
+            // NOTE: the reason that a DIVIDER exists is because YCrCb is unreliable when differentiating
+            // between RED and ORANGE. Thus, the DIVIDER prevents the Pipeline from detecting the RED
+            // Goal as a ring.
+
+            // Now that we have a working rectangle, we can perform an aspect ratio test to determine
+            // the height of the stack relative to the width, giving us a good measure of how many
+            // rings there are.
+            double aspectRatio = (double) maximumRectangle.height / maximumRectangle.width;
+            height = (maximumWidth >= MINIMUM_WIDTH ? (aspectRatio > HEIGHT_FACTOR ? Height.C : Height.B) : Height.A);
+
+            // The Above Ternary Expression Might be a little confusing to those with less experience
+            // reading code, so the following logic tree represents the same situation:
+            //                     Maximum Rectangle Width > Minimum Width?
+            //                                /                       \
+            //                               /                         \
+            //                             NO                          YES
+            //                         There is No              Is the Aspect Ratio
+            //                            Ring              Greater than the Height Factor
+            //                                                       /        \
+            //                                                      /          \
+            //                                                    NO           YES
+            //                                              There is only     There is a full
+            //                                                one ring         stack of ring
+
+            return mask;
+        }
 
 		public Height getHeight() {
 			return height;
