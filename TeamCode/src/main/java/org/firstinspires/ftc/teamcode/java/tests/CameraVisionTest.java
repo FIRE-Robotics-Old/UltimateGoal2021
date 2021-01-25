@@ -12,11 +12,10 @@ public class CameraVisionTest extends LinearOpMode {
 		HeightDetector heightDetector = new HeightDetector(hardwareMap);
 		waitForStart();
 
-
-		while (opModeIsActive()) {
-			telemetry.addData("Height Position", heightDetector.getHeight());
-			telemetry.update();
-			sleep(50);
-		}
-	}
+        while (opModeIsActive()) {
+            telemetry.addData("Height Position", heightDetector.getHeight());
+            telemetry.update();
+            sleep(50);
+        }
+    }
 }
