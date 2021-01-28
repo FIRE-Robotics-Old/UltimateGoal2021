@@ -13,6 +13,13 @@ public final class Constants {
     public static final double SIN_30 = 0.5;
     public static final double COS_60 = 0.5;
 
+    public static final double lowGoalHeight = 431.8;
+    public static final double mediumGoalHeight = 685.8;
+    public static final double highGoalHeight = 901.7;
+
+    public static final double leftGoalY = 866.775;
+    public static final double rightGoalY = 2701.925;
+
     public static final double E   = Math.E;
     public static final double E_1 = E;
     public static final double E_2 = E * E;
