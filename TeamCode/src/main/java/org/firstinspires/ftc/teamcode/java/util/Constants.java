@@ -14,11 +14,20 @@ public final class Constants {
     public static final double COS_60 = 0.5;
 
     public static final double lowGoalHeight = 431.8;
-    public static final double mediumGoalHeight = 685.8;
+    public static final double middleGoalHight = 685.8;
     public static final double highGoalHeight = 901.7;
+    public static final double powerShotHeight = 596.9;
 
-    public static final double leftGoalY = 866.775;
-    public static final double rightGoalY = 2701.925;
+    public static final double blueGoalY = 866.775;
+    public static final double redGoalY = 2701.925;
+
+    public static final double bluePowerShot1Y = 1682.75;
+    public static final double bluePowerShot2Y = 1492.25;
+    public static final double bluePowerShot3Y = 1301.75;
+
+    public static final double redPowerShot1Y = 1860.55;
+    public static final double redPowerShot2Y = 2051.05;
+    public static final double redPowerShot3Y = 2241.55;
 
     public static final double E   = Math.E;
     public static final double E_1 = E;
