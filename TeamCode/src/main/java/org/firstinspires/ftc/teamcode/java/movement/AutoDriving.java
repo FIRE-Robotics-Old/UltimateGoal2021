@@ -17,13 +17,13 @@ public class AutoDriving {
 	private final PIDFController PIDFDrive;
 	private final PIDFController PIDStrafe;
 	private final PIDFController PIDFTurn;
-	private final ActiveLocation AL;
+	private final ActiveLocation activeLocation;
 	private final DcMotorEx frontRightMotor;
 	private final DcMotorEx frontLeftMotor;
 	private final DcMotorEx backLeftMotor;
 	private final DcMotorEx backRightMotor;
 	private final Thread locationThread;
-	private final PathFinder PF;
+	private final PathFinder pathFinder;
 	private final Thread pathThread;
 	RobotHardware robot;
 	//private AutoDriving autoDriving;
@@ -88,9 +88,9 @@ public class AutoDriving {
     public double[] calculateDrivePowers(double maxV, double xError, double yError, double angleError) {
         //aError = angleError;
         //angleError = ((Math.toDegrees(angleError) + 360) % 360);
-        double strafe = PIDStrafe.calculateDrivePID(xError);
-        double drive = PIDFDrive.calculateDrivePID(yError);
-        double twist = PIDFTurn.calculateDrivePID(angleError);
+        double strafe = PIDStrafe.calculatePID(xError);
+        double drive = PIDFDrive.calculatePID(yError);
+        double twist = PIDFTurn.calculatePID(angleError);
         //double twist = 0;
 
         double[] speeds = {

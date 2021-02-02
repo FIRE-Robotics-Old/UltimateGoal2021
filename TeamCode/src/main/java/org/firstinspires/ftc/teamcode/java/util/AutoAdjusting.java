@@ -69,7 +69,7 @@ public class AutoAdjusting implements Runnable {
 		double deltaX = goalFieldX- currentFieldX;
 		double deltaY = goalFieldY - currentFieldY;
 		double yaw = Math.atan(deltaY/deltaX);
-		PIDFTurn.calculatePID();
+		//PIDFTurn.calculatePID();
 	}
 
 	public double getShooterPitchAngle() {

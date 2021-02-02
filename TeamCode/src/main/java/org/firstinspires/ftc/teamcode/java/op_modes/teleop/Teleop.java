@@ -71,7 +71,7 @@ public class Teleop extends LinearOpMode {
         activeLocation = new ActiveLocation(robot);
         locationThread = new Thread(activeLocation);
         locationThread.start();
-        autoAdjusting = new AutoAdjusting(robot);
+        //autoAdjusting = new AutoAdjusting(robot);
 
         waitForStart();
         try {
