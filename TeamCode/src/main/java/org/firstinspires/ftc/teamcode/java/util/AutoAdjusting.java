@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.java.util;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import org.firstinspires.ftc.teamcode.java.util.*;
 
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 

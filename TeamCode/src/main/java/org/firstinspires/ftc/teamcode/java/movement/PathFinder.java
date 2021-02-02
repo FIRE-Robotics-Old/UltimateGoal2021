@@ -1,125 +1,121 @@
 package org.firstinspires.ftc.teamcode.java.movement;
 
-import org.firstinspires.ftc.teamcode.java.util.MovementData;
-import org.firstinspires.ftc.teamcode.java.util.Vector2d;
+import org.firstinspires.ftc.teamcode.java.util.*;
+
 
 /**
  * The PathFinder finds the correct path the Robot Needs to Take to move to a different point.
  */
 public class PathFinder implements Runnable {
 
-	//TODO: Implement angle calculations in PathFinder
+    //TODO: Implement angle calculations in PathFinder
 
-	private final ActiveLocation activeLocation;
-	private MovementData destination;
+    private final ActiveLocation activeLocation;
+    private MovementData destination;
 
-	private double xToMove;
-	private double yToMove;
-	private double aToMove;
-	private static final double TWOPI = Math.PI;
+    private double xToMove;
+    private double yToMove;
+    private double aToMove;
+    private static final double TAU = 2 * Math.PI;
 
-	private volatile boolean isRunning = true;
+    private volatile boolean isRunning = true;
 
+    public PathFinder(ActiveLocation activeLocation, MovementData destination) {
+        this.activeLocation = activeLocation;
+        this.destination = destination;
+    }
 
-	public PathFinder(ActiveLocation activeLocation, MovementData destination) {
-		this.activeLocation = activeLocation;
-		this.destination = destination;
-	}
+    public PathFinder(ActiveLocation activeLocation, double x, double y) {
+        this(activeLocation, MovementData.withDegrees(x, y, 0));
+    }
 
-	public PathFinder(ActiveLocation activeLocation, double x, double y) {
-		this(activeLocation, MovementData.withDegrees(x, y, 0));
-	}
+    public PathFinder(ActiveLocation activeLocation) {
+        this.activeLocation = activeLocation;
+    }
 
-	public PathFinder(ActiveLocation activeLocation) {
-		this.activeLocation = activeLocation;
-	}
+    public PathFinder(ActiveLocation activeLocation, double x, double y, double alpha) {
+        this(activeLocation, MovementData.withDegrees(x, y, alpha));
+    }
 
-	public PathFinder(ActiveLocation activeLocation, double x, double y, double alpha) {
-		this(activeLocation, MovementData.withDegrees(x, y, alpha));
-	}
+    public MovementData getDestination() {
+        updateEncoderPath();
+        return destination;
+    }
 
-	public MovementData getDestination() {
-		updateEncoderPath();
-		return destination;
-	}
+    public void setDestination(MovementData destination) {
+        updateEncoderPath();
+        this.destination = destination;
+    }
 
-	public void setDestination(MovementData destination) {
-		updateEncoderPath();
-		this.destination = destination;
-	}
+    public void setDestination(double x, double y) {
+        this.setDestination(MovementData.withDegrees(x, y, 0));
+    }
 
-	public void setDestination(double x, double y) {
-		this.setDestination(MovementData.withDegrees(x, y, 0));
-	}
-
-	public void setDestination(double x, double y, double rotation) {
-		this.setDestination(MovementData.withDegrees(x, y, rotation));
-	}
-
-
-	public void setDestination(Vector2d translation, double rotation) {
-		this.setDestination(MovementData.withDegrees(translation, rotation));
-	}
+    public void setDestination(double x, double y, double rotation) {
+        this.setDestination(MovementData.withDegrees(x, y, rotation));
+    }
 
 
-	/**
-	 * Calculates the positions that the robot encoders need to move to using the current position,
-	 * allowing instantaneous calculation of the movement the robot needs to make.
-	 */
-	public void updateEncoderPath() {
-		synchronized (this) {
-			if (activeLocation == null || destination == null) return;
+    public void setDestination(Vector2d translation, double rotation) {
+        this.setDestination(MovementData.withDegrees(translation, rotation));
+    }
 
-			final double deltaX = destination.getX() - activeLocation.getFieldX();
-			final double deltaY = destination.getY() - activeLocation.getFieldY();
+    /**
+     * Calculates the positions that the robot encoders need to move to using the current position,
+     * allowing instantaneous calculation of the movement the robot needs to make.
+     */
+    public void updateEncoderPath() {
+        synchronized (this) {
+            if (activeLocation == null || destination == null) return;
 
-			xToMove = deltaX * Math.cos(activeLocation.angle) + deltaY * Math.sin(activeLocation.angle);
-			yToMove = deltaY * Math.cos(activeLocation.angle) - deltaX * Math.sin(activeLocation.angle);
-			calculateTurn();
-		}
-	}
+            final double deltaX = destination.getX() - activeLocation.getFieldX();
+            final double deltaY = destination.getY() - activeLocation.getFieldY();
 
-
-	/**
-	 * calculates the angle change that the robot gyro needs to do
-	 */
-	public void calculateTurn() {
-		//subtract angles to figure out direction?
-		synchronized (this) {
-			if (activeLocation == null || destination == null) return;
-			aToMove = (destination.getAngleInRadians() - activeLocation.getAngle());
-			if (aToMove > Math.PI) {
-				aToMove = (TWOPI - aToMove);
-			} else if (aToMove < -Math.PI) {
-				aToMove = TWOPI - Math.abs(aToMove);
-			}
-			aToMove *= -1;
-		}
-	}
-
-	/**
-	 * @return a @{link Coordinate} which contains the change values for Robot Encoders
-	 */
-	public MovementData getEncoderPath() {
-		updateEncoderPath();
-		//calculateTurn();
-		return MovementData.withRadians(xToMove, yToMove, aToMove);
-	}
+            xToMove = deltaX * Math.cos(activeLocation.angle) + deltaY * Math.sin(activeLocation.angle);
+            yToMove = deltaY * Math.cos(activeLocation.angle) - deltaX * Math.sin(activeLocation.angle);
+            calculateTurn();
+        }
+    }
 
 
-	public void stop() {
-		this.isRunning = false;
-	}
+    /**
+     * calculates the angle change that the robot gyro needs to do
+     */
+    public void calculateTurn() {
+        //subtract angles to figure out direction?
+        synchronized (this) {
+            if (activeLocation == null || destination == null) return;
+            aToMove = (destination.getAngleInRadians() - activeLocation.getAngle());
+            if (aToMove > Math.PI) {
+                aToMove = -(TAU - aToMove);
+            } else if (aToMove < -Math.PI) {
+                aToMove = -(TAU - Math.abs(aToMove));
+            }
+        }
+    }
 
-	public void resume() {
-		this.isRunning = true;
-	}
+    /**
+     * @return a @{link Coordinate} which contains the change values for Robot Encoders
+     */
+    public MovementData getEncoderPath() {
+        updateEncoderPath();
+        //calculateTurn();
+        return MovementData.withRadians(xToMove, yToMove, aToMove);
+    }
 
-	@Override
-	public void run() {
-		while (isRunning) {
-			updateEncoderPath();
 
-		}
-	}
+    public void stop() {
+        this.isRunning = false;
+    }
+
+    public void resume() {
+        this.isRunning = true;
+    }
+
+    @Override
+    public void run() {
+        while (isRunning) {
+            updateEncoderPath();
+        }
+    }
 }

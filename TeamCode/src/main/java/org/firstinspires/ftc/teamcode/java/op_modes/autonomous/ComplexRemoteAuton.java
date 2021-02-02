@@ -5,6 +5,7 @@ import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -34,12 +35,14 @@ import org.firstinspires.ftc.teamcode.java.util.*;
         private DcMotor frontLeftMotor;
         private DcMotor backLeftMotor;
         private DcMotor backRightMotor;
+        private DcMotor intakeAndDelivery;
         private BNO055IMU imu;
         private AutoDriving autoDriving;
         private PIDFController PIDFDrive;
         private PIDFController PIDFStrafe;
         private PIDFController PIDFTurn;
         public RevColorSensorV3 colorSensor;
+        private Servo lowerWobble;
         int movement = 0;
         int red = 0;
 
@@ -57,7 +60,9 @@ import org.firstinspires.ftc.teamcode.java.util.*;
             frontRightMotor = robot.frontRightMotor;
             backRightMotor = robot.backRightMotor;
             backLeftMotor = robot.backLeftMotor;
+            intakeAndDelivery = robot.intakeAndDelivery;
             colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
+            lowerWobble = robot.lowerWobble;
             if (colorSensor instanceof SwitchableLight) {
                 ((SwitchableLight)colorSensor).enableLight(true);
             }
