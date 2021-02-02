@@ -65,6 +65,7 @@ public class AutoDriving {
                 arrived = true;
             }
         }
+
         turnOff();
         //arrived = true;
         return arrived;
