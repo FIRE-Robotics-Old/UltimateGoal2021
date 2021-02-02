@@ -18,12 +18,16 @@ public class AutoAdjusting implements Runnable {
 	private final AnalogInput potentiometer;
 	private final BNO055IMU imu;
 	private final ActiveLocation activeLocation;
+	private PIDFController PIDFTurn;
+	private PIDFController PIDFPitch;
 
 	public AutoAdjusting(RobotHardware robot, ActiveLocation activeLocation) {
 		this.robot = robot;
 		this.activeLocation = activeLocation;
 		potentiometer = robot.potentiometer;
 		imu = robot.imu;
+		PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0);
+		PIDFPitch= new PIDFController(0,0,0,0);
 
 	}
 
@@ -35,6 +39,8 @@ public class AutoAdjusting implements Runnable {
 		double goalFieldZ = goalData.highGoalHeight;
 
 		double pitch = goalFieldZ-getHeight();
+		double power = PIDFPitch.calculatePID(pitch);
+
 	}
 
 	/**
@@ -47,7 +53,7 @@ public class AutoAdjusting implements Runnable {
 	 * Y  |
 	 *    |
 	 *    |
-	 *    R
+	 *    |
 	 * <p>
 	 * Calculates the angle between the Robot and the Goal and returns the Necessary Adjustment
 	 */
@@ -63,7 +69,7 @@ public class AutoAdjusting implements Runnable {
 		double deltaX = goalFieldX- currentFieldX;
 		double deltaY = goalFieldY - currentFieldY;
 		double yaw = Math.atan(deltaY/deltaX);
-		//TODO Have robot do the rotate
+		PIDFTurn.calculatePID();
 	}
 
 	public double getShooterPitchAngle() {

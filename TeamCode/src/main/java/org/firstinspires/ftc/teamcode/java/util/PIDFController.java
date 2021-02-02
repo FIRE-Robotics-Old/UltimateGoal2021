@@ -33,7 +33,7 @@ public class PIDFController {
 		this.f = f;
 	}
 
-	public double calculateDrivePID(double error) {
+	public double calculatePID(double error) {
 		double currentTime = elapsedTime.nanoseconds();
 		double p = kp * error;
 		double i = Range.clip(integral + ki * (error * (currentTime - previousTime)), minI, maxI);
