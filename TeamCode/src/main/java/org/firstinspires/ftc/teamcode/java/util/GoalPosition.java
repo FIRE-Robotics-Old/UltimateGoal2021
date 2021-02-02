@@ -1,6 +1,22 @@
 package org.firstinspires.ftc.teamcode.java.util;
 
 public final class GoalPosition {
+	public static final double lowGoalHeight = 431.8;
+	public static final double middleGoalHight = 685.8;
+	public static final double highGoalHeight = 901.7;
+	public static final double powerShotHeight = 596.9;
+
+	public static final double blueGoalY = 866.775;
+	public static final double redGoalY = 2701.925;
+
+	public static final double bluePowerShot1Y = 1682.75;
+	public static final double bluePowerShot2Y = 1492.25;
+	public static final double bluePowerShot3Y = 1301.75;
+
+	public static final double redPowerShot1Y = 1860.55;
+	public static final double redPowerShot2Y = 2051.05;
+	public static final double redPowerShot3Y = 2241.55;
+
 	private double height;
 	private double yPosition;
 
@@ -13,32 +29,32 @@ public final class GoalPosition {
 		if (s == Side.BLUE) {
 			switch (g) {
 				case LOWER_GOAL:
-					return new GoalPosition(Constants.blueGoalY, Constants.lowGoalHeight);
+					return new GoalPosition(blueGoalY, lowGoalHeight);
 				case MIDDLE_GOAL:
-					return new GoalPosition(Constants.blueGoalY, Constants.middleGoalHight);
+					return new GoalPosition(blueGoalY, middleGoalHight);
 				case HIGH_GOAL:
-					return new GoalPosition(Constants.blueGoalY, Constants.highGoalHeight);
+					return new GoalPosition(blueGoalY, highGoalHeight);
 				case POWER_SHOT_1:
-					return new GoalPosition(Constants.bluePowerShot1Y, Constants.powerShotHeight);
+					return new GoalPosition(bluePowerShot1Y, powerShotHeight);
 				case POWER_SHOT_2:
-					return new GoalPosition(Constants.bluePowerShot2Y, Constants.powerShotHeight);
+					return new GoalPosition(bluePowerShot2Y, powerShotHeight);
 				default:
-					return new GoalPosition(Constants.bluePowerShot3Y, Constants.powerShotHeight);
+					return new GoalPosition(bluePowerShot3Y, powerShotHeight);
 			}
 		}
 		switch (g) {
 			case LOWER_GOAL:
-				return new GoalPosition(Constants.redGoalY, Constants.lowGoalHeight);
+				return new GoalPosition(redGoalY, lowGoalHeight);
 			case MIDDLE_GOAL:
-				return new GoalPosition(Constants.redGoalY, Constants.middleGoalHight);
+				return new GoalPosition(redGoalY, middleGoalHight);
 			case HIGH_GOAL:
-				return new GoalPosition(Constants.redGoalY, Constants.highGoalHeight);
+				return new GoalPosition(redGoalY, highGoalHeight);
 			case POWER_SHOT_1:
-				return new GoalPosition(Constants.redPowerShot1Y, Constants.powerShotHeight);
+				return new GoalPosition(redPowerShot1Y, powerShotHeight);
 			case POWER_SHOT_2:
-				return new GoalPosition(Constants.redPowerShot2Y, Constants.powerShotHeight);
+				return new GoalPosition(redPowerShot2Y, powerShotHeight);
 			default:
-				return new GoalPosition(Constants.redPowerShot3Y, Constants.powerShotHeight);
+				return new GoalPosition(redPowerShot3Y, powerShotHeight);
 		}
 	}
 }
