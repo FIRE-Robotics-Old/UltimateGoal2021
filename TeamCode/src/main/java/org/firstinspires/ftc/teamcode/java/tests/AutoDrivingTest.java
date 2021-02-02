@@ -19,139 +19,139 @@ import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 public class AutoDrivingTest extends LinearOpMode {
 
-    private final ElapsedTime runtime = new ElapsedTime();
-    // Declare OpMode members.
-    RobotHardware robot = new RobotHardware();
-    //Hardware robot = new Hardware();
-    private DcMotor frontRightMotor;
-    private DcMotor frontLeftMotor;
-    private DcMotor backLeftMotor;
-    private DcMotor backRightMotor;
-    private BNO055IMU imu;
-    private ActiveLocation AL;
-    private Thread locationThread;
-    private PathFinder PF;
-    private Thread pathThread;
-    private AutoDriving autoDriving;
-    private PIDFController PIDFDrive;
-    private PIDFController PIDFStrafe;
-    private PIDFController PIDFTurn;
+	private final ElapsedTime runtime = new ElapsedTime();
+	// Declare OpMode members.
+	RobotHardware robot = new RobotHardware();
+	//Hardware robot = new Hardware();
+	private DcMotor frontRightMotor;
+	private DcMotor frontLeftMotor;
+	private DcMotor backLeftMotor;
+	private DcMotor backRightMotor;
+	private BNO055IMU imu;
+	private ActiveLocation AL;
+	private Thread locationThread;
+	private PathFinder PF;
+	private Thread pathThread;
+	private AutoDriving autoDriving;
+	private PIDFController PIDFDrive;
+	private PIDFController PIDFStrafe;
+	private PIDFController PIDFTurn;
 
-    private boolean location;
+	private boolean location;
 
-    //private ElapsedTime runtime = new ElapsedTime();
-    @Override
-    public void runOpMode() {
-        location = true;
-        robot.init(hardwareMap);
+	//private ElapsedTime runtime = new ElapsedTime();
+	@Override
+	public void runOpMode() {
+		location = true;
+		robot.init(hardwareMap);
 
-        imu = robot.imu;
+		imu = robot.imu;
 
-        frontLeftMotor = robot.frontLeftMotor;
-        frontRightMotor = robot.frontRightMotor;
-        backRightMotor = robot.backRightMotor;
-        backLeftMotor = robot.backLeftMotor;
-
-
-        /*AL = new ActiveLocation(robot);
-        locationThread = new Thread(AL);
-        locationThread.start();
-
-        PF = new PathFinder(AL);
-        pathThread = new Thread(PF);
-        pathThread.start();
-
-         */
-        //12096
-        PIDFDrive = new PIDFController(0.0011844/*96004999*/, 0.000000, 0.00150719/*423*/, 0); //003,000001,003705
-        //PIDFDrive = new PIDFController(0.00, 0.000000, 0.00, 0);
-        PIDFStrafe = new PIDFController(0.001705, 0.000000, 0.005705, 0);
-        PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0); //38
-        //PIDFTurn = new PIDFController(0, 0, 0, 0); //38
-
-        autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
+		frontLeftMotor = robot.frontLeftMotor;
+		frontRightMotor = robot.frontRightMotor;
+		backRightMotor = robot.backRightMotor;
+		backLeftMotor = robot.backLeftMotor;
 
 
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
+		/*AL = new ActiveLocation(robot);
+		locationThread = new Thread(AL);
+		locationThread.start();
+
+		PF = new PathFinder(AL);
+		pathThread = new Thread(PF);
+		pathThread.start();
+
+		 */
+		//12096
+		PIDFDrive = new PIDFController(0.0011844/*96004999*/, 0.000000, 0.00150719/*423*/, 0); //003,000001,003705
+		//PIDFDrive = new PIDFController(0.00, 0.000000, 0.00, 0);
+		PIDFStrafe = new PIDFController(0.001705, 0.000000, 0.005705, 0);
+		PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0); //38
+		//PIDFTurn = new PIDFController(0, 0, 0, 0); //38
+
+		autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
 
 
-        waitForStart();
-        runtime.reset();
-        boolean stat = false;
-
-        //while (opModeIsActive()) {
-        // run until the end of the match (driver presses STOP)
-        try {
-
-            //AL.setStartPosition(0, 0);
-            //PF.setDestination(600,600);
-            /*
-            telemetry.addData("FL", frontLeftMotor.getCurrentPosition());
-            telemetry.addData("BR", backRightMotor.getCurrentPosition());
-            telemetry.addData("FR", frontRightMotor.getCurrentPosition());
-            telemetry.addData("BL", backLeftMotor.getCurrentPosition());
-            telemetry.update();
-        }*/
-            //telemetry.addData("X", AL.getFieldX());
-            //telemetry.addData("Y", AL.getFieldY());
-            //telemetry.addData("Angle", AL.getAngle());
-            //telemetry.addData("Path: ", PF.getEncoderPath());
-            //telemetry.update();
-
-            while (opModeIsActive() && !isStopRequested()) {
-                //frontLeftMotor.setPower(.29);
+		telemetry.addData("Status", "Initialized");
+		telemetry.update();
 
 
-                if (!stat) {
-                    location = true;
-                    String report = autoDriving.stopAt(MovementData.withDegrees(00, 00, 0), .3);
-                    //String report = autoDriving.errorReport(MovementData.withDegrees(600, 0, 0));
-                    telemetry.addData("Error Report", report);
-                    telemetry.update();
-                }
+		waitForStart();
+		runtime.reset();
+		boolean stat = false;
 
-                //String report = autoDriving.errorReport(new MovementData(600, 600, 90));
-                //telemetry.addData("Error Report", report);
-                //telemetry.speak("Hello" + stat);
-            /*telemetry.addData("Angle", PIDF.getAngleErrorDegrees());
-            telemetry.addData("FL", frontLeftMotor.getPower());
-            telemetry.addData("FR", frontRightMotor.getPower());
-            telemetry.addData("BL", backLeftMotor.getPower());
-            telemetry.addData("BR", backRightMotor.getPower());
+		//while (opModeIsActive()) {
+		// run until the end of the match (driver presses STOP)
+		try {
 
-             */
-                //telemetry.update();
-                //sleep(200);
+			//AL.setStartPosition(0, 0);
+			//PF.setDestination(600,600);
+			/*
+			telemetry.addData("FL", frontLeftMotor.getCurrentPosition());
+			telemetry.addData("BR", backRightMotor.getCurrentPosition());
+			telemetry.addData("FR", frontRightMotor.getCurrentPosition());
+			telemetry.addData("BL", backLeftMotor.getCurrentPosition());
+			telemetry.update();
+		}*/
+			//telemetry.addData("X", AL.getFieldX());
+			//telemetry.addData("Y", AL.getFieldY());
+			//telemetry.addData("Angle", AL.getAngle());
+			//telemetry.addData("Path: ", PF.getEncoderPath());
+			//telemetry.update();
 
-                if (runtime.milliseconds() >= 29000 || stat) {
-                    location = false;
-                    frontRightMotor.setPower(0);
-                    frontLeftMotor.setPower(0);
-                    backRightMotor.setPower(0);
-                    backLeftMotor.setPower(0);
-                    //String report = autoDriving.errorReport(MovementData.withDegrees(0, 600, 0));
-                    //telemetry.addData("Error Report", report);
-                    //frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    //backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    telemetry.speak("Done");
-                    telemetry.update();
-                    //AL.Stop();
-                    //PF.stop();
+			while (opModeIsActive() && !isStopRequested()) {
+				//frontLeftMotor.setPower(.29);
 
-                }
 
-            }
-            //AL.Stop();
-            //PF.stop();
-        } catch (Exception e) {
-            telemetry.addData("error:", e.getStackTrace());
-            telemetry.addData("bob", location);
-            telemetry.update();
-            //AL.Stop();
-            //PF.stop();
-            sleep(10000);
-        }
-        //}
-    }
+				if (!stat) {
+					location = true;
+					String report = autoDriving.stopAt(MovementData.withDegrees(0, 0, 0), .3);
+					//String report = autoDriving.errorReport(MovementData.withDegrees(600, 0, 0));
+					telemetry.addData("Error Report", report);
+					telemetry.update();
+				}
+
+				//String report = autoDriving.errorReport(new MovementData(600, 600, 90));
+				//telemetry.addData("Error Report", report);
+				//telemetry.speak("Hello" + stat);
+			/*telemetry.addData("Angle", PIDF.getAngleErrorDegrees());
+			telemetry.addData("FL", frontLeftMotor.getPower());
+			telemetry.addData("FR", frontRightMotor.getPower());
+			telemetry.addData("BL", backLeftMotor.getPower());
+			telemetry.addData("BR", backRightMotor.getPower());
+
+			 */
+				//telemetry.update();
+				//sleep(200);
+
+				if (runtime.milliseconds() >= 29000 || stat) {
+					location = false;
+					frontRightMotor.setPower(0);
+					frontLeftMotor.setPower(0);
+					backRightMotor.setPower(0);
+					backLeftMotor.setPower(0);
+					//String report = autoDriving.errorReport(MovementData.withDegrees(0, 600, 0));
+					//telemetry.addData("Error Report", report);
+					//frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+					//backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+					telemetry.speak("Done");
+					telemetry.update();
+					//AL.Stop();
+					//PF.stop();
+
+				}
+
+			}
+			//AL.Stop();
+			//PF.stop();
+		} catch (Exception e) {
+			telemetry.addData("error:", e.getStackTrace());
+			telemetry.addData("bob", location);
+			telemetry.update();
+			//AL.Stop();
+			//PF.stop();
+			sleep(10000);
+		}
+		//}
+	}
 }

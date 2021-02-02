@@ -2,70 +2,55 @@ package org.firstinspires.ftc.teamcode.java.util;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
-enum Side {
-    BLUE,
-    RED,
-}
-
-enum Position {
-    LOW_GOAL,
-    MEDIUM_GOAL,
-    HIGH_GOAL,
-    POWER_SHOTS;
-
-    private int height;
-    Position() {
-    }
-}
-
 /**
  * Allows the automatic adjustment of the Robot towards the shooter
  */
 public class AutoAdjusting implements Runnable {
-    RobotHardware robot;
-    private final AnalogInput potentiometer;
+	RobotHardware robot;
+	private final AnalogInput potentiometer;
 
-    public AutoAdjusting(RobotHardware robot) {
-        this.robot = robot;
-        potentiometer = robot.potentiometer;
-    }
+	public AutoAdjusting(RobotHardware robot) {
+		this.robot = robot;
+		potentiometer = robot.potentiometer;
+	}
 
-    /**
-     * adjusting the pitch angle (using PIDF)
-     */
-    public void adjustPitch() {
+	/**
+	 * adjusting the pitch angle (using PIDF)
+	 */
+	public void adjustPitch() {
 
-    }
+	}
 
-    /**
-     * adjusting the yaw angle (using PID)
-     *      X
-     *     — — — — — — — S
-     *    |
-     *    |
-     * Y  |
-     *    |
-     *    |
-     *    R
-     * <p>
-     * Calculates the angle between the Robot and the Shooter and returns the Necessary Adjustment
-     */
-    public void adjustYaw() {
+	/**
+	 * adjusting the yaw angle (using PID)
+	 *           X
+	 *     — — — — — — — S
+	 *    |
+	 *    |
+	 * Y  |
+	 *    |
+	 *    |
+	 *    R
+	 * <p>
+	 * Calculates the angle between the Robot and the Shooter and returns the Necessary Adjustment
+	 */
+	public void adjustYaw() {
 
-    }
+	}
 
-    public double getShooterPitchAngle() {
-        return (potentiometer.getVoltage() * 81.8);
-    }
+	public double getShooterPitchAngle() {
+		return (potentiometer.getVoltage() * 81.8);
+	}
 
-    private boolean isRunning() {
-        return true;
-    }
+	private boolean isRunning() {
+		return true;
+	}
 
-    @Override
-    public void run() {
-        //this.robot.init(hardwareMap);
-        while (isRunning()) {
-        }
-    }
+	@Override
+	public void run() {
+		//this.robot.init(hardwareMap);
+		while (isRunning()) {
+			// Do Something
+		}
+	}
 }
