@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.java.util;
 
 public final class GoalPosition {
 	public static final double lowGoalHeight = 431.8;
-	public static final double middleGoalHight = 685.8;
+	public static final double middleGoalHeight = 685.8;
 	public static final double highGoalHeight = 901.7;
 	public static final double powerShotHeight = 596.9;
 
@@ -17,21 +17,22 @@ public final class GoalPosition {
 	public static final double redPowerShot2Y = 2051.05;
 	public static final double redPowerShot3Y = 2241.55;
 
-	private double height;
-	private double yPosition;
+	public final double height;
+	public final double yPosition;
+	public final double xPosition = Constants.backFieldX;
 
 	private GoalPosition(double yPosition, double height) {
 		this.yPosition = yPosition;
 		this.height = height;
 	}
 
-	public static GoalPosition generate(Side s, Goal g) {
-		if (s == Side.BLUE) {
-			switch (g) {
+	public static GoalPosition generate(Side side, Goal goal) {
+		if (side == Side.BLUE) {
+			switch (goal) {
 				case LOWER_GOAL:
 					return new GoalPosition(blueGoalY, lowGoalHeight);
 				case MIDDLE_GOAL:
-					return new GoalPosition(blueGoalY, middleGoalHight);
+					return new GoalPosition(blueGoalY, middleGoalHeight);
 				case HIGH_GOAL:
 					return new GoalPosition(blueGoalY, highGoalHeight);
 				case POWER_SHOT_1:
@@ -42,11 +43,11 @@ public final class GoalPosition {
 					return new GoalPosition(bluePowerShot3Y, powerShotHeight);
 			}
 		}
-		switch (g) {
+		switch (goal) {
 			case LOWER_GOAL:
 				return new GoalPosition(redGoalY, lowGoalHeight);
 			case MIDDLE_GOAL:
-				return new GoalPosition(redGoalY, middleGoalHight);
+				return new GoalPosition(redGoalY, middleGoalHeight);
 			case HIGH_GOAL:
 				return new GoalPosition(redGoalY, highGoalHeight);
 			case POWER_SHOT_1:
