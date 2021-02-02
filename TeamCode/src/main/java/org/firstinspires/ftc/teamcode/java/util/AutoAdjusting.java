@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.java.util;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
@@ -14,19 +15,25 @@ public class AutoAdjusting implements Runnable {
 
 	private final RobotHardware robot;
 	private final AnalogInput potentiometer;
+	private final BNO055IMU imu;
 	private final ActiveLocation activeLocation;
 
 	public AutoAdjusting(RobotHardware robot, ActiveLocation activeLocation) {
 		this.robot = robot;
 		this.activeLocation = activeLocation;
 		potentiometer = robot.potentiometer;
+		imu = robot.imu;
+
 	}
 
 	/**
 	 * adjusting the pitch angle (using PIDF)
 	 */
 	public void adjustPitch(Side side, Goal goal) {
+		GoalPosition goalData = GoalPosition.generate(side, goal);
+		double goalFieldZ = goalData.highGoalHeight;
 
+		double pitch = goalFieldZ-getHeight();
 	}
 
 	/**
@@ -54,6 +61,8 @@ public class AutoAdjusting implements Runnable {
 
 		double deltaX = goalFieldX- currentFieldX;
 		double deltaY = goalFieldY - currentFieldY;
+		double yaw = Math.atan(deltaY/deltaX);
+		//TODO Have robot do the rotate
 	}
 
 	public double getShooterPitchAngle() {
@@ -62,10 +71,10 @@ public class AutoAdjusting implements Runnable {
 
 	private double getHeight() {
 		return (
-				shooterLength * Math.sin(getShooterPitchAngle())+ // Height caused by Shoot
-				+
-						er
-				)
+				shooterLength * Math.sin(getShooterPitchAngle()) // Height caused by Shoot
+				+ (((velocityGoal * velocityGoal) * (Math.sin(getShooterPitchAngle()) * Math.sin(getShooterPitchAngle())))
+						/ (2*imu.getGravity().zAccel))
+				);
 	}
 
 	private boolean isRunning() {
@@ -77,6 +86,7 @@ public class AutoAdjusting implements Runnable {
 		//this.robot.init(hardwareMap);
 		while (isRunning()) {
 			// Do Something
+			// no
 		}
 	}
 }
