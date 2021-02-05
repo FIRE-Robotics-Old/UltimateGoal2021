@@ -7,117 +7,117 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp(name = "Simple Four Directional TeleOp", group = "Basic TeleOp")
 public class FourDirectionalTeleOp extends LinearOpMode {
 
-    public DcMotor frontRightMotor;
-    public DcMotor frontLeftMotor;
-    public DcMotor backLeftMotor;
-    public DcMotor backRightMotor;
+	public DcMotor frontRightMotor;
+	public DcMotor frontLeftMotor;
+	public DcMotor backLeftMotor;
+	public DcMotor backRightMotor;
 
-    boolean up = false;
-    boolean right = false;
-    boolean down = false;
-    boolean left = false;
+	boolean up = false;
+	boolean right = false;
+	boolean down = false;
+	boolean left = false;
 
-    double speed = 0.3;
-    double still = 0;
+	double speed = 0.3;
+	double still = 0;
 
-    int currentButton = 4; // none
+	int currentButton = 4; // none
 
-    @Override
-    public void runOpMode() {
-        frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
-        frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
-        backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
-        backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
+	@Override
+	public void runOpMode() {
+		frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
+		frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
+		backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
+		backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
 
-        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
-        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+		frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+		frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
+		backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+		backRightMotor.setDirection(DcMotor.Direction.FORWARD);
 
-        // Set Zero Power Behavior To All Motors
+		// Set Zero Power Behavior To All Motors
 
-        frontLeftMotor.setPower(still);
-        frontRightMotor.setPower(still);
-        backLeftMotor.setPower(still);
-        backRightMotor.setPower(still);
+		frontLeftMotor.setPower(still);
+		frontRightMotor.setPower(still);
+		backLeftMotor.setPower(still);
+		backRightMotor.setPower(still);
 
-        waitForStart();
+		waitForStart();
 
-        while (opModeIsActive()) {
-            up = gamepad1.dpad_up;
-            right = gamepad1.dpad_right;
-            down = gamepad1.dpad_down;
-            left = gamepad1.dpad_left;
+		while (opModeIsActive()) {
+			up = gamepad1.dpad_up;
+			right = gamepad1.dpad_right;
+			down = gamepad1.dpad_down;
+			left = gamepad1.dpad_left;
 
-            directionPriority(); // updates the current button
+			directionPriority(); // updates the current button
 
-            if (currentButton == 0) {
-                frontLeftMotor.setPower(speed);
-                frontRightMotor.setPower(speed);
-                backLeftMotor.setPower(speed);
-                backRightMotor.setPower(speed);
-            } else if (currentButton == 1) {
-                frontLeftMotor.setPower(-1 * speed);
-                frontRightMotor.setPower(speed);
-                backLeftMotor.setPower(speed);
-                backRightMotor.setPower(-1 * speed);
-            } else if (currentButton == 2) {
-                frontLeftMotor.setPower(-1 * speed);
-                frontRightMotor.setPower(-1 * speed);
-                backLeftMotor.setPower(-1 * speed);
-                backRightMotor.setPower(-1 * speed);
-            } else if (currentButton == 3) {
-                frontLeftMotor.setPower(speed);
-                frontRightMotor.setPower(-1 * speed);
-                backLeftMotor.setPower(-1 * speed);
-                backRightMotor.setPower(speed);
-            } else {
-                // Set Zero Power Behavior To All Motors
-                frontLeftMotor.setPower(still);
-                frontRightMotor.setPower(still);
-                backLeftMotor.setPower(still);
-                backRightMotor.setPower(still);
+			if (currentButton == 0) {
+				frontLeftMotor.setPower(speed);
+				frontRightMotor.setPower(speed);
+				backLeftMotor.setPower(speed);
+				backRightMotor.setPower(speed);
+			} else if (currentButton == 1) {
+				frontLeftMotor.setPower(-1 * speed);
+				frontRightMotor.setPower(speed);
+				backLeftMotor.setPower(speed);
+				backRightMotor.setPower(-1 * speed);
+			} else if (currentButton == 2) {
+				frontLeftMotor.setPower(-1 * speed);
+				frontRightMotor.setPower(-1 * speed);
+				backLeftMotor.setPower(-1 * speed);
+				backRightMotor.setPower(-1 * speed);
+			} else if (currentButton == 3) {
+				frontLeftMotor.setPower(speed);
+				frontRightMotor.setPower(-1 * speed);
+				backLeftMotor.setPower(-1 * speed);
+				backRightMotor.setPower(speed);
+			} else {
+				// Set Zero Power Behavior To All Motors
+				frontLeftMotor.setPower(still);
+				frontRightMotor.setPower(still);
+				backLeftMotor.setPower(still);
+				backRightMotor.setPower(still);
 
-            }
+			}
 
-        }
+		}
 
-    }
+	}
 
-    /*
-     * 
-     * double [] speeds = { (drive + strafe + twist), (drive - strafe - twist),
-     * (drive - strafe + twist), (drive + strafe - twist) };
-     * 
-     * double max = Math.abs(speeds [0]); for (int i = 0; i < speeds.length; i++) {
-     * if (max < Math.abs(speeds[i])) max = Math.abs(speeds[i]); }
-     * 
-     * if (max > 1) { for (int i = 0; i < speeds.length; i++) speeds[i] /= max;
-     * 
-     * }
-     * 
-     * fL.setPower(speeds[0]); fR.setPower(speeds[1]); bL.setPower(speeds[2]);
-     * bR.setPower(speeds[3]); /* }
-     * 
-     * } }
-     * 
-     */
-    // Priorities latest button pressed in favor of left or in favor of up?
+	/*
+	 *
+	 * double [] speeds = { (drive + strafe + twist), (drive - strafe - twist),
+	 * (drive - strafe + twist), (drive + strafe - twist) };
+	 *
+	 * double max = Math.abs(speeds [0]); for (int i = 0; i < speeds.length; i++) {
+	 * if (max < Math.abs(speeds[i])) max = Math.abs(speeds[i]); }
+	 *
+	 * if (max > 1) { for (int i = 0; i < speeds.length; i++) speeds[i] /= max;
+	 *
+	 * }
+	 *
+	 * fL.setPower(speeds[0]); fR.setPower(speeds[1]); bL.setPower(speeds[2]);
+	 * bR.setPower(speeds[3]); /* }
+	 *
+	 * } }
+	 *
+	 */
+	// Priorities latest button pressed in favor of left or in favor of up?
 
-    public void directionPriority() {
+	public void directionPriority() {
 
-        boolean[] status = { up, right, down, left };
-        for (int num = 0; num < 4; num++) {
-            // If currentButton does not = num and status index num is true reassign
-            if (currentButton != num && status[num]) {
-                currentButton = num;
-            }
+		boolean[] status = { up, right, down, left };
+		for (int num = 0; num < 4; num++) {
+			// If currentButton does not = num and status index num is true reassign
+			if (currentButton != num && status[num]) {
+				currentButton = num;
+			}
 
-        }
-        if (!status[0] && !status[1] && !status[2] && !status[3]) {
-            currentButton = 4;
-        }
+		}
+		if (!status[0] && !status[1] && !status[2] && !status[3]) {
+			currentButton = 4;
+		}
 
-    }
+	}
 
 }

@@ -9,9 +9,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.movement.PathFinder;
-import org.firstinspires.ftc.teamcode.java.util.MovementData;
-import org.firstinspires.ftc.teamcode.java.util.PIDFController;
-import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
+import org.firstinspires.ftc.teamcode.java.util.*;
+
 
 //To fix error perhaps flip the switch
 
@@ -28,10 +27,10 @@ public class AutoDrivingTest extends LinearOpMode {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
     private BNO055IMU imu;
-    private ActiveLocation AL;
-    private Thread locationThread;
-    private PathFinder PF;
-    private Thread pathThread;
+//    private ActiveLocation AL;
+//    private Thread locationThread;
+//    private PathFinder PF;
+//    private Thread pathThread;
     private AutoDriving autoDriving;
     private PIDFController PIDFDrive;
     private PIDFController PIDFStrafe;
@@ -63,10 +62,10 @@ public class AutoDrivingTest extends LinearOpMode {
 
          */
         //12096
-        PIDFDrive = new PIDFController(0.0011844/*96004999*/, 0.000000, 0.00150719/*423*/, 0); //003,000001,003705
+        PIDFDrive = new PIDFController(0.0011844/*96004999*/, 0.0000000000000, 0.00150719/*423*/, 0); //003,000001,003705
         //PIDFDrive = new PIDFController(0.00, 0.000000, 0.00, 0);
-        PIDFStrafe = new PIDFController(0.001705, 0.000000, 0.005705, 0);
-        PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0); //38
+        PIDFStrafe = new PIDFController(0.001705, 0.000000000000001, 0.005705, 0);
+        PIDFTurn = new PIDFController(0.35, 0.000000000, 0.395, 0); //38
         //PIDFTurn = new PIDFController(0, 0, 0, 0); //38
 
         autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
@@ -78,7 +77,7 @@ public class AutoDrivingTest extends LinearOpMode {
 
         waitForStart();
         runtime.reset();
-        boolean stat = false;
+        int movement;
 
         //while (opModeIsActive()) {
         // run until the end of the match (driver presses STOP)
@@ -99,17 +98,41 @@ public class AutoDrivingTest extends LinearOpMode {
             //telemetry.addData("Path: ", PF.getEncoderPath());
             //telemetry.update();
 
-            while (opModeIsActive() && !isStopRequested()) {
+            if (opModeIsActive() && !isStopRequested()) {
                 //frontLeftMotor.setPower(.29);
+                autoDriving.setStartLocation(0,0,0);
+                //autoDriving.setStartLocation(600,00,0);
+                autoDriving.stopAt(MovementData.withDegrees(-600, 0,0), .3);
+                sleep(1000);
+                autoDriving.stopAt(MovementData.withDegrees(600, 0,0), .3);
+                sleep(1000);
+                autoDriving.stopAt(MovementData.withDegrees(0, 0,0), .3);
+                movement = 2;
+                //autoDriving.turnOff();
+
+//                if (movement == 0) {
+//                    location = true;
+//                    //String report = autoDriving.stopAt(MovementData.withDegrees(00, 00, ), .3);
+//                    stat = autoDriving.stopAt(MovementData.withDegrees(00, 600,0 ), .3);
+//                    //String report = autoDriving.errorReport(MovementData.withDegrees(600, 0, 0));
+//                    //telemetry.addData("Error Report", report);
+//                    //telemetry.update();
+//                }else if (movement == 1){
+//                    //telemetry.speak("In");
+//                    stat = autoDriving.stopAt(MovementData.withDegrees(00, 00,00 ), .3);
+//                }else{
+//                    autoDriving.turnOff();
+//                }
+//                telemetry.speak(""+movement+" "+stat);
+//                if (stat){
+//                    movement+=1;
+//                    sleep(1000);
+//                    stat = false;
+//                }
+//                telemetry.addData("Report ", autoDriving.errorReport(0,0,0));
+//                telemetry.update();
 
 
-                if (!stat) {
-                    location = true;
-                    String report = autoDriving.stopAt(MovementData.withDegrees(00, 00, 0), .3);
-                    //String report = autoDriving.errorReport(MovementData.withDegrees(600, 0, 0));
-                    telemetry.addData("Error Report", report);
-                    telemetry.update();
-                }
 
                 //String report = autoDriving.errorReport(new MovementData(600, 600, 90));
                 //telemetry.addData("Error Report", report);
@@ -124,7 +147,7 @@ public class AutoDrivingTest extends LinearOpMode {
                 //telemetry.update();
                 //sleep(200);
 
-                if (runtime.milliseconds() >= 29000 || stat) {
+                if (runtime.milliseconds() >= 29000 || movement>1) {
                     location = false;
                     frontRightMotor.setPower(0);
                     frontLeftMotor.setPower(0);
@@ -136,6 +159,7 @@ public class AutoDrivingTest extends LinearOpMode {
                     //backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     telemetry.speak("Done");
                     telemetry.update();
+                    requestOpModeStop();
                     //AL.Stop();
                     //PF.stop();
 
@@ -154,4 +178,5 @@ public class AutoDrivingTest extends LinearOpMode {
         }
         //}
     }
+
 }

@@ -29,7 +29,7 @@ public final class MovementData {
 
     private MovementData(Vector2d translationalMovement, double angle, boolean inDegrees) {
         this.translationalMovement = translationalMovement;
-        this.angle = (inDegrees ? Math.toRadians(angle) : angle);
+        this.angle = -(inDegrees ? Math.toRadians(angle) : angle);
     }
 
     private MovementData(double x, double y, double angle, boolean inDegrees) {

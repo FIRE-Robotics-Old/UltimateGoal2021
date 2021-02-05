@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.java.movement;
 
-import org.firstinspires.ftc.teamcode.java.util.MovementData;
-import org.firstinspires.ftc.teamcode.java.util.Vector2d;
+import org.firstinspires.ftc.teamcode.java.util.*;
+
 
 /**
  * The PathFinder finds the correct path the Robot Needs to Take to move to a different point.
@@ -16,10 +16,9 @@ public class PathFinder implements Runnable {
     private double xToMove;
     private double yToMove;
     private double aToMove;
-    private static final double TWOPI = Math.PI;
+    private static final double TAU = 2 * Math.PI;
 
     private volatile boolean isRunning = true;
-
 
     public PathFinder(ActiveLocation activeLocation, MovementData destination) {
         this.activeLocation = activeLocation;
@@ -61,7 +60,6 @@ public class PathFinder implements Runnable {
         this.setDestination(MovementData.withDegrees(translation, rotation));
     }
 
-
     /**
      * Calculates the positions that the robot encoders need to move to using the current position,
      * allowing instantaneous calculation of the movement the robot needs to make.
@@ -89,11 +87,10 @@ public class PathFinder implements Runnable {
             if (activeLocation == null || destination == null) return;
             aToMove = (destination.getAngleInRadians() - activeLocation.getAngle());
             if (aToMove > Math.PI) {
-                aToMove = (TWOPI - aToMove);
+                aToMove = -(TAU - aToMove);
             } else if (aToMove < -Math.PI) {
-                aToMove = TWOPI - Math.abs(aToMove);
+                aToMove = -(TAU - Math.abs(aToMove));
             }
-            aToMove *= -1;
         }
     }
 
@@ -119,7 +116,6 @@ public class PathFinder implements Runnable {
     public void run() {
         while (isRunning) {
             updateEncoderPath();
-
         }
     }
 }

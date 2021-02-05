@@ -14,19 +14,19 @@ import java.util.Locale;
  */
 public class AutoDriving {
 
-    private final PIDFController PIDFDrive;
-    private final PIDFController PIDStrafe;
-    private final PIDFController PIDFTurn;
-    private final ActiveLocation AL;
-    private final DcMotorEx frontRightMotor;
-    private final DcMotorEx frontLeftMotor;
-    private final DcMotorEx backLeftMotor;
-    private final DcMotorEx backRightMotor;
-    private final Thread locationThread;
-    private final PathFinder PF;
-    private final Thread pathThread;
-    RobotHardware robot;
-    //private AutoDriving autoDriving;
+	private final PIDFController PIDFDrive;
+	private final PIDFController PIDStrafe;
+	private final PIDFController PIDFTurn;
+	private final ActiveLocation activeLocation;
+	private final DcMotorEx frontRightMotor;
+	private final DcMotorEx frontLeftMotor;
+	private final DcMotorEx backLeftMotor;
+	private final DcMotorEx backRightMotor;
+	private final Thread locationThread;
+	private final PathFinder pathFinder;
+	private final Thread pathThread;
+	RobotHardware robot;
+	//private AutoDriving autoDriving;
 
 
     public AutoDriving(PIDFController PIDFDrive, PIDFController PIDFStrafe, PIDFController PIDFTurn, RobotHardware robot) {
@@ -39,15 +39,14 @@ public class AutoDriving {
         backRightMotor = robot.backRightMotor;
         backLeftMotor = robot.backLeftMotor;
 
-        AL = new ActiveLocation(robot);
-        locationThread = new Thread(AL);
+        activeLocation = new ActiveLocation(robot);
+        locationThread = new Thread(activeLocation);
         locationThread.start();
-        AL.setStartPosition(0, 0, 270);
+        //AL.setStartPosition(0, 0, 270);
 
-        PF = new PathFinder(AL);
-        pathThread = new Thread(PF);
+        pathFinder = new PathFinder(activeLocation);
+        pathThread = new Thread(pathFinder);
         pathThread.start();
-
     }
 
     //TODO fill blank functions write aPID controller  add more functionality
@@ -55,23 +54,31 @@ public class AutoDriving {
     /**
      * drives to a point and stops using PID
      */
-    public String stopAt(MovementData goal, double Vmax) {
+    public boolean stopAt(MovementData goal, double Vmax) {
         boolean arrived = false;
-        //while (!arrived) {
-        PF.setDestination(goal);
-        MovementData error = PF.getEncoderPath();
-        double[] speeds = calculateDrivePowers(Vmax, error);//PIDFDrive.calculateDrivePowers(Vmax, error);
-        setMotorPowers(speeds);
-        //arrived = true;
-        /*
-        if ((Math.abs(goal.getX() - AL.getFieldX()) < 10) && (Math.abs(goal.getY() - AL.getFieldY()) < 15) &&  (PF.getEncoderPath().getAngleInDegrees() <= 5)){
-            return true;
+        while (!arrived) {
+            pathFinder.setDestination(goal);
+            MovementData error = pathFinder.getEncoderPath();
+            double[] speeds = calculateDrivePowers(Vmax, error);//PIDFDrive.calculateDrivePowers(Vmax, error);
+            setMotorPowers(speeds);
+            if ((Math.abs(goal.getX() - activeLocation.getFieldX()) < 40) && (Math.abs(goal.getY() - activeLocation.getFieldY()) < 40) && (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 25)) {
+                arrived = true;
+            }
         }
 
-        return false;
-*/
+        turnOff();
+        //arrived = true;
+        return arrived;
+
         //}
-        return String.format(Locale.ENGLISH, "X: %.2f", (Math.abs(goal.getX() - AL.getFieldX())));
+//        return String.format(
+//                Locale.ENGLISH,
+//                "X: %.2f Y: %.2f A: %.2f",
+//                Math.abs(goal.getX() - activeLocation.getFieldX()),
+//                Math.abs(goal.getY() - activeLocation.getFieldY()),
+//                -pathFinder.getEncoderPath().getRawAngleInDegrees()
+//        );
+        //return String.format(Locale.ENGLISH, "X: %.2f", (Math.abs(goal.getX() - AL.getFieldX())));
     }
 
     public double[] calculateDrivePowers(double maxV, MovementData errors) {
@@ -81,9 +88,9 @@ public class AutoDriving {
     public double[] calculateDrivePowers(double maxV, double xError, double yError, double angleError) {
         //aError = angleError;
         //angleError = ((Math.toDegrees(angleError) + 360) % 360);
-        double strafe = PIDStrafe.calculateDrivePID(xError);
-        double drive = PIDFDrive.calculateDrivePID(yError);
-        double twist = PIDFTurn.calculateDrivePID(angleError);
+        double strafe = PIDStrafe.calculatePID(xError);
+        double drive = PIDFDrive.calculatePID(yError);
+        double twist = PIDFTurn.calculatePID(angleError);
         //double twist = 0;
 
         double[] speeds = {
@@ -93,8 +100,6 @@ public class AutoDriving {
                 (drive + strafe - twist)
         };
 
-        //AtomicReference<Double> max = new AtomicReference<>(0.0);
-        //Arrays.stream(speeds).boxed().collect(Collectors.toList()).forEach((speed) -> max.set(Math.abs(speed)));
         double max = Math.abs(speeds[0]);
         for (double speed : speeds) {
             if (Math.abs(speed) > max) {
@@ -109,39 +114,94 @@ public class AutoDriving {
 
         return speeds;
     }
+
     /**
      * drives through a point without stopping
      */
-    public  void passAt(){
+    public  void passAt() {
     }
 
     /**
      * rotates to an angle and keeps it using PID
      */
-    public void rotateTo() {
+    public boolean rotateTo(double angle, double Vmax) {
+        MovementData goal = MovementData.withDegrees(activeLocation.getFieldX(),activeLocation.getFieldY(),angle);
+        return stopAt(goal,Vmax);
     }
 
     /**
      * uses all the above functions for combination of driving and tuning
      */
-    public void drive() {
+    public boolean drive(double x, double y, double Vmax) {
+        MovementData goal = MovementData.withDegrees(x,y,activeLocation.getAngleInDegrees());
+        return stopAt(goal,Vmax);
+    }
+    public boolean driveX(double x, double Vmax) {
+        MovementData goal = MovementData.withDegrees(x,activeLocation.getFieldY(),activeLocation.getAngleInDegrees());
+        return stopAt(goal,Vmax);
+    }
+    public boolean driveY(double y, double Vmax) {
+        MovementData goal = MovementData.withDegrees(activeLocation.getFieldX(),y,activeLocation.getAngleInDegrees());
+        return stopAt(goal,Vmax);
+    }
+
+    public boolean freeRotate(double angle, double Vmax) {
+        boolean arrived = false;
+        MovementData goal = MovementData.withDegrees(0, 0, angle);
+        while (!arrived) {
+            pathFinder.setDestination(goal);
+            MovementData error = pathFinder.getEncoderPath();
+            double[] speeds = calculateDrivePowers(Vmax, 0, 0, error.getAngleInRadians());//PIDFDrive.calculateDrivePowers(Vmax, error);
+            setMotorPowers(speeds);
+            if (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 25) {
+                arrived = true;
+            }
+        }
+
+        turnOff();
+        //arrived = true;
+        return arrived;
+    }
+
+
+    public void turnOff(){
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+    }
+
+    /**
+     * Sets start location in mm and degrees
+     * @param location location you are starting at a MovementData
+     */
+    public void setStartLocation(MovementData location){
+        activeLocation.setStartPosition(location);
 
     }
+    public void setStartLocation(double x, double y, double angle){
+        this.setStartLocation(MovementData.withDegrees(x,y,angle));
+    }
+
 
     public String errorReport(MovementData goal) {
         return String.format(
                 Locale.ENGLISH,
                 "X: %.2f Y: %.2f A: %.2f",
-                Math.abs(goal.getX() - AL.getFieldX()),
-                Math.abs(goal.getY() - AL.getFieldY()),
-                PF.getEncoderPath().getAngleInDegrees()
+                Math.abs(goal.getX() - activeLocation.getFieldX()),
+                Math.abs(goal.getY() - activeLocation.getFieldY()),
+                -pathFinder.getEncoderPath().getRawAngleInDegrees()
         );
-        //return "X: "+Math.abs(goal.getX() - AL.getFieldX())+" Y: "+Math.abs(goal.getY() - AL.getFieldY())+" A: "+Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees());
-        //return "A: Math.abs("+goal.getAngleInDegrees()+"-"+AL.getAngleInDegrees()+") = "+(Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees()));
-        //double[] speeds = PIDF.calculateDrivePowers(Vmax, goal);
-        //return String.format("1: %.2f 2: %.2f 3: %.2f 4: %.2f", speeds[0], speeds[1])
+        // return "X: "+Math.abs(goal.getX() - AL.getFieldX())+" Y: "+Math.abs(goal.getY() - AL.getFieldY())+" A: "+Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees());
+        // return "A: Math.abs("+goal.getAngleInDegrees()+"-"+AL.getAngleInDegrees()+") = "+(Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees()));
+        // double[] speeds = PIDF.calculateDrivePowers(Vmax, goal);
+        // return String.format("1: %.2f 2: %.2f 3: %.2f 4: %.2f", speeds[0], speeds[1])
 
     }
+    public String errorReport(double x,double y,double z){
+        return this.errorReport(MovementData.withDegrees(x,y,z));
+    }
+
 
     private void setMotorPowers(double[] speeds) {
         frontLeftMotor.setPower(speeds[0]);
