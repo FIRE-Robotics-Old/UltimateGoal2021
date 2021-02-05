@@ -124,15 +124,49 @@ public class AutoDriving {
     /**
      * rotates to an angle and keeps it using PID
      */
-    public void rotateTo() {
+    public boolean rotateTo(double angle, double Vmax) {
+        MovementData goal = MovementData.withDegrees(activeLocation.getFieldX(),activeLocation.getFieldY(),angle);
+        boolean arrived = stopAt(goal,Vmax);
+        return arrived;
     }
 
     /**
      * uses all the above functions for combination of driving and tuning
      */
-    public void drive() {
-
+    public boolean drive(double x, double y, double Vmax) {
+        MovementData goal = MovementData.withDegrees(x,y,activeLocation.getAngleInDegrees());
+        boolean arrived = stopAt(goal,Vmax);
+        return arrived;
     }
+    public boolean driveX(double x, double Vmax) {
+        MovementData goal = MovementData.withDegrees(x,activeLocation.getFieldY(),activeLocation.getAngleInDegrees());
+        boolean arrived = stopAt(goal,Vmax);
+        return arrived;
+    }
+    public boolean driveY(double y, double Vmax) {
+        MovementData goal = MovementData.withDegrees(activeLocation.getFieldX(),y,activeLocation.getAngleInDegrees());
+        boolean arrived = stopAt(goal,Vmax);
+        return arrived;
+    }
+
+    public boolean freeRotate(double angle, double Vmax) {
+        boolean arrived = false;
+        MovementData goal = MovementData.withDegrees(0, 0, angle);
+        while (!arrived) {
+            pathFinder.setDestination(goal);
+            MovementData error = pathFinder.getEncoderPath();
+            double[] speeds = calculateDrivePowers(Vmax, 0, 0, error.getAngleInRadians());//PIDFDrive.calculateDrivePowers(Vmax, error);
+            setMotorPowers(speeds);
+            if (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 25) {
+                arrived = true;
+            }
+        }
+
+        turnOff();
+        //arrived = true;
+        return arrived;
+    }
+
 
     public void turnOff(){
         frontRightMotor.setPower(0);
