@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.java.movement;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.arcrobotics.ftclib.files.kinematics.wpilibkinematics.MecanumOdoKinematics;
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
 import org.firstinspires.ftc.teamcode.java.util.PIDFController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
@@ -25,6 +26,7 @@ public class AutoDriving {
 	private final Thread locationThread;
 	private final PathFinder pathFinder;
 	private final Thread pathThread;
+	private double defualtVmax;
 	RobotHardware robot;
 	//private AutoDriving autoDriving;
 
@@ -47,6 +49,9 @@ public class AutoDriving {
         pathFinder = new PathFinder(activeLocation);
         pathThread = new Thread(pathFinder);
         pathThread.start();
+    }
+    public void setDefualtVmax(double defualtVmax){
+        this.defualtVmax = defualtVmax;
     }
 
     //TODO fill blank functions write aPID controller  add more functionality
@@ -79,6 +84,9 @@ public class AutoDriving {
 //                -pathFinder.getEncoderPath().getRawAngleInDegrees()
 //        );
         //return String.format(Locale.ENGLISH, "X: %.2f", (Math.abs(goal.getX() - AL.getFieldX())));
+    }
+    public boolean stopAt(MovementData goal){
+        return stopAt(goal, defualtVmax);
     }
 
     public double[] calculateDrivePowers(double maxV, MovementData errors) {
@@ -129,7 +137,9 @@ public class AutoDriving {
         boolean arrived = stopAt(goal,Vmax);
         return arrived;
     }
-
+    public boolean rotateTo(double angle){
+        return rotateTo(angle, defualtVmax);
+    }
     /**
      * uses all the above functions for combination of driving and tuning
      */
@@ -138,34 +148,101 @@ public class AutoDriving {
         boolean arrived = stopAt(goal,Vmax);
         return arrived;
     }
+    public boolean drive(double x, double y){
+        return drive(x,y, defualtVmax);
+    }
     public boolean driveX(double x, double Vmax) {
         MovementData goal = MovementData.withDegrees(x,activeLocation.getFieldY(),activeLocation.getAngleInDegrees());
         boolean arrived = stopAt(goal,Vmax);
         return arrived;
+    }
+    public boolean driveX(double x){
+        return driveX(x, defualtVmax);
     }
     public boolean driveY(double y, double Vmax) {
         MovementData goal = MovementData.withDegrees(activeLocation.getFieldX(),y,activeLocation.getAngleInDegrees());
         boolean arrived = stopAt(goal,Vmax);
         return arrived;
     }
+    public boolean driveY(double y){
+        return driveY(y, defualtVmax);
+    }
 
     public boolean freeRotate(double angle, double Vmax) {
         boolean arrived = false;
         MovementData goal = MovementData.withDegrees(0, 0, angle);
+        freeMove(goal,Vmax, 2);
+        turnOff();
+        return arrived;
+    }
+    public boolean freeRotate(double angle){
+        return freeRotate(angle, defualtVmax);
+    }
+
+    public boolean freeDriveX(double x, double Vmax){
+        boolean arrived = false;
+        MovementData goal = MovementData.withDegrees(x, 0, 0);
+        freeMove(goal,Vmax, 0);
+        turnOff();
+        return arrived;
+    }
+    public boolean freeDriveX(double x){
+        return freeDriveX(x, defualtVmax);
+    }
+    public boolean freeDriveY(double y, double Vmax){
+        boolean arrived = false;
+        MovementData goal = MovementData.withDegrees(y, 0, 0);
+        freeMove(goal,Vmax, 0);
+        turnOff();
+        return arrived;
+    }
+    public boolean freeDriveY(double y){
+        return freeDriveY(y, defualtVmax);
+    }
+    public boolean freeDriveXY(double x, double y, double Vmax){
+        boolean arrived = false;
+        MovementData goal = MovementData.withDegrees(x, y, 0);
+        freeMove(goal,Vmax,7); //Use large number to get default
+        turnOff();
+        return arrived;
+    }
+    public boolean freeDriveXY(double x, double y){
+        return freeDriveXY(x,y,defualtVmax);
+    }
+
+    private boolean freeMove(MovementData goal, double Vmax, int which){ //Keep private/make others like this private
+        boolean arrived = false;
         while (!arrived) {
             pathFinder.setDestination(goal);
             MovementData error = pathFinder.getEncoderPath();
-            double[] speeds = calculateDrivePowers(Vmax, 0, 0, error.getAngleInRadians());//PIDFDrive.calculateDrivePowers(Vmax, error);
+            double[] speeds = calculateDrivePowers(Vmax, goal);//PIDFDrive.calculateDrivePowers(Vmax, error);
             setMotorPowers(speeds);
-            if (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 25) {
-                arrived = true;
+            switch (which) {
+                case 0:
+                    if (Math.abs(goal.getX() - activeLocation.getFieldX()) < 40) {
+                        arrived = true;
+                    }
+                    break;
+                case 1:
+                    if (Math.abs(goal.getY() - activeLocation.getFieldY()) < 40) {
+                        arrived = true;
+                    }
+                    break;
+                case 2:
+                    if (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 25) {
+                        arrived = true;
+                    }
+                    break;
+                default:
+                    if ((Math.abs(goal.getX() - activeLocation.getFieldX()) < 40) && (Math.abs(goal.getY() - activeLocation.getFieldY()) < 40) && (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 25)) {
+                        arrived = true;
+                    }
             }
-        }
 
-        turnOff();
-        //arrived = true;
+        }
         return arrived;
     }
+
 
 
     public void turnOff(){
