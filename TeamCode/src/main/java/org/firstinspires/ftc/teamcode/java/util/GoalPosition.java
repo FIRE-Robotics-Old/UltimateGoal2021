@@ -17,9 +17,9 @@ public final class GoalPosition {
 	public static final double redPowerShot2X = 2051.05;
 	public static final double redPowerShot3X = 2241.55;
 
-	public static double height;
-	public static double xPosition;
-	public static double yPosition = 1200; //TODO Find right value
+	public double height;
+	public double xPosition;
+	public double yPosition = 1200; //TODO Find right value
 
 
 	private GoalPosition(double xPosition, double height) {
