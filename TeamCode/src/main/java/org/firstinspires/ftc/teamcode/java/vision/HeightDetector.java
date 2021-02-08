@@ -85,7 +85,7 @@ public class HeightDetector {
         public enum Height {
             A, // No Rings
             B, // 1 Ring
-            C;  // 3 Rings
+            C;  // 4 Rings
 
             @NonNull
             @Override
@@ -222,7 +222,8 @@ public class HeightDetector {
             //                                              There is only     There is a full
             //                                                one ring         stack of ring
 
-            return mask;
+//            return mask;
+	        return input;
         }
 
         public Height getHeight() {
