@@ -44,52 +44,45 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		this.telemetry = telemetry;
 	}
 
-	public RingHeightPipeline() {
-		this.telemetry = null;
-	}
-
 	/**
 	 * This is the minimum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MINIMUM = new Scalar(50, 44.5, 30); //TODO: Fine Tune
-	//Scalar YELLOW_MINIMUM = new Scalar(120, 170, 50); //TODO: Fine Tune
-	Scalar YELLOW_MINIMUM = new Scalar(140, 170, 50);
+	Scalar YELLOW_MINIMUM = new Scalar(0, 0, 0); //TODO: Fine Tune
     //rgb(156, 89, 60)
 	/**
 	 * This is the maximum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MAXIMUM = new Scalar(230, 172, 157.5); //TODO: Fine Tune
-	//Scalar YELLOW_MAXIMUM = new Scalar(140, 190, 70); //TODO: Fine Tune
-	Scalar YELLOW_MAXIMUM = new Scalar(220, 200, 100);
+	Scalar YELLOW_MAXIMUM = new Scalar(20, 20, 20); //TODO: Fine Tune
 
 	final static int inc = 10;
 
 	public void updateMin() {
 		double[] thing = YELLOW_MINIMUM.val;
+		double[] newMin = thing;
 		double[] newMax = YELLOW_MAXIMUM.val;
 
 		if (thing[0] < 255) {
-			thing[0]+=5;
-			newMax[0]+=5;
-		} else if (thing[1] < 200) {
-			thing[1]+=inc;
+			newMin[0]+=inc;
+			newMax[0]+=inc;
+		} else if (thing[1] < 255) {
+			newMin[1]+=inc;
 			newMax[1]+=inc;
-			thing[0] = 120;
-			newMax[0] = 140;
-		} else if (newMax[2] < 120) {
-			thing[2]+=inc;
+			newMin[0] = 0;
+			newMax[0] = 20;
+		} else if (newMax[2] < 255) {
+			newMin[2]+=inc;
 			newMax[2]+=inc;
-			thing[1] = 170;
-			newMax[1] = 190;
+			newMin[1] = 0;
+			newMax[1] = 20;
 		}
 
-		YELLOW_MINIMUM = new Scalar(thing);
+		YELLOW_MINIMUM = new Scalar(newMin);
 		YELLOW_MAXIMUM = new Scalar(newMax);
 
-		if (telemetry != null) {
-			telemetry.addData("Current Minimum", Arrays.toString(thing));
-			telemetry.update();
-		}
+		telemetry.addData("Current Minimum", Arrays.toString(newMin));
+		telemetry.update();
 	}
 
 	/**
@@ -201,12 +194,12 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		//                                              There is only     There is a full
 		//                                                one ring         stack of ring
 
-//		updateMin();
-//		try {
-//			Thread.sleep(50);
-//		} catch (InterruptedException e) {
-//			// Do Nothing
-//		}
+		updateMin();
+		try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			// Do Nothing
+		}
 		return mask;
 //		return input;
 	}
