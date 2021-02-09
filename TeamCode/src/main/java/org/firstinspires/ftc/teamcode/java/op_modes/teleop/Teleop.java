@@ -17,7 +17,7 @@ public class Teleop extends LinearOpMode {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
 
-    private DcMotor intakeAndDelivery;
+    //private DcMotor intakeAndDelivery;
     private DcMotor leftShooter;
     private DcMotor rightShooter;
     public RevColorSensorV3 colorSensor;
@@ -60,7 +60,7 @@ public class Teleop extends LinearOpMode {
         backRightMotor = robot.backRightMotor;
 
         colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
-        intakeAndDelivery = robot.intakeAndDelivery;
+       // intakeAndDelivery = robot.intakeAndDelivery;
         //rightShooter = robot.rightShooter;
         //leftShooter = robot.leftShooter;
         lowerWobble =robot.lowerWobble;
@@ -119,16 +119,26 @@ public class Teleop extends LinearOpMode {
                 } else if (!gamepad1.a) {
                     slowModePressed = false;
                 }
-                red = colorSensor.red();
+                //Lower wobble movement
+                if (gamepad1.right_bumper){
+                    if (lowerWobble.getPosition()>=(Math.abs(Constants.lowerWobbleUp-.2))){
+                        lowerWobble.setPosition(Constants.lowerWobbleDown);
+                    }else{
+                        lowerWobble.setPosition(Constants.lowerWobbleUp);
+                    }
 
-                if (red > 200){
-                    telemetry.speak("Zone Owen");
-                }else if (red > 55){
-                    telemetry.speak("Zone Bri");
-                }else{
-                    telemetry.speak("Zone Daniel");
                 }
-                sleep(1000);
+
+//                red = colorSensor.red();
+//
+//                if (red > 200){
+//                    telemetry.speak("Zone Owen");
+//                }else if (red > 55){
+//                    telemetry.speak("Zone Bri");
+//                }else{
+//                    telemetry.speak("Zone Daniel");
+//                }
+                //sleep(1000);
 
 //                if (rings<3){
 //                    intakeAndDeliveryPower = gamepad2.left_trigger;
