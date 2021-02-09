@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.java.movement;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.arcrobotics.ftclib.files.kinematics.wpilibkinematics.MecanumOdoKinematics;
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
 import org.firstinspires.ftc.teamcode.java.util.PIDFController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
@@ -66,7 +65,7 @@ public class AutoDriving {
             MovementData error = pathFinder.getEncoderPath();
             double[] speeds = calculateDrivePowers(Vmax, error);//PIDFDrive.calculateDrivePowers(Vmax, error);
             setMotorPowers(speeds);
-            if ((Math.abs(goal.getX() - activeLocation.getFieldX()) < 40) && (Math.abs(goal.getY() - activeLocation.getFieldY()) < 40) && (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 25)) {
+            if ((Math.abs(goal.getX() - activeLocation.getFieldX()) < 20) && (Math.abs(goal.getY() - activeLocation.getFieldY()) < 20) && (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 15)) {
                 arrived = true;
             }
         }
@@ -143,14 +142,20 @@ public class AutoDriving {
     /**
      * uses all the above functions for combination of driving and tuning
      */
-    public boolean drive(double x, double y, double Vmax) {
+    public boolean driveTo(double x, double y, double Vmax) {
         MovementData goal = MovementData.withDegrees(x,y,activeLocation.getAngleInDegrees());
         boolean arrived = stopAt(goal,Vmax);
         return arrived;
     }
-    public boolean drive(double x, double y){
-        return drive(x,y, defualtVmax);
+    public boolean driveXY(double x, double y, double Vmax){
+        MovementData goal = MovementData.withDegrees((activeLocation.getFieldX()+x),(activeLocation.getFieldY()+y), activeLocation.getAngleInDegrees());
+        boolean arrived = stopAt(goal,Vmax);
+        return arrived;
     }
+    public boolean driveTo(double x, double y){
+        return driveTo(x,y, defualtVmax);
+    }
+
     public boolean driveX(double x, double Vmax) {
         MovementData goal = MovementData.withDegrees(x,activeLocation.getFieldY(),activeLocation.getAngleInDegrees());
         boolean arrived = stopAt(goal,Vmax);

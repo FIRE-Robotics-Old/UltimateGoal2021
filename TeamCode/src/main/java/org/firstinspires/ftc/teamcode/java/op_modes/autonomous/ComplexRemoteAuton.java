@@ -67,12 +67,12 @@ import org.firstinspires.ftc.teamcode.java.util.*;
                 ((SwitchableLight)colorSensor).enableLight(true);
             }
 
-            PIDFDrive = new PIDFController(0.0011844, 0.000000, 0.00150719, 0);
-            PIDFStrafe = new PIDFController(0.001705, 0.000000, 0.005705, 0);
-            PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0);
+//            PIDFDrive = new PIDFController(0.0011844, 0.000000, 0.00150719, 0);
+//            PIDFStrafe = new PIDFController(0.001705, 0.000000, 0.005705, 0);
+//            PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0);
 
-            autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
-
+            autoDriving = new AutoDriving(PIDFConstants.USDrive, PIDFConstants.USStrafe, PIDFConstants.USTurn, robot);
+            autoDriving.setDefualtVmax(0.3); //If things don't work start here
 
             telemetry.addData("Status", "Initialized");
             telemetry.update();
@@ -101,6 +101,8 @@ import org.firstinspires.ftc.teamcode.java.util.*;
                         sleep(1000);
                         autoDriving.stopAt(MovementData.withDegrees(1850,1900,0),.3);
                     }
+                    lowerWobble.setPosition(Constants.lowerWobbleUp);
+                    autoDriving.driveXY(-150,-150,.3); //Backs away from wobble
                     autoDriving.stopAt(MovementData.withDegrees(1850,2070,0),.3);
 
                     end = true;

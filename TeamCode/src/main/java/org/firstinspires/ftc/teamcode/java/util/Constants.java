@@ -37,4 +37,7 @@ public final class Constants {
 
 	// Robotics Specific Constants
 	public static final double backFieldY = 3587.75;
+	public static final double lowerWobbleDown = 0; //∆
+	public static final double lowerWobbleUp = 0.7; //∆
+
 }
