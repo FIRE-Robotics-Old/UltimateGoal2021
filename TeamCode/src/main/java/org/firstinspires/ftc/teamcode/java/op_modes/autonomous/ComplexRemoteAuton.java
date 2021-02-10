@@ -23,6 +23,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.util.*;
 
+
 @Autonomous(name="theC00lerBasicRemoteAuton", group="auton")
 public class ComplexRemoteAuton extends LinearOpMode {
 
@@ -66,98 +67,43 @@ public class ComplexRemoteAuton extends LinearOpMode {
 			((SwitchableLight)colorSensor).enableLight(true);
 		}
 
-//            PIDFDrive = new PIDFController(0.0011844, 0.000000, 0.00150719, 0);
-//            PIDFStrafe = new PIDFController(0.001705, 0.000000, 0.005705, 0);
-//            PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0);
+		PIDFDrive = new PIDFController(0.0011844, 0.000000, 0.00150719, 0);
+		PIDFStrafe = new PIDFController(0.001705, 0.000000, 0.005705, 0);
+		PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0);
 
-//            PIDFDrive = new PIDFController(0.0011844, 0.000000, 0.00150719, 0);
-//            PIDFStrafe = new PIDFController(0.001705, 0.000000, 0.005705, 0);
-//            PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0);
+		autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
 
-            autoDriving = new AutoDriving(PIDFConstants.USDrive, PIDFConstants.USStrafe, PIDFConstants.USTurn, robot);
-            autoDriving.setDefualtVmax(0.3); //If things don't work start here
 
-            telemetry.addData("Status", "Initialized");
-            telemetry.update();
+		telemetry.addData("Status", "Initialized");
+		telemetry.update();
+
+
+		waitForStart();
+		runtime.reset();
+		boolean end = false;
 
 
 		try {
 
 			if (opModeIsActive() && !isStopRequested()) {
-				double startPosx = 1850.85;
-				autoDriving.setStartLocation(startPosx,0,0);
-				//autoDriving.stopAt(MovementData.withDegrees(startPosX,892.8,90),.3);
-				//autoDriving.stopAt(MovementData.withDegrees(1550,892.8,0),.3);
-
-				//autoDriving.driveY(892.8);
-				//autoDriving.rotateTo(90);
-				//autoDriving.driveX(1550);
-				//autoDriving.rotateTo(0);
-				autoDriving.stopAt(MovementData.withDegrees(1550,892.8,0),.3);
+				autoDriving.setStartLocation(1850.85,0,90);
+				autoDriving.stopAt(MovementData.withDegrees(1550,892.8,90),.3);
 				red = colorSensor.red();
 				if (red > 200){
 					telemetry.speak("Zone Owen");
-					autoDriving.stopAt(MovementData.withDegrees(startPosx,2900,0),.3);
-					//autoDriving.driveY(2900);
+					autoDriving.stopAt(MovementData.withDegrees(1850,2900,0),.3);
 				}else if (red > 55){
 					telemetry.speak("Zone Bri");
-					//autoDriving.stopAt(MovementData.withDegrees(startPosX,2500,90),.3);
-					//autoDriving.stopAt(MovementData.withDegrees(1400,2500,0),.3);
 					autoDriving.stopAt(MovementData.withDegrees(1400,2500,0),.3);
-					autoDriving.rotateTo(90); //Keep if use bottom
-					//autoDriving.driveX(1400);
-					//autoDriving.rotateTo(0);
-					//autoDriving.driveY(2500);
 					sleep(1000);
 				}else{
 					telemetry.speak("Zone Daniel");
 					sleep(1000);
-					autoDriving.stopAt(MovementData.withDegrees(startPosx,1900,0),.3);
-					//autoDriving.driveY(1900);
+					autoDriving.stopAt(MovementData.withDegrees(1850,1900,0),.3);
 				}
-				lowerWobble.setPosition(Constants.lowerWobbleUp);
-				autoDriving.freeDriveXY(-150,-150,.3); //Backs away from wobble
-				//autoDriving.freeDriveY(-150);
-				autoDriving.stopAt(MovementData.withDegrees(startPosx,2070,0),.3);
-				//autoDriving.driveY(2070);
+				autoDriving.stopAt(MovementData.withDegrees(1850,2070,0),.3);
 
-                if (opModeIsActive() && !isStopRequested()) {
-                	double startPosx = 1850.85;
-                    autoDriving.setStartLocation(startPosx,0,0);
-                    //autoDriving.stopAt(MovementData.withDegrees(startPosX,892.8,90),.3);
-                    //autoDriving.stopAt(MovementData.withDegrees(1550,892.8,0),.3);
-
-	                //autoDriving.driveY(892.8);
-	                //autoDriving.rotateTo(90);
-	                //autoDriving.driveX(1550);
-	                //autoDriving.rotateTo(0);
-                    autoDriving.stopAt(MovementData.withDegrees(1550,892.8,0),.3);
-                    red = colorSensor.red();
-                    if (red > 200){
-                        telemetry.speak("Zone Owen");
-                        autoDriving.stopAt(MovementData.withDegrees(startPosx,2900,0),.3);
-                        //autoDriving.driveY(2900);
-                    }else if (red > 55){
-                        telemetry.speak("Zone Bri");
-                        //autoDriving.stopAt(MovementData.withDegrees(startPosX,2500,90),.3);
-                        //autoDriving.stopAt(MovementData.withDegrees(1400,2500,0),.3);
-                        autoDriving.stopAt(MovementData.withDegrees(1400,2500,0),.3);
-                        autoDriving.rotateTo(90); //Keep if use bottom
-                        //autoDriving.driveX(1400);
-	                    //autoDriving.rotateTo(0);
-	                    //autoDriving.driveY(2500);
-                        sleep(1000);
-                    }else{
-                        telemetry.speak("Zone Daniel");
-                        sleep(1000);
-                        autoDriving.stopAt(MovementData.withDegrees(startPosx,1900,0),.3);
-                        //autoDriving.driveY(1900);
-                    }
-                    lowerWobble.setPosition(Constants.lowerWobbleUp);
-                    autoDriving.freeDriveXY(-150,-150,.3); //Backs away from wobble
-	                //autoDriving.freeDriveY(-150);
-                    autoDriving.stopAt(MovementData.withDegrees(startPosx,2070,0),.3);
-                    //autoDriving.driveY(2070);
+				end = true;
 
 			}
 			if (runtime.milliseconds() >= 29000 || end) {
