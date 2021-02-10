@@ -14,36 +14,34 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 public class CameraVisionTest extends LinearOpMode {
 	@Override
 	public void runOpMode() {
-		HeightDetector heightDetector = new HeightDetector(hardwareMap);
-		waitForStart();
 
 		RingHeightPipeline pipeline = new RingHeightPipeline(telemetry);
 
-	    OpenCvInternalCamera camera;
-	    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-			    "cameraMonitorViewId",
-			    "id",
-			    hardwareMap.appContext.getPackageName()
-	    );
-	    camera = OpenCvCameraFactory.getInstance().createInternalCamera(
-			    OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId
-	    );
+		OpenCvInternalCamera camera;
+		int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+				"cameraMonitorViewId",
+				"id",
+				hardwareMap.appContext.getPackageName()
+		);
+		camera = OpenCvCameraFactory.getInstance().createInternalCamera(
+				OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId
+		);
 
-	    camera.setPipeline(pipeline);
+		camera.setPipeline(pipeline);
 
-	    camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
+		camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
 
-	    camera.openCameraDeviceAsync(() ->
-			    camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
-	    );
+		camera.openCameraDeviceAsync(() ->
+				camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
+		);
 
-	    waitForStart();
+		waitForStart();
 
-	    while (opModeIsActive()) {
+		while (opModeIsActive()) {
 
-	    }
+		}
 
-	    camera.stopStreaming();
+		camera.stopStreaming();
 //
 //        HeightDetector heightDetector = new HeightDetector(hardwareMap);
 //        waitForStart();
@@ -53,5 +51,5 @@ public class CameraVisionTest extends LinearOpMode {
 //            telemetry.update();
 //            sleep(50);
 //        }
-    }
+	}
 }

@@ -50,18 +50,18 @@ public class HeightDetector {
 		camera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
 	}
 
-    public void startStreaming() {
-        // Starts Streaming the Camera Contents to the phone
-        camera.openCameraDeviceAsync(() ->
-                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
-        );
-    }
+	public void startStreaming() {
+		// Starts Streaming the Camera Contents to the phone
+		camera.openCameraDeviceAsync(() ->
+				camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
+		);
+	}
 
 	public void stopStreaming() {
 		camera.stopStreaming();
 	}
 
-    public RingHeightPipeline.Height getHeight() {
-        return pipeline.getHeight();
-    }
+	public RingHeightPipeline.Height getHeight() {
+		return pipeline.getHeight();
+	}
 }

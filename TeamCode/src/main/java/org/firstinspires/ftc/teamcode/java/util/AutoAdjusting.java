@@ -36,7 +36,7 @@ public class AutoAdjusting implements Runnable {
 	 */
 	public void adjustPitch(Side side, Goal goal) {
 		GoalPosition goalData = GoalPosition.generate(side, goal);
-		double goalFieldZ = goalData.highGoalHeight;
+		double goalFieldZ = GoalPosition.highGoalHeight;
 
 		double pitch = goalFieldZ-getHeight();
 		double power = PIDFPitch.calculatePID(pitch);
