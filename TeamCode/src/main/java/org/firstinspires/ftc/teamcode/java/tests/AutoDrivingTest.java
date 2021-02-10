@@ -77,7 +77,6 @@ public class AutoDrivingTest extends LinearOpMode {
 
         waitForStart();
         runtime.reset();
-        boolean stat = false;
         int movement = 0;
 
         //while (opModeIsActive()) {
@@ -101,7 +100,7 @@ public class AutoDrivingTest extends LinearOpMode {
 
             if (opModeIsActive() && !isStopRequested()) {
                 //frontLeftMotor.setPower(.29);
-                autoDriving.setStartLocation(00,00,0);
+                autoDriving.setStartLocation(0,0,0);
                 //autoDriving.setStartLocation(600,00,0);
                 autoDriving.stopAt(MovementData.withDegrees(600,0,0),.3);
                 movement +=1; //??? Might cause issue

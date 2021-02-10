@@ -170,11 +170,11 @@ public class BasicRemoteAuton extends LinearOpMode {
         }
     }
     public void moveY(double y){
-        int direct = 1;
+        int direct;
         while (Math.abs(AL.getFieldY()-y)>5){
             if (AL.getFieldY()>y){
                 direct =-1;
-            }else{
+            } else{
                 direct = 1;
             }
             synchronized (this) {
@@ -190,11 +190,11 @@ public class BasicRemoteAuton extends LinearOpMode {
         off();
     }
     public void moveX(double x){
-        int direct = 1;
+        int direct;
         while (Math.abs(AL.getFieldX()-x)>50){
             if (AL.getFieldX()>x){
                 direct =-1;
-            }else{
+            } else{
                 direct = 1;
             }
             synchronized (this) {

@@ -133,8 +133,7 @@ public class AutoDriving {
      */
     public boolean rotateTo(double angle, double Vmax) {
         MovementData goal = MovementData.withDegrees(activeLocation.getFieldX(),activeLocation.getFieldY(),angle);
-        boolean arrived = stopAt(goal,Vmax);
-        return arrived;
+        return stopAt(goal,Vmax);
     }
     public boolean rotateTo(double angle){
         return rotateTo(angle, defualtVmax);
@@ -144,6 +143,10 @@ public class AutoDriving {
      */
     public boolean driveTo(double x, double y, double Vmax) {
         MovementData goal = MovementData.withDegrees(x,y,activeLocation.getAngleInDegrees());
+        return stopAt(goal,Vmax);
+    }
+    public boolean driveXY(double x, double y, double Vmax){
+        MovementData goal = MovementData.withDegrees((activeLocation.getFieldX()+x),(activeLocation.getFieldY()+y), activeLocation.getAngleInDegrees());
         boolean arrived = stopAt(goal,Vmax);
         return arrived;
     }
@@ -158,16 +161,14 @@ public class AutoDriving {
 
     public boolean driveX(double x, double Vmax) {
         MovementData goal = MovementData.withDegrees(x,activeLocation.getFieldY(),activeLocation.getAngleInDegrees());
-        boolean arrived = stopAt(goal,Vmax);
-        return arrived;
+        return stopAt(goal,Vmax);
     }
     public boolean driveX(double x){
         return driveX(x, defualtVmax);
     }
     public boolean driveY(double y, double Vmax) {
         MovementData goal = MovementData.withDegrees(activeLocation.getFieldX(),y,activeLocation.getAngleInDegrees());
-        boolean arrived = stopAt(goal,Vmax);
-        return arrived;
+        return stopAt(goal,Vmax);
     }
     public boolean driveY(double y){
         return driveY(y, defualtVmax);
