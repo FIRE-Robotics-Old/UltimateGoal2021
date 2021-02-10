@@ -44,6 +44,10 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		this.telemetry = telemetry;
 	}
 
+	public RingHeightPipeline() {
+		this.telemetry = null;
+	}
+
 	/**
 	 * This is the minimum threshold for Yellow/Orange which we will detect
 	 */
@@ -62,29 +66,30 @@ public class RingHeightPipeline extends OpenCvPipeline {
 
 	public void updateMin() {
 		double[] thing = YELLOW_MINIMUM.val;
-		double[] newMin = thing;
 		double[] newMax = YELLOW_MAXIMUM.val;
 
 		if (thing[0] < 255) {
-			newMin[0]+=5;
+			thing[0]+=5;
 			newMax[0]+=5;
 		} else if (thing[1] < 200) {
-			newMin[1]+=inc;
+			thing[1]+=inc;
 			newMax[1]+=inc;
-			newMin[0] = 120;
+			thing[0] = 120;
 			newMax[0] = 140;
 		} else if (newMax[2] < 120) {
-			newMin[2]+=inc;
+			thing[2]+=inc;
 			newMax[2]+=inc;
-			newMin[1] = 170;
+			thing[1] = 170;
 			newMax[1] = 190;
 		}
 
-		YELLOW_MINIMUM = new Scalar(newMin);
+		YELLOW_MINIMUM = new Scalar(thing);
 		YELLOW_MAXIMUM = new Scalar(newMax);
 
-		telemetry.addData("Current Minimum", Arrays.toString(newMin));
-		telemetry.update();
+		if (telemetry != null) {
+			telemetry.addData("Current Minimum", Arrays.toString(thing));
+			telemetry.update();
+		}
 	}
 
 	/**
@@ -196,12 +201,12 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		//                                              There is only     There is a full
 		//                                                one ring         stack of ring
 
-		//updateMin();
-		try {
-			Thread.sleep(50);
-		} catch (InterruptedException e) {
-			// Do Nothing
-		}
+//		updateMin();
+//		try {
+//			Thread.sleep(50);
+//		} catch (InterruptedException e) {
+//			// Do Nothing
+//		}
 		return mask;
 //		return input;
 	}
