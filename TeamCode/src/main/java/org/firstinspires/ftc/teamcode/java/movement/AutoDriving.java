@@ -150,11 +150,7 @@ public class AutoDriving {
         boolean arrived = stopAt(goal,Vmax);
         return arrived;
     }
-    public boolean driveXY(double x, double y, double Vmax){
-        MovementData goal = MovementData.withDegrees((activeLocation.getFieldX()+x),(activeLocation.getFieldY()+y), activeLocation.getAngleInDegrees());
-        boolean arrived = stopAt(goal,Vmax);
-        return arrived;
-    }
+
     public boolean driveTo(double x, double y){
         return driveTo(x,y, defualtVmax);
     }

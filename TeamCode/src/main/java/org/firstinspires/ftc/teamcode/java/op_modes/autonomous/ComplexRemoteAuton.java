@@ -85,7 +85,7 @@ public class ComplexRemoteAuton extends LinearOpMode {
 
 			if (opModeIsActive() && !isStopRequested()) {
 				double startPosx = 1850.85;
-				autoDriving.setStartLocation(startPosx,0,0);
+				autoDriving.setStartLocation(startPosx, 0, 0);
 				//autoDriving.stopAt(MovementData.withDegrees(startPosX,892.8,90),.3);
 				//autoDriving.stopAt(MovementData.withDegrees(1550,892.8,0),.3);
 
@@ -93,83 +93,84 @@ public class ComplexRemoteAuton extends LinearOpMode {
 				//autoDriving.rotateTo(90);
 				//autoDriving.driveX(1550);
 				//autoDriving.rotateTo(0);
-				autoDriving.stopAt(MovementData.withDegrees(1550,892.8,0),.3);
+				autoDriving.stopAt(MovementData.withDegrees(1550, 892.8, 0), .3);
 				red = colorSensor.red();
-				if (red > 200){
+				if (red > 200) {
 					telemetry.speak("Zone Owen");
-					autoDriving.stopAt(MovementData.withDegrees(startPosx,2900,0),.3);
+					autoDriving.stopAt(MovementData.withDegrees(startPosx, 2900, 0), .3);
 					//autoDriving.driveY(2900);
-				}else if (red > 55){
+				} else if (red > 55) {
 					telemetry.speak("Zone Bri");
 					//autoDriving.stopAt(MovementData.withDegrees(startPosX,2500,90),.3);
 					//autoDriving.stopAt(MovementData.withDegrees(1400,2500,0),.3);
-					autoDriving.stopAt(MovementData.withDegrees(1400,2500,0),.3);
+					autoDriving.stopAt(MovementData.withDegrees(1400, 2500, 0), .3);
 					autoDriving.rotateTo(90); //Keep if use bottom
 					//autoDriving.driveX(1400);
 					//autoDriving.rotateTo(0);
 					//autoDriving.driveY(2500);
 					sleep(1000);
-				}else{
+				} else {
 					telemetry.speak("Zone Daniel");
 					sleep(1000);
-					autoDriving.stopAt(MovementData.withDegrees(startPosx,1900,0),.3);
+					autoDriving.stopAt(MovementData.withDegrees(startPosx, 1900, 0), .3);
 					//autoDriving.driveY(1900);
 				}
 				lowerWobble.setPosition(Constants.lowerWobbleUp);
-				autoDriving.freeDriveXY(-150,-150,.3); //Backs away from wobble
+				autoDriving.freeDriveXY(-150, -150, .3); //Backs away from wobble
 				//autoDriving.freeDriveY(-150);
-				autoDriving.stopAt(MovementData.withDegrees(startPosx,2070,0),.3);
+				autoDriving.stopAt(MovementData.withDegrees(startPosx, 2070, 0), .3);
 				//autoDriving.driveY(2070);
 
-                if (opModeIsActive() && !isStopRequested()) {
-                	double startPosx = 1850.85;
-                    autoDriving.setStartLocation(startPosx,0,0);
-                    //autoDriving.stopAt(MovementData.withDegrees(startPosX,892.8,90),.3);
-                    //autoDriving.stopAt(MovementData.withDegrees(1550,892.8,0),.3);
+				if (opModeIsActive() && !isStopRequested()) {
+					double startPosx = 1850.85;
+					autoDriving.setStartLocation(startPosx, 0, 0);
+					//autoDriving.stopAt(MovementData.withDegrees(startPosX,892.8,90),.3);
+					//autoDriving.stopAt(MovementData.withDegrees(1550,892.8,0),.3);
 
-	                //autoDriving.driveY(892.8);
-	                //autoDriving.rotateTo(90);
-	                //autoDriving.driveX(1550);
-	                //autoDriving.rotateTo(0);
-                    autoDriving.stopAt(MovementData.withDegrees(1550,892.8,0),.3);
-                    red = colorSensor.red();
-                    if (red > 200){
-                        telemetry.speak("Zone Owen");
-                        autoDriving.stopAt(MovementData.withDegrees(startPosx,2900,0),.3);
-                        //autoDriving.driveY(2900);
-                    }else if (red > 55){
-                        telemetry.speak("Zone Bri");
-                        //autoDriving.stopAt(MovementData.withDegrees(startPosX,2500,90),.3);
-                        //autoDriving.stopAt(MovementData.withDegrees(1400,2500,0),.3);
-                        autoDriving.stopAt(MovementData.withDegrees(1400,2500,0),.3);
-                        autoDriving.rotateTo(90); //Keep if use bottom
-                        //autoDriving.driveX(1400);
-	                    //autoDriving.rotateTo(0);
-	                    //autoDriving.driveY(2500);
-                        sleep(1000);
-                    }else{
-                        telemetry.speak("Zone Daniel");
-                        sleep(1000);
-                        autoDriving.stopAt(MovementData.withDegrees(startPosx,1900,0),.3);
-                        //autoDriving.driveY(1900);
-                    }
-                    lowerWobble.setPosition(Constants.lowerWobbleUp);
-                    autoDriving.freeDriveXY(-150,-150,.3); //Backs away from wobble
-	                //autoDriving.freeDriveY(-150);
-                    autoDriving.stopAt(MovementData.withDegrees(startPosx,2070,0),.3);
-                    //autoDriving.driveY(2070);
+					//autoDriving.driveY(892.8);
+					//autoDriving.rotateTo(90);
+					//autoDriving.driveX(1550);
+					//autoDriving.rotateTo(0);
+					autoDriving.stopAt(MovementData.withDegrees(1550, 892.8, 0), .3);
+					red = colorSensor.red();
+					if (red > 200) {
+						telemetry.speak("Zone Owen");
+						autoDriving.stopAt(MovementData.withDegrees(startPosx, 2900, 0), .3);
+						//autoDriving.driveY(2900);
+					} else if (red > 55) {
+						telemetry.speak("Zone Bri");
+						//autoDriving.stopAt(MovementData.withDegrees(startPosX,2500,90),.3);
+						//autoDriving.stopAt(MovementData.withDegrees(1400,2500,0),.3);
+						autoDriving.stopAt(MovementData.withDegrees(1400, 2500, 0), .3);
+						autoDriving.rotateTo(90); //Keep if use bottom
+						//autoDriving.driveX(1400);
+						//autoDriving.rotateTo(0);
+						//autoDriving.driveY(2500);
+						sleep(1000);
+					} else {
+						telemetry.speak("Zone Daniel");
+						sleep(1000);
+						autoDriving.stopAt(MovementData.withDegrees(startPosx, 1900, 0), .3);
+						//autoDriving.driveY(1900);
+					}
+					lowerWobble.setPosition(Constants.lowerWobbleUp);
+					autoDriving.freeDriveXY(-150, -150, .3); //Backs away from wobble
+					//autoDriving.freeDriveY(-150);
+					autoDriving.stopAt(MovementData.withDegrees(startPosx, 2070, 0), .3);
+					//autoDriving.driveY(2070);
 
-			}
-			if (runtime.milliseconds() >= 29000 || end) {
-				location = false;
-				frontRightMotor.setPower(0);
-				frontLeftMotor.setPower(0);
-				backRightMotor.setPower(0);
-				backLeftMotor.setPower(0);
-				telemetry.speak("Done");
-				telemetry.update();
-				requestOpModeStop();
+				}
+				if (runtime.milliseconds() >= 29000 || end) {
+					location = false;
+					frontRightMotor.setPower(0);
+					frontLeftMotor.setPower(0);
+					backRightMotor.setPower(0);
+					backLeftMotor.setPower(0);
+					telemetry.speak("Done");
+					telemetry.update();
+					requestOpModeStop();
 
+				}
 			}
 		} catch (Exception e) {
 			telemetry.addData("error:", e.getStackTrace());
