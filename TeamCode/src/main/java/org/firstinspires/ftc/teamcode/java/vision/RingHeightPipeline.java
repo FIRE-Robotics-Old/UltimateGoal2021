@@ -48,13 +48,15 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	 * This is the minimum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MINIMUM = new Scalar(50, 44.5, 30); //TODO: Fine Tune
-	Scalar YELLOW_MINIMUM = new Scalar(120, 170, 50); //TODO: Fine Tune
+	//Scalar YELLOW_MINIMUM = new Scalar(120, 170, 50); //TODO: Fine Tune
+	Scalar YELLOW_MINIMUM = new Scalar(140, 170, 50);
     //rgb(156, 89, 60)
 	/**
 	 * This is the maximum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MAXIMUM = new Scalar(230, 172, 157.5); //TODO: Fine Tune
-	Scalar YELLOW_MAXIMUM = new Scalar(140, 190, 70); //TODO: Fine Tune
+	//Scalar YELLOW_MAXIMUM = new Scalar(140, 190, 70); //TODO: Fine Tune
+	Scalar YELLOW_MAXIMUM = new Scalar(220, 200, 100);
 
 	final static int inc = 10;
 
@@ -194,7 +196,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		//                                              There is only     There is a full
 		//                                                one ring         stack of ring
 
-		updateMin();
+		//updateMin();
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
