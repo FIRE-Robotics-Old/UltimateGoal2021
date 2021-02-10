@@ -48,13 +48,13 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	 * This is the minimum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MINIMUM = new Scalar(50, 44.5, 30); //TODO: Fine Tune
-	Scalar YELLOW_MINIMUM = new Scalar(0, 0, 0); //TODO: Fine Tune
+	Scalar YELLOW_MINIMUM = new Scalar(120, 170, 50); //TODO: Fine Tune
     //rgb(156, 89, 60)
 	/**
 	 * This is the maximum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MAXIMUM = new Scalar(230, 172, 157.5); //TODO: Fine Tune
-	Scalar YELLOW_MAXIMUM = new Scalar(20, 20, 20); //TODO: Fine Tune
+	Scalar YELLOW_MAXIMUM = new Scalar(140, 190, 70); //TODO: Fine Tune
 
 	final static int inc = 10;
 
@@ -64,18 +64,18 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		double[] newMax = YELLOW_MAXIMUM.val;
 
 		if (thing[0] < 255) {
-			newMin[0]+=inc;
-			newMax[0]+=inc;
-		} else if (thing[1] < 255) {
+			newMin[0]+=5;
+			newMax[0]+=5;
+		} else if (thing[1] < 200) {
 			newMin[1]+=inc;
 			newMax[1]+=inc;
-			newMin[0] = 0;
-			newMax[0] = 20;
-		} else if (newMax[2] < 255) {
+			newMin[0] = 120;
+			newMax[0] = 140;
+		} else if (newMax[2] < 120) {
 			newMin[2]+=inc;
 			newMax[2]+=inc;
-			newMin[1] = 0;
-			newMax[1] = 20;
+			newMin[1] = 170;
+			newMax[1] = 190;
 		}
 
 		YELLOW_MINIMUM = new Scalar(newMin);
