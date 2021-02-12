@@ -12,7 +12,7 @@ import java.util.Locale;
  * The AutoDriving class allows the robot to move to specified locations after calculating with
  * PathFinder.
  */
-public class AutoDriving {
+public class AutoDrivingOld {
 
 	private final PIDFController PIDFDrive;
 	private final PIDFController PIDStrafe;
