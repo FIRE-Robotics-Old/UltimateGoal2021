@@ -29,7 +29,7 @@ public class AutoDrivingOld {
 	//private AutoDriving autoDriving;
 
 
-    public AutoDriving(PIDFController PIDFDrive, PIDFController PIDFStrafe, PIDFController PIDFTurn, RobotHardware robot) {
+    public AutoDrivingOld(PIDFController PIDFDrive, PIDFController PIDFStrafe, PIDFController PIDFTurn, RobotHardware robot) {
         this.PIDFDrive = PIDFDrive;
         this.PIDStrafe = PIDFStrafe;
         this.PIDFTurn = PIDFTurn;

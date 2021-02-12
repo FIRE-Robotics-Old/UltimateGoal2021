@@ -150,7 +150,7 @@ public class AutoDriving {
         boolean arrived = stopAt(goal,Vmax);
         return arrived;
     }
-
+    
     public boolean driveTo(double x, double y){
         return driveTo(x,y, defualtVmax);
     }

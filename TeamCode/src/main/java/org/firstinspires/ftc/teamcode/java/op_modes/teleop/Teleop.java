@@ -20,7 +20,7 @@ public class Teleop extends LinearOpMode {
     //private DcMotor intakeAndDelivery;
     private DcMotor leftShooter;
     private DcMotor rightShooter;
-    public RevColorSensorV3 colorSensor;
+    //public RevColorSensorV3 colorSensor;
     private Servo lowerWobble;
     //private TouchSensor wobbleDetector;
     //private TouchSensor ringCounter;
@@ -59,7 +59,7 @@ public class Teleop extends LinearOpMode {
         backLeftMotor = robot.backLeftMotor;
         backRightMotor = robot.backRightMotor;
 
-        colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
+        //colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
        // intakeAndDelivery = robot.intakeAndDelivery;
         //rightShooter = robot.rightShooter;
         //leftShooter = robot.leftShooter;

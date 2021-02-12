@@ -9,7 +9,7 @@ public class CameraVisionFramework extends LinearOpMode {
 	@Override
 	public void runOpMode() {
 		// OpMode Necessities
-		HeightDetector heightDetector = new HeightDetector(hardwareMap);
+		HeightDetector heightDetector = new HeightDetector(hardwareMap,telemetry);
 
 		waitForStart();
 

@@ -46,7 +46,7 @@ public final class Constants {
 
 		//Hardware constants
 	public static final double lowerWobbleDown = 0;
-	public static final double lowerWobbleUp = 0.7;
+	public static final double lowerWobbleUp = 1;
 
 
 }

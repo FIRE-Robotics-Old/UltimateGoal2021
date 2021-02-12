@@ -39,6 +39,7 @@ public class CameraVisionTest extends LinearOpMode {
 
 	    while (opModeIsActive()) {
 
+
 	    }
 
 	    camera.stopStreaming();

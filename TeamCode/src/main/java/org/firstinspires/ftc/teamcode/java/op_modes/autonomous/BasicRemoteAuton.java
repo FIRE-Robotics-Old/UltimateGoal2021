@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.util.*;
+import org.firstinspires.ftc.teamcode.java.vision.HeightDetector;
+import org.firstinspires.ftc.teamcode.java.vision.RingHeightPipeline;
 
 
 @Autonomous(name="BasicRemoteAuton", group="Backup")
@@ -31,7 +33,8 @@ public class BasicRemoteAuton extends LinearOpMode {
     private BNO055IMU imu;
     private ActiveLocation AL;
     private Thread locationThread;
-    public RevColorSensorV3 colorSensor;
+    HeightDetector heightDetector;
+    //public RevColorSensorV3 colorSensor;
     private int red = 0;
     private double open = .9;
     private double close = .5;
@@ -45,6 +48,8 @@ public class BasicRemoteAuton extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
 
+        heightDetector = new HeightDetector(hardwareMap, telemetry);
+
         imu = robot.imu;
 
         frontLeftMotor = robot.frontLeftMotor;
@@ -53,12 +58,11 @@ public class BasicRemoteAuton extends LinearOpMode {
         backLeftMotor = robot.backLeftMotor;
 
         wobbleGrip = hardwareMap.get(Servo.class, "wobbleGrip");
-        wobble2 = hardwareMap.get(Servo.class, "wobble2");
 
-        colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
-        if (colorSensor instanceof SwitchableLight) {
-            ((SwitchableLight)colorSensor).enableLight(true);
-        }
+//        colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
+//        if (colorSensor instanceof SwitchableLight) {
+//            ((SwitchableLight)colorSensor).enableLight(true);
+//        }
 
         AL = new ActiveLocation(robot);
         locationThread = new Thread(AL);
@@ -66,66 +70,87 @@ public class BasicRemoteAuton extends LinearOpMode {
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+        heightDetector.startStreaming();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
+
         // run until the end of the match (driver presses STOP)
         try {
+            RingHeightPipeline.Height position = heightDetector.getHeight();
+            heightDetector.stopStreaming();
+            telemetry.addData("Position of Ring", position);
+            telemetry.update();
             sleep(1000);
-            wobble2.setPosition(0.5);
-
             double startTime = runtime.milliseconds();
             double currentTime = 0;
-
+            wobbleGrip.setPosition(Constants.lowerWobbleDown);
             AL.setStartPosition(0, 0,0);
-            telemetry.addData("FL:", AL.getAngleInDegrees());
-            telemetry.update();
-            //moveY(600);//1193
-            angleGoal = 0;
-            yGoal = AL.getFieldY()-150;
-            moveX(900);
-            sleep(1000);
-            //turn(0);
-            adjustErrorY(angleGoal,yGoal);
-            sleep(100);
-            red = colorSensor.red();
-            sleep(150);
-            telemetry.speak("Red"+red);
-            sleep(1000);
-            telemetry.update();
-            if (red < 300) {
-                telemetry.addData("Zone", "A");
-                telemetry.update();
-                /*moveX(2032);
-                sleep(100);
-                moveY(-200);
-                sleep(100);
-                //moveX(2332);
-                sleep(100);
-                 */
-                moveX(1650);
+            switch (position) {
+                case A:
+                    moveY(1970);
+                    turn(0);
+                    moveX(0);
+                case B:
+                    moveY(2000);
+                case C:
+                    moveY(2200);
+                    turn(0);
+                    //moveX(300);
 
-            /*else if (red >= 48 && red < 300){
-                telemetry.speak("Zone B");
-                telemetry.update();
-                moveX(2032);
-                adjustErrorY(0,0);
-                moveY(200);
-                moveX(1650);
-                adjustErrorY(0,200);
-            }*/
-            }else{
-                telemetry.addData("Zone","C");
-                telemetry.update();
-                moveX(1650);
-                adjustErrorY(0,0);
-                moveX(2590);
-                adjustErrorY(0,0);
-                sleep(1000);
-                moveX(1650);
             }
-            wobbleGrip.setPosition(.9);
+            wobbleGrip.setPosition(Constants.lowerWobbleUp);
+            turn(0);
+            moveY(1980);
+            turn(0);
+//            telemetry.addData("FL:", AL.getAngleInDegrees());
+//            telemetry.update();
+//            //moveY(600);//1193
+//            angleGoal = 0;
+//            yGoal = AL.getFieldY()-150;
+//            moveX(900);
+//            sleep(1000);
+//            //turn(0);
+//            adjustErrorY(angleGoal,yGoal);
+//            sleep(100);
+//            red = colorSensor.red();
+//            sleep(150);
+//            telemetry.speak("Red"+red);
+//            sleep(1000);
+//            telemetry.update();
+//            if (red < 300) {
+//                telemetry.addData("Zone", "A");
+//                telemetry.update();
+//                /*moveX(2032);
+//                sleep(100);
+//                moveY(-200);
+//                sleep(100);
+//                //moveX(2332);
+//                sleep(100);
+//                 */
+//                moveX(1650);
+//
+//            /*else if (red >= 48 && red < 300){
+//                telemetry.speak("Zone B");
+//                telemetry.update();
+//                moveX(2032);
+//                adjustErrorY(0,0);
+//                moveY(200);
+//                moveX(1650);
+//                adjustErrorY(0,200);
+//            }*/
+//            }else{
+//                telemetry.addData("Zone","C");
+//                telemetry.update();
+//                moveX(1650);
+//                adjustErrorY(0,0);
+//                moveX(2590);
+//                adjustErrorY(0,0);
+//                sleep(1000);
+//                moveX(1650);
+//            }
+//            wobbleGrip.setPosition(.9);
 /*
             telemetry.addData("BL",backLeftMotor.getCurrentPosition());
             telemetry.addData("FR", frontRightMotor.getCurrentPosition());
@@ -165,13 +190,13 @@ public class BasicRemoteAuton extends LinearOpMode {
             stop();
 
         } catch (Exception e) {
-            telemetry.addData("error:", e.getStackTrace());
-            AL.stop();
+	        telemetry.addData("error:", e.getStackTrace());
+	        AL.stop();
         }
     }
     public void moveY(double y){
         int direct;
-        while (Math.abs(AL.getFieldY()-y)>5){
+        while (Math.abs(AL.getFieldY()-y)>20){
             if (AL.getFieldY()>y){
                 direct =-1;
             } else{
