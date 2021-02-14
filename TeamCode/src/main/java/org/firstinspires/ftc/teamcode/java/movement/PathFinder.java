@@ -13,9 +13,9 @@ public class PathFinder implements Runnable {
     private final ActiveLocation activeLocation;
     private MovementData destination;
 
-    private double xToMove;
-    private double yToMove;
-    private double aToMove;
+    private double xToMove = 0;
+    private double yToMove = 0;
+    private double aToMove = 0;
     private static final double TAU = 2 * Math.PI;
 
     private volatile boolean isRunning = true;

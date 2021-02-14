@@ -32,7 +32,7 @@ public class ActiveLocation implements Runnable {
     private double xEncoder = 0;
     double angle = 0;
     double resetAngle = 0;
-    double startAngle;
+    double startAngle = 0;
 
     // Field location
     double fieldXPosition =0;
@@ -134,8 +134,6 @@ public class ActiveLocation implements Runnable {
         double deltaY = internalCurrentY - internalPreviousY;
         double deltaX = internalCurrentX - internalPreviousX;
         fieldXPosition += deltaX * Math.cos(angle) - deltaY * Math.sin(angle);
-        //fieldXPosition = internalPreviousX;
-        //fieldYPosition = internalCurrentY;
         fieldYPosition += deltaX * Math.sin(angle) + deltaY * Math.cos(angle);
     }
 

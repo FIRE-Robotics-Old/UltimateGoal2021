@@ -9,18 +9,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 //import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 //import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
-import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.util.*;
 
 @Autonomous(name="theC00lerBasicRemoteAuton", group="auton")
@@ -76,7 +69,7 @@ public class ComplexRemoteAuton extends LinearOpMode {
 //            PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0);
 
             autoDriving = new AutoDriving(PIDFConstants.USDrive, PIDFConstants.USStrafe, PIDFConstants.USTurn, robot);
-            autoDriving.setDefualtVmax(0.3); //If things don't work start here
+            autoDriving.setDefaultVmax(0.3); //If things don't work start here
 
             telemetry.addData("Status", "Initialized");
             telemetry.update();

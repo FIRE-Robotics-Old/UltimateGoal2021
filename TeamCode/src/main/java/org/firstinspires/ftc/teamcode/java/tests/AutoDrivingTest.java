@@ -102,7 +102,7 @@ public class AutoDrivingTest extends LinearOpMode {
                 //frontLeftMotor.setPower(.29);
                 autoDriving.setStartLocation(0,0,0);
                 //autoDriving.setStartLocation(600,00,0);
-                autoDriving.stopAt(MovementData.withDegrees(600,0,0),.3);
+                autoDriving.stopAt(MovementData.withDegrees(0,0,90),.3);
                 movement +=1; //??? Might cause issue
                 //autoDriving.driveX(600);
 //                autoDriving.stopAt(MovementData.withDegrees(-600, 00,0), .3);
