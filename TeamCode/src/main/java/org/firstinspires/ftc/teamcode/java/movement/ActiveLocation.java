@@ -115,6 +115,11 @@ public class ActiveLocation implements Runnable {
 
 
     }
+
+    /**
+     * Sets the start position
+     * @param location A movement data containing x and y position in mm and the angle in degrees
+     */
     public void setStartPosition(MovementData location){
         this.setStartPosition(location.getX(), location.getY(), location.getAngleInDegrees());
 
@@ -186,10 +191,18 @@ public class ActiveLocation implements Runnable {
         return angle;
     }
 
+    /**
+     * Get's the Robot's Angle on the field, in degrees
+     * @return returns angle in degrees
+     */
     public double getAngleInDegrees(){
         updateSensors();
         return ((Math.toDegrees(angle) + 360) % 360);
     }
+
+    /**
+     * Takes the current angle and sets that value to 0 in the robots point of view
+     */
     public void resetAngle(){
         updateSensors();
         resetAngle = angle;
