@@ -20,7 +20,6 @@ public class PIDFController {
 	private final double kd;
 	private final double f;
 
-
 	double integral = 0;
 
 	double derivative = 0;
