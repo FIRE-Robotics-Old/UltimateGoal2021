@@ -17,47 +17,49 @@ public final class GoalPosition {
 	public static final double redPowerShot2X = 2051.05;
 	public static final double redPowerShot3X = 2241.55;
 
-	public double height;
-	public double xPosition;
-	public double yPosition = 1200; //TODO Find right value
+	public final double height;
+	public final double xPosition;
+	public final double yPosition = 1200; //TODO Find right value
+	public final Side side;
+	public final Goal goal;
 
-
-	private GoalPosition(double xPosition, double height) {
-			this.xPosition = xPosition;
-			this.height = height;
+	private GoalPosition(double xPosition, double height, Side side, Goal goal) {
+		this.xPosition  = xPosition;
+		this.height     = height;
+		this.side       = side;
+		this.goal       = goal;
 	}
-
 
 	public static GoalPosition generate(Side side, Goal goal) {
 		if (side == Side.BLUE) {
 			switch (goal) {
 				case LOWER_GOAL:
-					return new GoalPosition(blueGoalX, lowGoalHeight);
+					return new GoalPosition(blueGoalX, lowGoalHeight, side, goal);
 				case MIDDLE_GOAL:
-					return new GoalPosition(blueGoalX, middleGoalHeight);
+					return new GoalPosition(blueGoalX, middleGoalHeight, side, goal);
 				case HIGH_GOAL:
-					return new GoalPosition(blueGoalX, highGoalHeight);
+					return new GoalPosition(blueGoalX, highGoalHeight, side, goal);
 				case POWER_SHOT_1:
-					return new GoalPosition(bluePowerShot1X, powerShotHeight);
+					return new GoalPosition(bluePowerShot1X, powerShotHeight, side, goal);
 				case POWER_SHOT_2:
-					return new GoalPosition(bluePowerShot2X, powerShotHeight);
+					return new GoalPosition(bluePowerShot2X, powerShotHeight, side, goal);
 				default:
-					return new GoalPosition(bluePowerShot3X, powerShotHeight);
+					return new GoalPosition(bluePowerShot3X, powerShotHeight, side, goal);
 			}
 		}
 		switch (goal) {
 			case LOWER_GOAL:
-				return new GoalPosition(redGoalX, lowGoalHeight);
+				return new GoalPosition(redGoalX, lowGoalHeight, side, goal);
 			case MIDDLE_GOAL:
-				return new GoalPosition(redGoalX, middleGoalHeight);
+				return new GoalPosition(redGoalX, middleGoalHeight, side, goal);
 			case HIGH_GOAL:
-				return new GoalPosition(redGoalX, highGoalHeight);
+				return new GoalPosition(redGoalX, highGoalHeight, side, goal);
 			case POWER_SHOT_1:
-				return new GoalPosition(redPowerShot1X, powerShotHeight);
+				return new GoalPosition(redPowerShot1X, powerShotHeight, side, goal);
 			case POWER_SHOT_2:
-				return new GoalPosition(redPowerShot2X, powerShotHeight);
+				return new GoalPosition(redPowerShot2X, powerShotHeight, side, goal);
 			default:
-				return new GoalPosition(redPowerShot3X, powerShotHeight);
+				return new GoalPosition(redPowerShot3X, powerShotHeight, side, goal);
 		}
 	}
 }
@@ -68,10 +70,10 @@ enum Side {
 }
 
 enum Goal {
-	LOWER_GOAL,
-	MIDDLE_GOAL,
-	HIGH_GOAL,
 	POWER_SHOT_1,
 	POWER_SHOT_2,
 	POWER_SHOT_3,
+	HIGH_GOAL,
+	MIDDLE_GOAL,
+	LOWER_GOAL,
 }
