@@ -12,6 +12,7 @@ import java.util.Locale;
  * The AutoDriving class allows the robot to move to specified locations after calculating with
  * PathFinder.
  */
+//TODO: Create a tuning class
 public class AutoDriving {
 
 	private final PIDFController PIDFDrive;
@@ -26,6 +27,11 @@ public class AutoDriving {
 	private final PathFinder pathFinder;
 	private final Thread pathThread;
 	private double defaultMaxVelocity = 0;
+	private MovementData defaultErrorRanges;
+
+	private double defaultErrorX = 40;
+	private double defaultErrorY = 40;
+	private double defaultErrorAngle = 5;
 	RobotHardware robot;
 
     public AutoDriving(PIDFController PIDFDrive, PIDFController PIDFStrafe, PIDFController PIDFTurn, RobotHardware robot) {
@@ -50,20 +56,46 @@ public class AutoDriving {
     public void setDefaultMaxVelocity(double defaultMaxVelocity){
         this.defaultMaxVelocity = defaultMaxVelocity;
     }
+    public void setDefaultErrorRanges(MovementData errorRange){
+    	this.defaultErrorX = errorRange.getX();
+    	this.defaultErrorY = errorRange.getY();
+    	this.defaultErrorAngle = errorRange.getAngleInDegrees();
+    }
+    public void setDefaultErrorRanges(double xErrorRange, double yErrorRange, double angleErrorRange){
+    	setDefaultErrorRanges(MovementData.withDegrees(xErrorRange,yErrorRange,angleErrorRange));
+    }
+    public void setDefaultDriveErrorRange(double errorRange){
+    	setDefaultErrorRanges(errorRange,errorRange,defaultErrorAngle);
+
+    }
+    public void setDefaultAngleErrorRange(double errorRange){
+		setDefaultErrorRanges(defaultErrorX,defaultErrorY,errorRange);
+    }
+    public void setDefaultErrorRangeX(double errorRange){
+    	setDefaultErrorRanges(errorRange, defaultErrorY, defaultErrorAngle);
+    }
+    public void setDefaultErrorRangeY(double errorRange){
+    	setDefaultErrorRanges(defaultErrorX, errorRange, defaultErrorAngle);
+    }
 
     //TODO fill blank functions write aPID controller  add more functionality
 
     /**
      * drives to a point and stops using PID
      */
-    public boolean stopAt(MovementData goal, double maxVelocity) {
+    //TODO implement false return if already at position
+    public boolean stopAt(MovementData goal, double maxVelocity, MovementData errorRanges) {
+    	double errorRangeX = errorRanges.getX();
+    	double errorRangeY = errorRanges.getY();
+    	double errorRangeAngle = errorRanges.getAngleInDegrees();
+
         boolean arrived = false;
         while (!arrived) {
             pathFinder.setDestination(goal);
             MovementData error = pathFinder.getEncoderPath();
             double[] speeds = calculateDrivePowers(maxVelocity, error);//PIDFDrive.calculateDrivePowers(maxVelocity, error);
             setMotorPowers(speeds);
-            if ((Math.abs(goal.getX() - activeLocation.getFieldX()) < 20) && (Math.abs(goal.getY() - activeLocation.getFieldY()) < 20) && (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= 15)) {
+            if ((Math.abs(goal.getX() - activeLocation.getFieldX()) < errorRangeX) && (Math.abs(goal.getY() - activeLocation.getFieldY()) < errorRangeY) && (Math.abs(pathFinder.getEncoderPath().getAngleInDegrees()) <= errorRangeAngle)) {
                 arrived = true;
             }
         }
@@ -71,8 +103,23 @@ public class AutoDriving {
         return arrived;
     }
     public boolean stopAt(MovementData goal){
-        return stopAt(goal, defaultMaxVelocity);
+        return stopAt(goal, defaultMaxVelocity, MovementData.withDegrees(defaultErrorX,defaultErrorY,defaultErrorAngle));
     }
+	public boolean stopAt(MovementData goal, MovementData errorRanges){
+		return stopAt(goal, defaultMaxVelocity, errorRanges);
+	}
+	public boolean stopAt(MovementData goal, double VMax){
+		return stopAt(goal, VMax, MovementData.withDegrees(defaultErrorX,defaultErrorY,defaultErrorAngle));
+	}
+	public boolean stopAt(MovementData goal, double VMax, double xErrorRange, double yErrorRange, double angleErrorRange){
+		return stopAt(goal, VMax, MovementData.withDegrees(xErrorRange,yErrorRange,angleErrorRange));
+	}
+//	public boolean stopAt(MovementData goal, double xErrorRange, double yErrorRange, double angleErrorRange){
+//		return stopAt(goal, defaultMaxVelocity, MovementData.withDegrees(xErrorRange,yErrorRange,angleErrorRange));
+//	}
+	public boolean stopAt(MovementData goal, double VMax, double driveErrorRange, double angleErrorRange){
+		return stopAt(goal, VMax, MovementData.withDegrees(driveErrorRange,driveErrorRange,angleErrorRange));
+	}
 
     public double[] calculateDrivePowers(double maxVelocity, MovementData errors) {
         return calculateDrivePowers(maxVelocity, errors.getX(), errors.getY(), errors.getRawAngleInRadians());
@@ -131,8 +178,7 @@ public class AutoDriving {
     }
     public boolean driveXY(double x, double y, double maxVelocity){
         MovementData goal = MovementData.withDegrees((activeLocation.getFieldX()+x),(activeLocation.getFieldY()+y), activeLocation.getAngleInDegrees());
-        boolean arrived = stopAt(goal,maxVelocity);
-        return arrived;
+        return stopAt(goal,maxVelocity);
     }
     
     public boolean driveTo(double x, double y){
@@ -176,8 +222,8 @@ public class AutoDriving {
         return freeDriveX(x, defaultMaxVelocity);
     }
     public boolean freeDriveY(double y, double maxVelocity){
-        boolean arrived = false;
-        MovementData goal = MovementData.withDegrees(y, 0, 0);
+        boolean arrived = false; // TODO Arrive is not changing
+        MovementData goal = MovementData.withDegrees(0, y, 0);
         freeMove(goal,maxVelocity, 0);
         turnOff();
         return arrived;

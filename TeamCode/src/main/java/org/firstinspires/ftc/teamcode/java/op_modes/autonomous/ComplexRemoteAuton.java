@@ -69,7 +69,7 @@ public class ComplexRemoteAuton extends LinearOpMode {
 //            PIDFTurn = new PIDFController(0.35, 0.00000, 0.395, 0);
 
             autoDriving = new AutoDriving(PIDFConstants.USDrive, PIDFConstants.USStrafe, PIDFConstants.USTurn, robot);
-            autoDriving.setDefaultVmax(0.3); //If things don't work start here
+            autoDriving.setDefaultMaxVelocity(0.3); //If things don't work start here
 
             telemetry.addData("Status", "Initialized");
             telemetry.update();
