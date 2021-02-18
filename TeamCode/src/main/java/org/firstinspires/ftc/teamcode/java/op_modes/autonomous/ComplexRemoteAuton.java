@@ -123,6 +123,7 @@ public class ComplexRemoteAuton extends LinearOpMode {
 				frontRightMotor.setPower(0);
 				frontLeftMotor.setPower(0);
 				backRightMotor.setPower(0);
+
 				backLeftMotor.setPower(0);
 				telemetry.speak("Done");
 				telemetry.update();

@@ -85,25 +85,35 @@ public class BasicRemoteAuton extends LinearOpMode {
             sleep(1000);
             double startTime = runtime.milliseconds();
             double currentTime = 0;
-            wobbleGrip.setPosition(Constants.lowerWobbleDown);
+            //wobbleGrip.setPosition(Constants.lowerWobbleDown);
             AL.setStartPosition(0, 0,0);
-            switch (position) {
-                case A:
-                    moveY(1970);
-                    turn(0);
-                    moveX(0);
-                case B:
-                    moveY(2000);
-                case C:
-                    moveY(2200);
-                    turn(0);
-                    //moveX(300);
-
-            }
-            wobbleGrip.setPosition(Constants.lowerWobbleUp);
+            //moveY(1430); A Y
+            //moveY(1880); //parking pot
+            //moveY(2000);//B Y
+            moveY(2600); //C Y
             turn(0);
-            moveY(1980);
-            turn(0);
+            sleep(100);
+            //moveX(0);
+            sleep(100);
+            //turn(0);
+//            switch (position) {
+//                case A:
+//                    moveY(1970);
+//                    turn(0);
+//                    moveX(0);
+//                case B:
+//                    moveY(2000);
+//                case C:
+//                    moveY(2200);
+//                    turn(0);
+//                    //moveX(300);
+//
+//            }
+            //wobbleGrip.setPosition(Constants.lowerWobbleUp);
+            //turn(0);
+            sleep(3000);
+            //moveY(1980);
+            //turn(0);
 //            telemetry.addData("FL:", AL.getAngleInDegrees());
 //            telemetry.update();
 //            //moveY(600);//1193
@@ -188,6 +198,7 @@ public class BasicRemoteAuton extends LinearOpMode {
 */
             telemetry.update();
             stop();
+            AL.stop();
 
         } catch (Exception e) {
 	        telemetry.addData("error:", e.getStackTrace());
@@ -215,13 +226,20 @@ public class BasicRemoteAuton extends LinearOpMode {
         off();
     }
     public void moveX(double x){
-        int direct;
-        while (Math.abs(AL.getFieldX()-x)>50){
-            if (AL.getFieldX()>x){
-                direct =-1;
-            } else{
+        int direct =1;
+        while (Math.abs(AL.getFieldX()-x)>10){
+            double xToMove = AL.getFieldX()-x;
+            if (xToMove > 0){
                 direct = 1;
+            } else {
+                direct = -1;
             }
+            //            if (AL.getFieldX()>x){
+//                direct =1;
+//            } else{
+//                direct = -1;
+//            }
+
             synchronized (this) {
                 frontLeftMotor.setPower(-0.3 * direct);
                 frontRightMotor.setPower(0.3 * direct);
@@ -235,17 +253,27 @@ public class BasicRemoteAuton extends LinearOpMode {
         off();
     }
     public void turn(double angle){
-        double maxTime = runtime.milliseconds()+5000;
+        double maxTime = runtime.milliseconds()+2000;
         int direct = 1;
-        if (AL.getAngleInDegrees()<angle){
-            direct = -1;
-        }
-        while (AL.getAngleInDegrees() < angle && runtime.milliseconds()<maxTime){
+//        if (aToMove > Math.PI) {
+//            aToMove = -(direct - aToMove);
+//        } else if (aToMove < -Math.PI) {
+//            aToMove = -(TAU - Math.abs(aToMove));
+//        }
+        while (Math.abs(AL.getAngleInDegrees()-angle) >5 && runtime.milliseconds()<maxTime){
+            double aToMove = Math.abs(AL.getAngleInDegrees()-angle);
+            if (aToMove > 180){
+                direct = -1;
+            } else {
+                direct = 1;
+            }
             frontRightMotor.setPower(-0.3*direct);
-            frontLeftMotor.setPower(-0.3*direct);
-            backRightMotor.setPower(0.3*direct);
+            frontLeftMotor.setPower(0.3*direct);
+            backRightMotor.setPower(-0.3*direct);
             backLeftMotor.setPower(0.3*direct);
-            output("A"+angle,AL.getAngleInDegrees());
+            //output("A"+angle,AL.getAngleInDegrees());
+            telemetry.addData("loop", AL.getAngleInDegrees() < angle && runtime.milliseconds()<maxTime);
+            telemetry.update();
         }
         off();
     }
