@@ -48,15 +48,15 @@ public class Vector3d {
 	}
 
 	public Vector3d unaryMinus() {
-		return new  Vector3d(-x, -y, -z);
+		return new Vector3d(-x, -y, -z);
 	}
 
 	public Vector3d times(double scalar) {
-		return new  Vector3d(x * scalar, y * scalar, z * scalar);
+		return new Vector3d(x * scalar, y * scalar, z * scalar);
 	}
 
 	public Vector3d div(double scalar) {
-		return new  Vector3d(x / scalar, y / scalar, z / scalar);
+		return new Vector3d(x / scalar, y / scalar, z / scalar);
 	}
 
 	@Override
