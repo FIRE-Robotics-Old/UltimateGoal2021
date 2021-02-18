@@ -4,7 +4,8 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
-import org.firstinspires.ftc.teamcode.java.movement.PathFinder;
+
+import static org.firstinspires.ftc.teamcode.java.util.MathUtil.squared;
 
 /**
  * Allows the automatic adjustment of the Robot towards the shooter
@@ -19,14 +20,8 @@ public class AutoAdjusting {
 	private final BNO055IMU         imu;
 
 	private final ActiveLocation    activeLocation;
-	private final PathFinder        pathFinder;
-	private final Thread            pathFinderThread;
 
 	private final PIDFController    PidfYaw, PidfPitch;
-
-
-	private double defaultYawErrorRange     = 5;
-	private double defaultPitchErrorRange   = 5;
 
 	public double deltaX            = 0;
 	public double deltaY            = 0;
@@ -35,6 +30,7 @@ public class AutoAdjusting {
 	private double shooterRotationPower = 0;
 	private double robotTurnPower = 0;
 
+	private final Side side;
 	private GoalPosition activeGoal;
 	private int goalPositionIndex = 0;
 
@@ -44,14 +40,11 @@ public class AutoAdjusting {
 
 		this.activeLocation = activeLocation;
 
-		this.pathFinder         = new PathFinder(activeLocation);
-		this.pathFinderThread   = new Thread(pathFinder);
-		pathFinderThread.start();
-
 		// TODO: Calibrate turn and Pitch Values
 		this.PidfYaw    = new PIDFController(0.35, 0.00000, 0.395, 0);
 		this.PidfPitch  = new PIDFController(0,0,0,0);
 
+		this.side = side;
 		activeGoal = GoalPosition.generate(side, initialGoal);
 	}
 
@@ -65,16 +58,14 @@ public class AutoAdjusting {
 		goalPositionIndex = activeGoal.side == Side.RED
 				? (goalPositionIndex + 1) % Goal.values().length
 				: (goalPositionIndex + Goal.values().length - 1) % Goal.values().length;
+		activeGoal = GoalPosition.generate(side, Goal.values()[goalPositionIndex]);
 	}
 
 	public void cycleLeft() {
 		goalPositionIndex = activeGoal.side == Side.BLUE
 				? (goalPositionIndex + 1) % Goal.values().length
 				: (goalPositionIndex + Goal.values().length - 1) % Goal.values().length;
-	}
-
-	public AutoAdjusting(RobotHardware robot, ActiveLocation activeLocation, Side side, double angleErrorRange) {
-		this(robot, activeLocation, side);
+		activeGoal = GoalPosition.generate(side, Goal.values()[goalPositionIndex]);
 	}
 
 	/**
@@ -123,20 +114,9 @@ public class AutoAdjusting {
 		return robotTurnPower;
 	}
 
-	public double getShooterTurnPower(){
+	public double getShooterTurnPower() {
 		calculatePitchPower();
 		return shooterRotationPower;
 	}
-
-	private boolean isRunning() {
-		return true;
-	}
-
-	private double squared(double num) {
-		return num * num;
-	}
-
-	private int squared(int num) {
-		return num * num;
-	}
 }
+
