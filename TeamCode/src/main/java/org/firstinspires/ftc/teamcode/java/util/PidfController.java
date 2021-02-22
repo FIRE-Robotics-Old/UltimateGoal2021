@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.Range;
  * for example AutoDriving ,autoAdjusting , controlling the shooter speed
  */
 //P is main power, I looks at the sum of error and gives final push, D is how much the error is changing
-public class PIDFController {
+public class PidfController {
 	private static final double maxI = .1;
 	private static final double minI = -.1;
 
@@ -24,7 +24,7 @@ public class PIDFController {
 
 	double derivative = 0;
 
-	public PIDFController(double kp, double ki, double kd, double f) {
+	public PidfController(double kp, double ki, double kd, double f) {
 		elapsedTime = new ElapsedTime();
 		this.previousTime = 0;
 		this.kp = kp;

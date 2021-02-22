@@ -21,7 +21,7 @@ public class AutoAdjusting {
 
 	private final ActiveLocation    activeLocation;
 
-	private final PIDFController    PidfYaw, PidfPitch;
+	private final PidfController PidfYaw, PidfPitch;
 
 	public double deltaX            = 0;
 	public double deltaY            = 0;
@@ -41,8 +41,8 @@ public class AutoAdjusting {
 		this.activeLocation = activeLocation;
 
 		// TODO: Calibrate turn and Pitch Values
-		this.PidfYaw    = new PIDFController(0.35, 0.00000, 0.395, 0);
-		this.PidfPitch  = new PIDFController(0,0,0,0);
+		this.PidfYaw    = new PidfController(0.35, 0.00000, 0.395, 0);
+		this.PidfPitch  = new PidfController(0,0,0,0);
 
 		this.side = side;
 		activeGoal = GoalPosition.generate(side, initialGoal);

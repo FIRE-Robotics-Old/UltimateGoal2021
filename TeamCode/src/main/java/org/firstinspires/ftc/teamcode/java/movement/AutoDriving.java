@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.java.movement;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
-import org.firstinspires.ftc.teamcode.java.util.PIDFController;
+import org.firstinspires.ftc.teamcode.java.util.PidfController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 import java.util.Locale;
@@ -15,9 +15,9 @@ import java.util.Locale;
 //TODO: Create a tuning class
 public class AutoDriving {
 
-	private final PIDFController PIDFDrive;
-	private final PIDFController PIDStrafe;
-	private final PIDFController PIDFTurn;
+	private final PidfController PIDFDrive;
+	private final PidfController PIDStrafe;
+	private final PidfController PIDFTurn;
 	private final ActiveLocation activeLocation;
 	private final DcMotorEx frontRightMotor;
 	private final DcMotorEx frontLeftMotor;
@@ -34,7 +34,7 @@ public class AutoDriving {
 	private double defaultErrorAngle = 5;
 	RobotHardware robot;
 
-    public AutoDriving(PIDFController PIDFDrive, PIDFController PIDFStrafe, PIDFController PIDFTurn, RobotHardware robot) {
+    public AutoDriving(PidfController PIDFDrive, PidfController PIDFStrafe, PidfController PIDFTurn, RobotHardware robot) {
         this.PIDFDrive = PIDFDrive;
         this.PIDStrafe = PIDFStrafe;
         this.PIDFTurn = PIDFTurn;

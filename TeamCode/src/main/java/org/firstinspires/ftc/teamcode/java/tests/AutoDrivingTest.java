@@ -6,9 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
-import org.firstinspires.ftc.teamcode.java.movement.PathFinder;
 import org.firstinspires.ftc.teamcode.java.util.*;
 
 
@@ -32,9 +30,9 @@ public class AutoDrivingTest extends LinearOpMode {
 //    private PathFinder PF;
 //    private Thread pathThread;
     private AutoDriving autoDriving;
-    private PIDFController PIDFDrive;
-    private PIDFController PIDFStrafe;
-    private PIDFController PIDFTurn;
+    private PidfController PIDFDrive;
+    private PidfController PIDFStrafe;
+    private PidfController PIDFTurn;
 
     private boolean location;
 
