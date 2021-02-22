@@ -52,35 +52,38 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	 * This is the minimum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MINIMUM = new Scalar(50, 44.5, 30); //TODO: Fine Tune
-	//Scalar YELLOW_MINIMUM = new Scalar(120, 170, 50); //TODO: Fine Tune
-	Scalar YELLOW_MINIMUM = new Scalar(140, 170, 50);
+	//Scalar YELLOW_MINIMUM = new Scalar(140, 130, 83); //TODO: Fine Tune
+	//Scalar YELLOW_MINIMUM = new Scalar(130, 160, 30);
     //rgb(156, 89, 60)
+	Scalar YELLOW_MINIMUM = new Scalar(140, 130, 85);
+	//Guess: 200,150,95
 	/**
 	 * This is the maximum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MAXIMUM = new Scalar(230, 172, 157.5); //TODO: Fine Tune
-	//Scalar YELLOW_MAXIMUM = new Scalar(140, 190, 70); //TODO: Fine Tune
-	Scalar YELLOW_MAXIMUM = new Scalar(220, 200, 100);
+	//Scalar YELLOW_MAXIMUM = new Scalar(160, 150, 103); //TODO: Fine Tune
+	Scalar YELLOW_MAXIMUM = new Scalar(180, 150, 104);
+	//Scalar YELLOW_MAXIMUM = new Scalar(220, 200, 100);
 
-	final static int inc = 10;
+	final static int inc = 2;
 
 	public void updateMin() {
 		double[] thing = YELLOW_MINIMUM.val;
 		double[] newMax = YELLOW_MAXIMUM.val;
 
-		if (thing[0] < 255) {
-			thing[0]+=5;
-			newMax[0]+=5;
-		} else if (thing[1] < 200) {
-			thing[1]+=inc;
-			newMax[1]+=inc;
-			thing[0] = 120;
-			newMax[0] = 140;
-		} else if (newMax[2] < 120) {
-			thing[2]+=inc;
-			newMax[2]+=inc;
-			thing[1] = 170;
-			newMax[1] = 190;
+		if (thing[0] < 180) {
+			thing[0]+=inc;
+			newMax[0]+=inc;
+		} else if (thing[1] < 180) {
+			thing[1]+=5;
+			newMax[1]+=5;
+			thing[0] = 140;
+			newMax[0] = 160;
+		} else if (newMax[2] < 115) {
+			thing[2]+=1;
+			newMax[2]+=1;
+			thing[1] = 130;
+			newMax[1] = 150;
 		}
 
 		YELLOW_MINIMUM = new Scalar(thing);
@@ -212,7 +215,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		//                                              There is only     There is a full
 		//                                                one ring         stack of ring
 
-//		updateMin();
+		updateMin();
 //		try {
 //			Thread.sleep(50);
 //		} catch (InterruptedException e) {
