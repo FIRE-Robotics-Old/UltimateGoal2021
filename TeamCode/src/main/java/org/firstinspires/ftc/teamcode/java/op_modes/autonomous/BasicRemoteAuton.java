@@ -87,12 +87,22 @@ public class BasicRemoteAuton extends LinearOpMode {
             double currentTime = 0;
             //wobbleGrip.setPosition(Constants.lowerWobbleDown);
             AL.setStartPosition(0, 0,0);
-            //moveY(1430); A Y
-            //moveY(1880); //parking pot
+            moveY(1430); //A Y
+            turn(0);
+            sleep(4000);
+            moveY(0);
+            turn(0);
+            moveY(1450);
+            sleep(2000);
+            moveY(1880); //parking pot
             //moveY(2000);//B Y
-            moveY(2600); //C Y
+            //moveY(2600); //zC Y
+            //sleep(3000);
+            //moveY(3075);//edge of field
+            sleep(2000);
             turn(0);
             sleep(100);
+            moveY(1880);
             //moveX(0);
             sleep(100);
             //turn(0);

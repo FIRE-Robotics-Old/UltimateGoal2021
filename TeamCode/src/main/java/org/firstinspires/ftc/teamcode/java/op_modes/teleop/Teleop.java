@@ -29,7 +29,7 @@ public class Teleop extends LinearOpMode {
 
     // TODO change the max speed to 1
 
-    private double maxSpeed = 0.3;
+    private double maxSpeed = 0.7;
 
 
     private double drive = 0;
@@ -111,11 +111,11 @@ public class Teleop extends LinearOpMode {
                 if (gamepad1.a && !slowMode && !slowModePressed) {
                     slowModePressed = true;
                     slowMode = true;
-                    maxSpeed = 0.15;
+                    maxSpeed = 0.5;
                 } else if (gamepad1.a && slowMode && !slowModePressed) {
                     slowModePressed = true;
                     slowMode = false;
-                    maxSpeed = 0.3;
+                    maxSpeed = 0.7;
                 } else if (!gamepad1.a) {
                     slowModePressed = false;
                 }
