@@ -80,7 +80,7 @@ public class ActiveLocationTest extends LinearOpMode {
                 telemetry.addData("Angle", Math.toDegrees(imu.getAngularOrientation().firstAngle));
                 telemetry.addData("Pain", activeLocation.getAngleInDegrees());
                 telemetry.addData("Path: ", pathFinder.getEncoderPath());
-                telemetry.addData("Raw SPain", pathFinder.getEncoderPath().getRawAngleInDegrees());
+                telemetry.addData("Raw SPain", pathFinder.getEncoderPath().getAngleInDegrees());
 
                 //telemetry.addData("Error",autoDriving.errorReport(MovementData.withDegrees(600,600,90)));
                 telemetry.update();

@@ -82,7 +82,7 @@ public class AutoDrivingOld {
     }
 
     public double[] calculateDrivePowers(double maxV, MovementData errors) {
-        return calculateDrivePowers(maxV, errors.getX(), errors.getY(), errors.getRawAngleInRadians());
+        return calculateDrivePowers(maxV, errors.getX(), errors.getY(), errors.getAngleInRadians());
     }
 
     public double[] calculateDrivePowers(double maxV, double xError, double yError, double angleError) {
@@ -190,7 +190,7 @@ public class AutoDrivingOld {
                 "X: %.2f Y: %.2f A: %.2f",
                 Math.abs(goal.getX() - activeLocation.getFieldX()),
                 Math.abs(goal.getY() - activeLocation.getFieldY()),
-                -pathFinder.getEncoderPath().getRawAngleInDegrees()
+                -pathFinder.getEncoderPath().getAngleInDegrees()
         );
         // return "X: "+Math.abs(goal.getX() - AL.getFieldX())+" Y: "+Math.abs(goal.getY() - AL.getFieldY())+" A: "+Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees());
         // return "A: Math.abs("+goal.getAngleInDegrees()+"-"+AL.getAngleInDegrees()+") = "+(Math.abs(goal.getAngleInDegrees() - AL.getAngleInDegrees()));

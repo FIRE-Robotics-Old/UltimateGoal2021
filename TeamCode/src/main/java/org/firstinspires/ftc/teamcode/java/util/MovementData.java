@@ -4,32 +4,24 @@ import java.util.Locale;
 
 public final class MovementData {
     private final Vector2d translationalMovement;
-    private final double angle;
+    private final Angle angle;
 
-    /**
-     * @param x the x coordinate
-     * @param y the y coordinate
-     * @param angle the angle
-     * @deprecated
-     */
-    public MovementData(double x, double y, double angle) {
-        this.translationalMovement = new Vector2d(x, y);
+    public MovementData(Vector2d translationalMovement, Angle angle) {
+        this.translationalMovement = translationalMovement;
         this.angle = angle;
     }
 
-    /**
-     * @param translationalMovement the coordinate to move to
-     * @param angle the angle
-     * @deprecated
-     */
-    public MovementData(Vector2d translationalMovement, double angle) {
-        this.translationalMovement = translationalMovement;
-        this.angle = angle;
+    public MovementData(double x, double y, Angle angle) {
+        this(new Vector2d(x, y), angle);
     }
 
     private MovementData(Vector2d translationalMovement, double angle, boolean inDegrees) {
-        this.translationalMovement = translationalMovement;
-        this.angle = -(inDegrees ? Math.toRadians(angle) : angle);
+        this(
+            translationalMovement,
+            inDegrees
+                ? Angle.fromDegrees(angle)
+                : Angle.fromRadians(angle)
+        );
     }
 
     private MovementData(double x, double y, double angle, boolean inDegrees) {
@@ -52,21 +44,16 @@ public final class MovementData {
         return new MovementData(translation, angle, false);
     }
 
-    //TODO fix naming
     public double getAngleInRadians() {
-        return ((angle + (2 * Math.PI)) % (2 * Math.PI));
+        return angle.getAngleInRadians();
     }
 
     public double getAngleInDegrees() {
-        return ((Math.toDegrees(angle) + 360) % 360);
+        return angle.getAngleInDegrees();
     }
 
-    public double getRawAngleInRadians() {
-        return (angle);
-    }
-
-    public double getRawAngleInDegrees() {
-        return (Math.toDegrees(angle));
+    public Angle getAngle() {
+        return angle;
     }
 
     public double getX() {

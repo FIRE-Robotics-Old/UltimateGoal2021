@@ -2,9 +2,10 @@ package org.firstinspires.ftc.teamcode.java.util;
 
 import java.util.Locale;
 
-public class Angle {
-	private static final double TAU = 2 * Math.PI;
+import static org.firstinspires.ftc.teamcode.java.util.Constants.PI;
+import static org.firstinspires.ftc.teamcode.java.util.Constants.TAU;
 
+public class Angle {
 	private final double angle;
 
 	private Angle(double angle) {
@@ -15,12 +16,12 @@ public class Angle {
 		return new Angle((reflectDirection ? -1 : 1) * Math.toRadians(angle % 360));
 	}
 
-	public static Angle fromDegree(double angle) {
+	public static Angle fromDegrees(double angle) {
 		return fromDegrees(angle, true);
 	}
 
 	public static Angle fromRadians(double angle, boolean reflectDirection) {
-		return new Angle((reflectDirection ? -1 : 1) * (angle % 360));
+		return new Angle((reflectDirection ? -1 : 1) * (angle % (TAU)));
 	}
 
 	public static Angle fromRadians(double angle) {
@@ -36,9 +37,9 @@ public class Angle {
 	}
 
 	public double getTrimmedAngleInRadians() {
-		if (angle > Math.PI) {
+		if (angle > PI) {
 			return angle - TAU;
-		} else if (angle <= - Math.PI) {
+		} else if (angle <= PI) {
 			return angle + TAU;
 		} else return angle;
 	}

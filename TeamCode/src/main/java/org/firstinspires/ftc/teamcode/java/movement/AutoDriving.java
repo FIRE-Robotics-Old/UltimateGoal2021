@@ -122,7 +122,7 @@ public class AutoDriving {
 	}
 
     public double[] calculateDrivePowers(double maxVelocity, MovementData errors) {
-        return calculateDrivePowers(maxVelocity, errors.getX(), errors.getY(), errors.getRawAngleInRadians());
+        return calculateDrivePowers(maxVelocity, errors.getX(), errors.getY(), errors.getAngleInRadians());
     }
 
     public double[] calculateDrivePowers(double maxVelocity, double xError, double yError, double angleError) {
@@ -301,7 +301,7 @@ public class AutoDriving {
                 "X: %.2f Y: %.2f A: %.2f",
                 Math.abs(goal.getX() - activeLocation.getFieldX()),
                 Math.abs(goal.getY() - activeLocation.getFieldY()),
-                - pathFinder.getEncoderPath().getRawAngleInDegrees()
+                - pathFinder.getEncoderPath().getAngleInDegrees()
         );
 
     }
