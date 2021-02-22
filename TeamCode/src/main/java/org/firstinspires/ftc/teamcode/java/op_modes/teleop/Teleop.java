@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.java.op_modes.teleop;
 
-import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
-//import org.firstinspires.ftc.teamcode.java.util.AutoAdjusting;
+//import org.firstinspires.ftc.teamcode.java.movement.AutoAdjusting;
+import org.firstinspires.ftc.teamcode.java.movement.AutoAdjusting;
 import org.firstinspires.ftc.teamcode.java.util.*;
 
 @TeleOp(name = "Final TeleOp", group = "TeleOp")

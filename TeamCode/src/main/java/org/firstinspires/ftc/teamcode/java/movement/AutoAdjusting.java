@@ -1,9 +1,13 @@
-package org.firstinspires.ftc.teamcode.java.util;
+package org.firstinspires.ftc.teamcode.java.movement;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
-import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
+import org.firstinspires.ftc.teamcode.java.util.Goal;
+import org.firstinspires.ftc.teamcode.java.util.GoalPosition;
+import org.firstinspires.ftc.teamcode.java.util.PidfController;
+import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
+import org.firstinspires.ftc.teamcode.java.util.Side;
 
 import static org.firstinspires.ftc.teamcode.java.util.MathUtil.squared;
 
