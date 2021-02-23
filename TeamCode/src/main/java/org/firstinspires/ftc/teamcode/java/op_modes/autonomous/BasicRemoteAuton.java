@@ -38,6 +38,8 @@ public class BasicRemoteAuton extends LinearOpMode {
     private int red = 0;
     private double open = .9;
     private double close = .5;
+    private int yDirect = 1;
+    private int xDirect = 1;
     private double angleGoal;
     private double yGoal;
 
@@ -87,6 +89,45 @@ public class BasicRemoteAuton extends LinearOpMode {
             double currentTime = 0;
             //wobbleGrip.setPosition(Constants.lowerWobbleDown);
             AL.setStartPosition(0, 0,0);
+            //Path A:
+            /*
+            moveY(1430);
+            sleep(100);
+            turn(0);
+            sleep(4000); //Deposit and collect second wobble time (account for)
+            moveY(700);
+            turn(0);
+            sleep(1000);
+            moveY(Constants.NavLineY);
+
+             */
+            //Path B:
+	        wobbleGrip.setPosition(Constants.lowerWobbleDown);
+	        sleep(100);
+            moveY(2000);
+            wobbleGrip.setPosition(Constants.lowerWobbleUp);
+            sleep(500);
+            moveY(1790);
+            turn(180);
+            yDirect = -1;
+            sleep(1000);
+            moveY(490);
+            sleep(1000);
+            turn(359);
+            //moveX(100);
+	        yDirect = 1;
+            sleep(100);
+            moveY(2000);
+            sleep(0);
+            moveY(Constants.navLineY);
+
+            /*
+
+
+
+
+
+
             moveY(1430); //A Y
             turn(0);
             sleep(4000);
@@ -95,16 +136,18 @@ public class BasicRemoteAuton extends LinearOpMode {
             moveY(1450);
             sleep(2000);
             moveY(1880); //parking pot
+
+             */
             //moveY(2000);//B Y
             //moveY(2600); //zC Y
             //sleep(3000);
             //moveY(3075);//edge of field
-            sleep(2000);
-            turn(0);
-            sleep(100);
-            moveY(1880);
-            //moveX(0);
-            sleep(100);
+//            sleep(2000);
+//            turn(0);
+//            sleep(100);
+//            moveY(1880);
+//            //moveX(0);
+//            sleep(100);
             //turn(0);
 //            switch (position) {
 //                case A:
@@ -121,7 +164,7 @@ public class BasicRemoteAuton extends LinearOpMode {
 //            }
             //wobbleGrip.setPosition(Constants.lowerWobbleUp);
             //turn(0);
-            sleep(3000);
+            //sleep(3000);
             //moveY(1980);
             //turn(0);
 //            telemetry.addData("FL:", AL.getAngleInDegrees());
@@ -219,9 +262,9 @@ public class BasicRemoteAuton extends LinearOpMode {
         int direct;
         while (Math.abs(AL.getFieldY()-y)>20){
             if (AL.getFieldY()>y){
-                direct =-1;
+                direct =-1*yDirect;
             } else{
-                direct = 1;
+                direct = 1*yDirect;
             }
             synchronized (this) {
                 frontLeftMotor.setPower(0.3 * direct);
@@ -237,18 +280,18 @@ public class BasicRemoteAuton extends LinearOpMode {
     }
     public void moveX(double x){
         int direct =1;
-        while (Math.abs(AL.getFieldX()-x)>10){
-            double xToMove = AL.getFieldX()-x;
-            if (xToMove > 0){
-                direct = 1;
-            } else {
-                direct = -1;
-            }
-            //            if (AL.getFieldX()>x){
-//                direct =1;
-//            } else{
+        while (Math.abs(AL.getFieldX()-x)>50){
+            //double xToMove = AL.getFieldX()-x;
+//            if (xToMove > 0){
+//                direct = 1;
+//            } else {
 //                direct = -1;
 //            }
+            if (AL.getFieldX()>x){
+                direct =-1*xDirect;
+            } else{
+                direct = 1*xDirect;
+            }
 
             synchronized (this) {
                 frontLeftMotor.setPower(-0.3 * direct);
@@ -263,6 +306,9 @@ public class BasicRemoteAuton extends LinearOpMode {
         off();
     }
     public void turn(double angle){
+    	if (Math.abs(AL.getAngleInDegrees()-angle) <1){
+    		return;
+	    }
         double maxTime = runtime.milliseconds()+2000;
         int direct = 1;
 //        if (aToMove > Math.PI) {
@@ -270,12 +316,12 @@ public class BasicRemoteAuton extends LinearOpMode {
 //        } else if (aToMove < -Math.PI) {
 //            aToMove = -(TAU - Math.abs(aToMove));
 //        }
-        while (Math.abs(AL.getAngleInDegrees()-angle) >5 && runtime.milliseconds()<maxTime){
+        while ((AL.getAngleInDegrees()!= angle) && runtime.milliseconds()<maxTime){
             double aToMove = Math.abs(AL.getAngleInDegrees()-angle);
             if (aToMove > 180){
-                direct = -1;
-            } else {
                 direct = 1;
+            } else {
+                direct = -1;
             }
             frontRightMotor.setPower(-0.3*direct);
             frontLeftMotor.setPower(0.3*direct);
