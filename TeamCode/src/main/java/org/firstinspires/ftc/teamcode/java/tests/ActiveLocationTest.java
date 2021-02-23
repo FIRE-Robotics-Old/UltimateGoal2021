@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.movement.PathFinder;
-import org.firstinspires.ftc.teamcode.java.util.PIDFController;
+import org.firstinspires.ftc.teamcode.java.util.PidfController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 //To fix error perhaps flip the switch
@@ -33,7 +33,7 @@ public class ActiveLocationTest extends LinearOpMode {
     private PathFinder pathFinder;
     private Thread pathThread;
     private AutoDriving autoDriving;
-    private PIDFController PIDF;
+    private PidfController PIDF;
 
     //private ElapsedTime runtime = new ElapsedTime();
     @Override
@@ -80,7 +80,7 @@ public class ActiveLocationTest extends LinearOpMode {
                 telemetry.addData("Angle", Math.toDegrees(imu.getAngularOrientation().firstAngle));
                 telemetry.addData("Pain", activeLocation.getAngleInDegrees());
                 telemetry.addData("Path: ", pathFinder.getEncoderPath());
-                telemetry.addData("Raw SPain", pathFinder.getEncoderPath().getRawAngleInDegrees());
+                telemetry.addData("Raw SPain", pathFinder.getEncoderPath().getAngleInDegrees());
 
                 //telemetry.addData("Error",autoDriving.errorReport(MovementData.withDegrees(600,600,90)));
                 telemetry.update();

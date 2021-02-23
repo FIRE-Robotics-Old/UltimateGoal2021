@@ -38,8 +38,8 @@ public class CameraVisionTest extends LinearOpMode {
 	    waitForStart();
 
 	    while (opModeIsActive()) {
-
-
+            telemetry.addData("Height Position", pipeline.getHeight());
+            telemetry.update();
 	    }
 
 	    camera.stopStreaming();

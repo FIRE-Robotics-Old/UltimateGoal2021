@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.java.movement;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
-import org.firstinspires.ftc.teamcode.java.util.PIDFController;
+import org.firstinspires.ftc.teamcode.java.util.PidfController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 import java.util.Locale;
@@ -15,9 +15,9 @@ import java.util.Locale;
 //TODO: Create a tuning class
 public class AutoDriving {
 
-	private final PIDFController PIDFDrive;
-	private final PIDFController PIDStrafe;
-	private final PIDFController PIDFTurn;
+	private final PidfController PIDFDrive;
+	private final PidfController PIDStrafe;
+	private final PidfController PIDFTurn;
 	private final ActiveLocation activeLocation;
 	private final DcMotorEx frontRightMotor;
 	private final DcMotorEx frontLeftMotor;
@@ -34,7 +34,7 @@ public class AutoDriving {
 	private double defaultErrorAngle = 5;
 	RobotHardware robot;
 
-    public AutoDriving(PIDFController PIDFDrive, PIDFController PIDFStrafe, PIDFController PIDFTurn, RobotHardware robot) {
+    public AutoDriving(PidfController PIDFDrive, PidfController PIDFStrafe, PidfController PIDFTurn, RobotHardware robot) {
         this.PIDFDrive = PIDFDrive;
         this.PIDStrafe = PIDFStrafe;
         this.PIDFTurn = PIDFTurn;
@@ -122,7 +122,7 @@ public class AutoDriving {
 	}
 
     public double[] calculateDrivePowers(double maxVelocity, MovementData errors) {
-        return calculateDrivePowers(maxVelocity, errors.getX(), errors.getY(), errors.getRawAngleInRadians());
+        return calculateDrivePowers(maxVelocity, errors.getX(), errors.getY(), errors.getAngleInRadians());
     }
 
     public double[] calculateDrivePowers(double maxVelocity, double xError, double yError, double angleError) {
@@ -301,7 +301,7 @@ public class AutoDriving {
                 "X: %.2f Y: %.2f A: %.2f",
                 Math.abs(goal.getX() - activeLocation.getFieldX()),
                 Math.abs(goal.getY() - activeLocation.getFieldY()),
-                - pathFinder.getEncoderPath().getRawAngleInDegrees()
+                - pathFinder.getEncoderPath().getAngleInDegrees()
         );
 
     }

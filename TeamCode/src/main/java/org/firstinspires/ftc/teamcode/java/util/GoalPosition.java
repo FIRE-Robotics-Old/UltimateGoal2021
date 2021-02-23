@@ -63,17 +63,3 @@ public final class GoalPosition {
 		}
 	}
 }
-
-enum Side {
-	BLUE,
-	RED,
-}
-
-enum Goal {
-	POWER_SHOT_1,
-	POWER_SHOT_2,
-	POWER_SHOT_3,
-	HIGH_GOAL,
-	MIDDLE_GOAL,
-	LOWER_GOAL,
-}

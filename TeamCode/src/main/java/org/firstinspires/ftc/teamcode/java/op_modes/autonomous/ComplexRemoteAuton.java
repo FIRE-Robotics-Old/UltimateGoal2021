@@ -30,9 +30,9 @@ public class ComplexRemoteAuton extends LinearOpMode {
 	private DcMotor intakeAndDelivery;
 	private BNO055IMU imu;
 	private AutoDriving autoDriving;
-	private PIDFController PIDFDrive;
-	private PIDFController PIDFStrafe;
-	private PIDFController PIDFTurn;
+	private PidfController PIDFDrive;
+	private PidfController PIDFStrafe;
+	private PidfController PIDFTurn;
 	public RevColorSensorV3 colorSensor;
 	private Servo lowerWobble;
 	int movement = 0;
