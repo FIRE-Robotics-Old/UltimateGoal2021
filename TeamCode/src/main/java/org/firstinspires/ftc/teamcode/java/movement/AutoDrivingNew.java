@@ -80,6 +80,14 @@ public class AutoDrivingNew {
 	}
 
 	/**
+	 * Set the start location for the Robot
+	 * @param startLocation the new start location
+	 */
+	public void setStartLocation(MovementData startLocation) {
+		activeLocation.setStartPosition(startLocation);
+	}
+
+	/**
 	 * Update the Default Maximum Velocity to a new user set value
 	 * @param defaultMaxVelocity the new default maximum velocity
 	 */
@@ -309,5 +317,46 @@ public class AutoDrivingNew {
 	 */
 	public boolean stopAt(MovementData goal) {
 		return stopAt(goal, defaultMaxVelocity);
+	}
+
+	/**
+	 * Rotates the robot to a new {@link Angle}, maintaining the other field positions
+	 * @param angle the goal angle to reach
+	 * @param maxVelocity the maximum velocity to reach
+	 * @param xErrorRange the permitted error range for the horizontal axis
+	 * @param yErrorRange the permitted error range for the vertical axis
+	 * @param angleErrorRange the permitted error range for the angle
+	 * @return whether or not the robot needed to move
+	 */
+	public boolean rotateTo(Angle angle, double maxVelocity, double xErrorRange, double yErrorRange,
+	                        Angle angleErrorRange) {
+		return stopAt(
+				new MovementData(activeLocation.getFieldX(), activeLocation.getFieldY(), angle),
+				maxVelocity,
+				xErrorRange,
+				yErrorRange,
+				angleErrorRange
+		);
+	}
+
+	/**
+	 * Rotates the robot to a new {@link Angle}, maintaining the other field positions
+	 * @param angle the goal angle to reach
+	 * @param maxVelocity the maximum velocity to reach
+	 * @param angleErrorRange the permitted error range for the angle
+	 * @return whether or not the robot needed to move
+	 */
+	public boolean rotateTo(Angle angle, double maxVelocity, Angle angleErrorRange) {
+		return rotateTo(angle, maxVelocity, defaultErrorX, defaultErrorY, angleErrorRange);
+	}
+
+	/**
+	 * Rotates the robot to a new {@link Angle}, maintaining the other field positions
+	 * @param angle the goal angle to reach
+	 * @param maxVelocity the maximum velocity to reach
+	 * @return whether or not the robot needed to move
+	 */
+	public boolean rotateTo(Angle angle, double maxVelocity) {
+		return rotateTo(angle, maxVelocity, defaultErrorX, defaultErrorY, defaultErrorAngle);
 	}
 }
