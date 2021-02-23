@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.java.drivebase;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.java.util.MovementData;
 import org.firstinspires.ftc.teamcode.java.util.Vector2d;
 
 public class MecanumDrive extends Drivetrain {
@@ -60,6 +61,15 @@ public class MecanumDrive extends Drivetrain {
 				driveSpeed - strafeSpeed + turnSpeed,
 				driveSpeed + strafeSpeed - turnSpeed
 		);
+	}
+
+	public static double[] calculateDrivePowers(double driveSpeed, double strafeSpeed, double turnSpeed) {
+		return new double[] {
+				driveSpeed + strafeSpeed + turnSpeed,
+				driveSpeed - strafeSpeed - turnSpeed,
+				driveSpeed - strafeSpeed + turnSpeed,
+				driveSpeed + strafeSpeed - turnSpeed
+		};
 	}
 
 	public void drive(double driveSpeed, double strafeSpeed, double turnSpeed, boolean quadraticGrowth) {
