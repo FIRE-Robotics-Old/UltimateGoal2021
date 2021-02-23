@@ -43,6 +43,11 @@ public final class Constants {
 	public static final double navLineY = 1880;
 	public static final Coordinate cornerAB = new Coordinate(1828.8,2438.4);
 	public static final Coordinate cornerBC = new Coordinate(1828.8,3048);
+	public static final double ALowerBorder = 1430;
+	public static final double BLowerBorder = 2000;
+	public static final double CLowerBorder = 2600;
+	public static final double wobbleY = 490;
+
 
 		//Hardware constants
 	public static final double lowerWobbleDown = 0;
