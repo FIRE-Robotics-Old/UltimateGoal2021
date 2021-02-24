@@ -183,7 +183,8 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		Mat hierarchy = new Mat();
 
 		// Update Mask Mat to only use a portion of the Mat
-		mask = new Mat(mask, new Rect(new Point(0, 0), new Point(240, 320)));
+		Rect subsection = new Rect(new Point(0, 0), new Point(240, 320));
+		mask = new Mat(mask, subsection);
 
 		Imgproc.findContours(
 				mask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE
