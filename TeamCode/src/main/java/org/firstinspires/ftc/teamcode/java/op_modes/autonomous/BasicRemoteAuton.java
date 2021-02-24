@@ -26,8 +26,9 @@ public class BasicRemoteAuton extends LinearOpMode {
     private DcMotor frontLeftMotor;
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
+    private DcMotor elevator;
     private Servo wobbleGrip;
-    private Servo wobble2;
+    private Servo ringArm;
     private BNO055IMU imu;
     private ActiveLocation AL;
     private Thread locationThread;
@@ -57,7 +58,14 @@ public class BasicRemoteAuton extends LinearOpMode {
         backRightMotor = robot.backRightMotor;
         backLeftMotor = robot.backLeftMotor;
 
+        elevator = hardwareMap.get(DcMotor.class, "Elevator");
+	    elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+	    elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
         wobbleGrip = hardwareMap.get(Servo.class, "wobbleGrip");
+        ringArm = hardwareMap.get(Servo.class, "ringArm");
 
 //        colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
 //        if (colorSensor instanceof SwitchableLight) {
@@ -88,30 +96,34 @@ public class BasicRemoteAuton extends LinearOpMode {
             //wobbleGrip.setPosition(Constants.lowerWobbleDown);
             AL.setStartPosition(0, 0,0);
             //Path A:
-	        /*
+
             wobbleGrip.setPosition(Constants.lowerWobbleDown);
             sleep(1000);
             moveY(Constants.ALowerBorder);
             sleep(100);
+	        moveX(-400);
             wobbleGrip.setPosition(Constants.lowerWobbleUp);
             moveY(Constants.ALowerBorder-200);
-            turnTo(0);
+            //turnTo(0);
             sleep(100);
-            turn(180);
+	        moveX(655);
+            turnTo(180);
             yDirect = -1;
-            sleep(100); //Deposit and collect second wobble time (account for)
-            moveY(Constants.wobbleY);
-            wobbleGrip.setPosition(Constants.lowerWobbleDown);
-            turn(180);
-            yDirect = 1;
+            xDirect = -1;
             sleep(100);
-            moveY(Constants.ALowerBorder);
-            wobbleGrip.setPosition(Constants.lowerWobbleUp);
-            sleep(100);;
-            moveY(Constants.NavLineY);
-             */
-            //Path B:
 
+            moveY(Constants.wobbleY+42);
+            sleep(1000);
+            wobbleGrip.setPosition(Constants.lowerWobbleDown);
+//            sleep(100);
+//            moveX(-10);
+//            moveY(Constants.ALowerBorder);
+//            wobbleGrip.setPosition(Constants.lowerWobbleUp);
+//            sleep(100);;
+//            moveY(Constants.navLineY);
+
+            //Path B:
+/*
 	        wobbleGrip.setPosition(Constants.lowerWobbleDown);
 	        sleep(100);
             moveY(2000);
@@ -130,19 +142,14 @@ public class BasicRemoteAuton extends LinearOpMode {
             wobbleGrip.setPosition(Constants.lowerWobbleDown);
             sleep(500);
             moveX(675);
-            //turnTo(180);
-            //turn(180); //Pull backwards?
-            //moveX(100);
-	        //yDirect = 1;
-
             sleep(100);
             moveY(Constants.BLowerBorder+350);
             wobbleGrip.setPosition(Constants.lowerWobbleUp);
 //            sleep(100);
 //            moveY(Constants.navLineY);
-
+*/
             //Path C
-	        /*
+/*
 	        wobbleGrip.setPosition(Constants.lowerWobbleDown);
 	        sleep(1000);
 	        double startMove = runtime.milliseconds();
@@ -152,20 +159,31 @@ public class BasicRemoteAuton extends LinearOpMode {
 	        sleep(500);
 	        moveY(Constants.CLowerBorder-200);
 	        sleep(100);
-	        turnTo(0);
-	        if (runtime.milliseconds()+(2*moveTime)<25){
-		        sleep(100);
-		        turn(180);
-		        yDirect = -1;
-		        moveY(Constants.wobbleY);
-				wobbleGrip.setPosition(Constants.lowerWobbleDown);
-				sleep(100);
-				moveY(Constants.CLowerBorder);
-				wobbleGrip.setPosition(Constants.lowerWobbleUp);
-				sleep(100);
-	        }
+	        moveX(300);
+	        turnTo(180);
+	        moveY(Constants.backFieldY);
+	        elevator.setTargetPosition(200);
+	        ringArm.setPosition(.5);
+	        sleep(500);
+	        ringArm.setPosition(0);
+	        moveY(Constants.backFieldY-100);
+	        elevator.setTargetPosition(0);
 	        moveY(Constants.navLineY);
-	        */
+/*
+
+//	        if (runtime.milliseconds()+(2*moveTime)<25){
+//		        sleep(100);
+//		        turn(180);
+//		        yDirect = -1;
+//		        moveY(Constants.wobbleY);
+//				wobbleGrip.setPosition(Constants.lowerWobbleDown);
+//				sleep(100);
+//				moveY(Constants.CLowerBorder);
+//				wobbleGrip.setPosition(Constants.lowerWobbleUp);
+//				sleep(100);
+//	        }
+	        moveY(Constants.navLineY);
+
 
 
 

@@ -57,7 +57,7 @@ public class RobotHardware {
         imu.initialize(parameters);
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
-        potentiometer = hardwareMap.get(AnalogInput.class, "potentiometer");
+        //potentiometer = hardwareMap.get(AnalogInput.class, "potentiometer");
         //wobbleDetector = hardwareMap.get(TouchSensor.class, "wobbleDetector");
         //ringCounter = hardwareMap.get(TouchSensor.class, "ringCounter");
 

@@ -55,35 +55,50 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	//Scalar YELLOW_MINIMUM = new Scalar(140, 130, 83); //TODO: Fine Tune
 	//Scalar YELLOW_MINIMUM = new Scalar(130, 160, 30);
     //rgb(156, 89, 60)
-	Scalar YELLOW_MINIMUM = new Scalar(140, 130, 85);
-	//Guess: 200,150,95
+	//165 150 95
+	int rstart = 15;
+	int gstart = 15;
+	int bstart = 30;
+	Scalar YELLOW_MINIMUM = new Scalar(rstart, gstart, bstart);
+	//145 165 165
+	// 161 155 155
+
+	//165 190 180
+	//180
+
+	//165 150 95
+	//145 165 165
+	// 161 155 155
+
+	//165 190 180
+	//180
 	/**
 	 * This is the maximum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MAXIMUM = new Scalar(230, 172, 157.5); //TODO: Fine Tune
 	//Scalar YELLOW_MAXIMUM = new Scalar(160, 150, 103); //TODO: Fine Tune
-	Scalar YELLOW_MAXIMUM = new Scalar(180, 150, 104);
+	Scalar YELLOW_MAXIMUM = new Scalar(rstart+20, gstart+20, rstart+20);
 	//Scalar YELLOW_MAXIMUM = new Scalar(220, 200, 100);
 
-	final static int inc = 2;
+	final static int inc = 15;
 
 	public void updateMin() {
 		double[] thing = YELLOW_MINIMUM.val;
 		double[] newMax = YELLOW_MAXIMUM.val;
 
-		if (thing[0] < 180) {
+		if (thing[0] < 255) {
 			thing[0]+=inc;
 			newMax[0]+=inc;
-		} else if (thing[1] < 180) {
-			thing[1]+=5;
-			newMax[1]+=5;
-			thing[0] = 140;
-			newMax[0] = 160;
-		} else if (newMax[2] < 115) {
-			thing[2]+=1;
-			newMax[2]+=1;
-			thing[1] = 130;
-			newMax[1] = 150;
+		} else if (thing[1] < 255) {
+			thing[1]+=inc;
+			newMax[1]+=inc;
+			thing[0] = rstart;
+			newMax[0] = rstart+20;
+		} else if (newMax[2] < 255) {
+			thing[2]+=inc/3;
+			newMax[2]+=inc/3;
+			thing[1] = gstart;
+			newMax[1] = gstart+20;
 		}
 
 		YELLOW_MINIMUM = new Scalar(thing);
@@ -121,16 +136,18 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	private volatile Height height = Height.A;
 
 	Mat yCrCb = new Mat();
+	
+
 
 	@Override
 	public void init(Mat mat) {
 		super.init(mat);
-		telemetry.speak("Never gonna give you up\n" +
-				"Never gonna let you down\n" +
-				"Never gonna run around and desert you\n" +
-				"Never gonna make you cry\n" +
-				"Never gonna say goodbye\n" +
-				"Never gonna tell a lie and hurt you");
+//		telemetry.speak("Never gonna give you up\n" +
+//				"Never gonna let you down\n" +
+//				"Never gonna run around and desert you\n" +
+//				"Never gonna make you cry\n" +
+//				"Never gonna say goodbye\n" +
+//				"Never gonna tell a lie and hurt you");
 	}
 
 	/**
@@ -216,6 +233,15 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		//                                                one ring         stack of ring
 
 		updateMin();
+//		telemetry.addData("Min",YELLOW_MINIMUM);
+//		telemetry.addData("max", YELLOW_MAXIMUM);
+//		if (height == Height.C){
+//			//telemetry.speak("Gottem");
+////			telemetry.speak(""+YELLOW_MAXIMUM);
+//			telemetry.addData("Values",YELLOW_MINIMUM);
+//
+//		}
+//		telemetry.update();
 //		try {
 //			Thread.sleep(50);
 //		} catch (InterruptedException e) {

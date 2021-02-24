@@ -39,6 +39,12 @@ public class CameraVisionTest extends LinearOpMode {
 
 	    while (opModeIsActive()) {
             telemetry.addData("Height Position", pipeline.getHeight());
+//            if (pipeline.getHeight()== RingHeightPipeline.Height.C){
+//            	telemetry.speak("Yeee");
+//            	sleep(3000);
+//            	requestOpModeStop();
+
+            //}
             telemetry.update();
 	    }
 

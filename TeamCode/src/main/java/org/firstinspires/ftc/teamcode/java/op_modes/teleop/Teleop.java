@@ -21,6 +21,9 @@ public class Teleop extends LinearOpMode {
     private DcMotor leftShooter;
     private DcMotor rightShooter;
     //public RevColorSensorV3 colorSensor;
+    private DcMotor elevator;
+    private Servo ringArm;
+
     private Servo lowerWobble;
     //private TouchSensor wobbleDetector;
     //private TouchSensor ringCounter;
@@ -58,6 +61,12 @@ public class Teleop extends LinearOpMode {
         frontRightMotor = robot.frontRightMotor;
         backLeftMotor = robot.backLeftMotor;
         backRightMotor = robot.backRightMotor;
+
+        elevator = hardwareMap.get(DcMotor.class, "Elevator");
+        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ringArm = hardwareMap.get(Servo.class, "ringArm");
 
         //colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
        // intakeAndDelivery = robot.intakeAndDelivery;
@@ -182,6 +191,18 @@ public class Teleop extends LinearOpMode {
                 telemetry.update();
                 sleep(1000);
                 */
+                if (gamepad1.dpad_up){
+                    elevator.setPower(0.3);
+                }else if (gamepad1.dpad_down){
+                    elevator.setPower(-0.3);
+                }
+                if (gamepad1.left_bumper){
+                    if (ringArm.getPosition()>.4){
+                        ringArm.setPosition(0);
+                    }else{
+                        ringArm.setPosition(.5);
+                    }
+                }
                 //setting the speed to the motors
                 frontLeftMotor.setPower(speeds[0]);
                 frontRightMotor.setPower(speeds[1]);
