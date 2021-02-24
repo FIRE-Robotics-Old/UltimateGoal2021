@@ -6,6 +6,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -95,8 +96,8 @@ public class RingHeightPipeline extends OpenCvPipeline {
 			thing[0] = rstart;
 			newMax[0] = rstart+20;
 		} else if (newMax[2] < 255) {
-			thing[2]+=inc/3;
-			newMax[2]+=inc/3;
+			thing[2]+= inc / 3;
+			newMax[2]+= inc / 3;
 			thing[1] = gstart;
 			newMax[1] = gstart+20;
 		}
@@ -142,12 +143,12 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	@Override
 	public void init(Mat mat) {
 		super.init(mat);
-//		telemetry.speak("Never gonna give you up\n" +
-//				"Never gonna let you down\n" +
-//				"Never gonna run around and desert you\n" +
-//				"Never gonna make you cry\n" +
-//				"Never gonna say goodbye\n" +
-//				"Never gonna tell a lie and hurt you");
+		telemetry.speak("Never gonna give you up\n" +
+				"Never gonna let you down\n" +
+				"Never gonna run around and desert you\n" +
+				"Never gonna make you cry\n" +
+				"Never gonna say goodbye\n" +
+				"Never gonna tell a lie and hurt you");
 	}
 
 	/**
@@ -180,6 +181,10 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		// Now, after blurring, we can proceed to find the contours in the image
 		List<MatOfPoint> contours = new ArrayList<>();
 		Mat hierarchy = new Mat();
+
+		// Update Mask Mat to only use a portion of the Mat
+		mask = new Mat(mask, new Rect(new Point(0, 0), new Point(240, 320)));
+
 		Imgproc.findContours(
 				mask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE
 		);
