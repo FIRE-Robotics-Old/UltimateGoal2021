@@ -95,7 +95,7 @@ public class PathFinder implements Runnable {
     }
 
     /**
-     * @return a @{link Coordinate} which contains the change values for Robot Encoders
+     * @return a {@link Coordinate} which contains the change values for Robot Encoders
      */
     public MovementData getEncoderPath() {
         updateEncoderPath();
