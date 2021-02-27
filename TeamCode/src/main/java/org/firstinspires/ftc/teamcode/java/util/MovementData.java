@@ -15,6 +15,10 @@ public final class MovementData {
         this(new Vector2d(x, y), angle);
     }
 
+    /**
+     * @deprecated Use Constructor with {@link Angle}, or {@link MovementData(Vector2d, Angle)}
+     */
+    @Deprecated
     private MovementData(Vector2d translationalMovement, double angle, boolean inDegrees) {
         this(
             translationalMovement,
@@ -24,22 +28,42 @@ public final class MovementData {
         );
     }
 
+    /**
+     * @deprecated Use Constructor with {@link Angle}, or {@link MovementData(double, double, Angle)}
+     */
+    @Deprecated
     private MovementData(double x, double y, double angle, boolean inDegrees) {
         this(new Vector2d(x, y), angle, inDegrees);
     }
 
+    /**
+     * @deprecated Use Constructor with {@link Angle}, or {@link MovementData(double, double, Angle)}
+     */
+    @Deprecated
     public static MovementData withDegrees(double x, double y, double angle) {
         return new MovementData(x, y, angle, true);
     }
 
+    /**
+     * @deprecated Use Constructor with {@link Angle}, or {@link MovementData(Vector2d, Angle)}
+     */
+    @Deprecated
     public static MovementData withDegrees(Vector2d translation, double angle) {
         return new MovementData(translation, angle, true);
     }
 
+    /**
+     * @deprecated Use Constructor with {@link Angle}, or {@link MovementData(double, double, Angle)}
+     */
+    @Deprecated
     public static MovementData withRadians(double x, double y, double angle) {
         return new MovementData(x, y, angle, false);
     }
 
+    /**
+     * @deprecated Use Constructor with {@link Angle}, or {@link MovementData(Vector2d, Angle)}
+     */
+    @Deprecated
     public static MovementData withRadians(Vector2d translation, double angle) {
         return new MovementData(translation, angle, false);
     }
