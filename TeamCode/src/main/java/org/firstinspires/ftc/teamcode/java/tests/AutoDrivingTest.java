@@ -60,10 +60,10 @@ public class AutoDrivingTest extends LinearOpMode {
 
          */
         //12096
-        PIDFDrive = PIDFConstants.USDrive;//new PIDFController(0.0011844/*96004999*/, 0.0000000000000, 0.00150719/*423*/, 0); //003,000001,003705
+        PIDFDrive = PidfConstants.USDrive;//new PIDFController(0.0011844/*96004999*/, 0.0000000000000, 0.00150719/*423*/, 0); //003,000001,003705
         //PIDFDrive = new PIDFController(0.00, 0.000000, 0.00, 0);
-        PIDFStrafe = PIDFConstants.USStrafe;//new PIDFController(0.001705, 0.000000000000001, 0.005705, 0);
-        PIDFTurn = PIDFConstants.USTurn; //new PIDFController(0.35, 0.000000000, 0.395, 0); //38
+        PIDFStrafe = PidfConstants.USStrafe;//new PIDFController(0.001705, 0.000000000000001, 0.005705, 0);
+        PIDFTurn = PidfConstants.USTurn; //new PIDFController(0.35, 0.000000000, 0.395, 0); //38
         //PIDFTurn = new PIDFController(0, 0, 0, 0); //38
 
         autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
