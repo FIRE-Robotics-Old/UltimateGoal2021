@@ -6,6 +6,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -80,25 +81,26 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	Scalar YELLOW_MAXIMUM = new Scalar(rstart+20, gstart+20, rstart+20);
 	//Scalar YELLOW_MAXIMUM = new Scalar(220, 200, 100);
 
-	final static int inc = 15;
+	final static int bigIncrement = 15;
+	final static int smallIncrement = bigIncrement / 3;
 
 	public void updateMin() {
 		double[] thing = YELLOW_MINIMUM.val;
 		double[] newMax = YELLOW_MAXIMUM.val;
 
 		if (thing[0] < 255) {
-			thing[0]+=inc;
-			newMax[0]+=inc;
+			thing[0]    += bigIncrement;
+			newMax[0]   += bigIncrement;
 		} else if (thing[1] < 255) {
-			thing[1]+=inc;
-			newMax[1]+=inc;
-			thing[0] = rstart;
-			newMax[0] = rstart+20;
+			thing[1]    += bigIncrement;
+			newMax[1]   += bigIncrement;
+			thing[0]    = rstart;
+			newMax[0]   = rstart + 20;
 		} else if (newMax[2] < 255) {
-			thing[2]+=inc/3;
-			newMax[2]+=inc/3;
-			thing[1] = gstart;
-			newMax[1] = gstart+20;
+			thing[2]    += smallIncrement;
+			newMax[2]   += smallIncrement;
+			thing[1]    = gstart;
+			newMax[1]   = gstart+20;
 		}
 
 		YELLOW_MINIMUM = new Scalar(thing);
@@ -137,17 +139,15 @@ public class RingHeightPipeline extends OpenCvPipeline {
 
 	Mat yCrCb = new Mat();
 	
-
-
 	@Override
 	public void init(Mat mat) {
 		super.init(mat);
-//		telemetry.speak("Never gonna give you up\n" +
-//				"Never gonna let you down\n" +
-//				"Never gonna run around and desert you\n" +
-//				"Never gonna make you cry\n" +
-//				"Never gonna say goodbye\n" +
-//				"Never gonna tell a lie and hurt you");
+		telemetry.speak("Never gonna give you up\n" +
+				"Never gonna let you down\n" +
+				"Never gonna run around and desert you\n" +
+				"Never gonna make you cry\n" +
+				"Never gonna say goodbye\n" +
+				"Never gonna tell a lie and hurt you");
 	}
 
 	/**
@@ -180,8 +180,17 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		// Now, after blurring, we can proceed to find the contours in the image
 		List<MatOfPoint> contours = new ArrayList<>();
 		Mat hierarchy = new Mat();
+
+		// Only Study the Portion of the Mat within the rectangle (x and y might be swapped
+		// TODO: Change the rectangle value to the value that we want to use (FOR TESTING PURPOSES ONLY)
+		Rect studyRectangle = new Rect(new Point(0, 0), new Point(240, 320));
+		Mat toStudy = new Mat(mask, studyRectangle);
+
+		// Draw a box around the rectangle we are studying in GREEN
+		Imgproc.rectangle(mask, studyRectangle, new Scalar(0, 255, 0), 5);
+
 		Imgproc.findContours(
-				mask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE
+				toStudy, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE
 		);
 
 		// Since there might be multiple rectangles within the camera scan, we find the
@@ -208,9 +217,12 @@ public class RingHeightPipeline extends OpenCvPipeline {
 			copy.release();
 		}
 
-		// NOTE: the reason that a DIVIDER exists is because YCrCb is unreliable when differentiating
-		// between RED and ORANGE. Thus, the DIVIDER prevents the Pipeline from detecting the RED
-		// Goal as a ring.
+		// Draw a rectangle around the largest yellow/orange area (the detected rings) in BLUE
+		Imgproc.rectangle(mask, maximumRectangle, new Scalar(0, 0, 255), 5);
+
+		// NOTE: the reason that a DIVIDER exists is because YCrCb is unreliable when
+		// differentiating between RED and ORANGE. Thus, the DIVIDER prevents the Pipeline from
+		// detecting the RED Goal as a ring.
 
 		// Now that we have a working rectangle, we can perform an aspect ratio test to determine
 		// the height of the stack relative to the width, giving us a good measure of how many
