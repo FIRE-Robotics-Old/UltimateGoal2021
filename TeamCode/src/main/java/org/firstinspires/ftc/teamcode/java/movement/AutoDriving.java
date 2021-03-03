@@ -126,9 +126,9 @@ public class AutoDriving {
     }
 
     public double[] calculateDrivePowers(double maxVelocity, double xError, double yError, double angleError) {
-        double strafe = PIDStrafe.calculatePID(xError);
-        double drive = PIDFDrive.calculatePID(yError);
-        double twist = PIDFTurn.calculatePID(angleError);
+        double strafe = PIDStrafe.calculate(xError);
+        double drive = PIDFDrive.calculate(yError);
+        double twist = PIDFTurn.calculate(angleError);
         //double twist = 0;
 
         double[] speeds = {

@@ -81,7 +81,7 @@ public class PidfController {
 		this.f = f;
 	}
 
-	public double calculatePID(double error) {
+	public double calculate(double error) {
 		double currentTime = elapsedTime.nanoseconds();
 		double p = kp * error;
 		double i = Range.clip(integral + ki * (error * (currentTime - previousTime)), minI, maxI);

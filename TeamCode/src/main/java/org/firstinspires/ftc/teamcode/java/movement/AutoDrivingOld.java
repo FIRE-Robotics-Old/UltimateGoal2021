@@ -88,9 +88,9 @@ public class AutoDrivingOld {
     public double[] calculateDrivePowers(double maxV, double xError, double yError, double angleError) {
         //aError = angleError;
         //angleError = ((Math.toDegrees(angleError) + 360) % 360);
-        double strafe = PIDStrafe.calculatePID(xError);
-        double drive = PIDFDrive.calculatePID(yError);
-        double twist = PIDFTurn.calculatePID(angleError);
+        double strafe = PIDStrafe.calculate(xError);
+        double drive = PIDFDrive.calculate(yError);
+        double twist = PIDFTurn.calculate(angleError);
         //double twist = 0;
 
         double[] speeds = {

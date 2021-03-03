@@ -174,9 +174,9 @@ public class AutoDrivingNew {
 	 * @return an array with the powers for the wheels
 	 */
 	public double[] calculateDrivePowers(double maxVelocity, double xError, double yError, double angleError) {
-		double strafePower = strafePid.calculatePID(xError);
-		double drivePower = drivePid.calculatePID(yError);
-		double turnPower = turnPid.calculatePID(angleError);
+		double strafePower = strafePid.calculate(xError);
+		double drivePower = drivePid.calculate(yError);
+		double turnPower = turnPid.calculate(angleError);
 
 		double[] wheelSpeeds = MecanumDrive.calculateDrivePowers(
 				drivePower, strafePower, turnPower
