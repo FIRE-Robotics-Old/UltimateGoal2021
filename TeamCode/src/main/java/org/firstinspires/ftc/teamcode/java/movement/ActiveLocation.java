@@ -16,10 +16,9 @@ import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 public class ActiveLocation implements Runnable {
 
     // Hardware setup
-    RobotHardware robot;
     private final BNO055IMU imu;
-    private final DcMotor frontLeftMotor;
-    private final DcMotor backRightMotor;
+    private final DcMotor yDirectionEncoder;
+    private final DcMotor xDirectionEncoder;
 
     //########## VARIABLE SET UP ##########\\
 
@@ -35,11 +34,11 @@ public class ActiveLocation implements Runnable {
     double startAngle = 0;
 
     // Field location
-    double fieldXPosition =0;
-    double fieldYPosition =0;
+    double fieldXPosition = 0;
+    double fieldYPosition = 0;
 
     // For stopping the thread
-    private volatile boolean isRunning;
+    private volatile boolean isRunning = true;
 
     // Static values for calculations
     final static double tickPerRotation = 8192;
@@ -47,13 +46,28 @@ public class ActiveLocation implements Runnable {
 
     double startX;
 
+    /**
+     * Creates an Active Location Tracker for the Robot given by a {@link RobotHardware}
+     *
+     * @param robot the HardwareMap set of the Robot
+     */
     public ActiveLocation(RobotHardware robot){
-        this.robot = robot;
-        frontLeftMotor = robot.frontLeftMotor;
-        backRightMotor = robot.backRightMotor;
+        yDirectionEncoder = robot.frontLeftMotor;
+        xDirectionEncoder = robot.backRightMotor;
         imu = robot.imu;
+    }
 
-        isRunning = true;
+    /**
+     * Create an Active Location Tracker for the Robot
+     *
+     * @param xDirectionEncoder the encoder set up in the X Direction
+     * @param yDirectionEncoder the encoder set up in the Y Direction
+     * @param gyroscope the imu (aka gyroscope) to determine the angle of the robot
+     */
+    public ActiveLocation(DcMotor xDirectionEncoder, DcMotor yDirectionEncoder, BNO055IMU gyroscope) {
+        this.yDirectionEncoder = yDirectionEncoder;
+        this.xDirectionEncoder = xDirectionEncoder;
+        this.imu = gyroscope;
     }
 
     /**
@@ -80,7 +94,9 @@ public class ActiveLocation implements Runnable {
      *
      * @param distance mm value
      * @return returns tick value
+     * @deprecated
      */
+    @Deprecated
     private static double distanceToTicks(double distance) {
         return ((distance / wheelCircumference) * tickPerRotation);
     }
@@ -100,7 +116,7 @@ public class ActiveLocation implements Runnable {
 
     }
     public void setStartPosition(MovementData location){
-        this.setStartPosition(location.getX(),location.getY(),location.getAngleInDegrees());
+        this.setStartPosition(location.getX(), location.getY(), location.getAngleInDegrees());
 
     }
 
@@ -111,8 +127,8 @@ public class ActiveLocation implements Runnable {
      * of the robot using the built in IMU on the Rev Hub.
      */
     private void updateSensors() {
-        yEncoder = frontLeftMotor.getCurrentPosition();
-        xEncoder = backRightMotor.getCurrentPosition();
+        yEncoder = yDirectionEncoder.getCurrentPosition();
+        xEncoder = xDirectionEncoder.getCurrentPosition();
         angle = ((imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle) + startAngle - resetAngle);
         angle = ((angle + (2 * Math.PI)) % (2 * Math.PI));
     }
@@ -196,8 +212,6 @@ public class ActiveLocation implements Runnable {
      */
     @Override
     public void run() {
-        //this.robot.init(hardwareMap);
-
         while (isRunning) {
             updateSensors();
             findFieldPosition();
