@@ -170,6 +170,91 @@ public class AutoDrivingNew {
 	}
 
 	/**
+	 * Scales all wheel speeds to a scaling factor
+	 *
+	 * @param wheelSpeeds the speeds to scale
+	 * @param scaleTo the scaling factor
+	 * @param replaceAll whether or not to disregard the acutal values of the variables
+	 */
+	private void scaleSpeeds(double[] wheelSpeeds, double scaleTo, boolean replaceAll) {
+		if (replaceAll) {
+			double maxMagnitude = scalarMax(wheelSpeeds);
+			// Scales the speeds
+			for (int i = 0; i < wheelSpeeds.length; i++) {
+				wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude * scaleTo;
+			}
+		} else {
+			scaleSpeeds(wheelSpeeds, scaleTo);
+		}
+	}
+
+	/**
+	 * Scales all speeds down to a maximum velocity if any is above it
+	 *
+	 * @param wheelSpeeds the speeds to scale
+	 * @param maximumVelocity the maximum velocity
+	 */
+	private void scaleSpeeds(double[] wheelSpeeds, double maximumVelocity) {
+		double maxMagnitude = scalarMax(wheelSpeeds);
+		if (maxMagnitude > maximumVelocity) {
+			// Scales the speeds
+			for (int i = 0; i < wheelSpeeds.length; i++) {
+				wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude * maximumVelocity;
+			}
+		}
+	}
+
+	/**
+	 * Scales all wheel speeds so that none are greater than the maximum speed.
+	 *
+	 * @param wheelSpeeds the speeds to scale
+	 */
+	private void scaleSpeeds(double[] wheelSpeeds) {
+		scaleSpeeds(wheelSpeeds, defaultMaxVelocity);
+	}
+
+	/**
+	 * Finds the scalar maximum of an array of doubles
+	 *
+	 * Scalar Maximum means that only the magnitude, not the sign, will be taken into account
+	 * in the calculation
+	 * @param values an array of values from which the maximum must be found
+	 * @return the maximum
+	 * @throws IllegalArgumentException protects against arrays with no elements
+	 */
+	private double scalarMax(double[] values) throws IllegalArgumentException {
+		if (values.length == 0)
+			throw new IllegalArgumentException("There must be at least one value in the array");
+
+		double scalarMax = Math.abs(values[0]);
+		for (int i = 1; i < values.length; i++) {
+			scalarMax = Math.max(scalarMax, Math.abs(values[i]));
+		}
+		return scalarMax;
+	}
+
+	/**
+	 * Finds the vector maximum of an array of doubles
+	 *
+	 * Vector Maximum means that both the direction (positive/negative) and the magnitude are taken
+	 * into account, where positive numbers are all greater than negative numbers.
+	 *
+	 * @param values an array of values from which the maximum must be found
+	 * @return the maximum
+	 * @throws IllegalArgumentException protects against arrays with no elements
+	 */
+	private double vectorMax(double[] values) throws IllegalArgumentException {
+		if (values.length == 0)
+			throw new IllegalArgumentException("There must be at least one value in the array");
+
+		double vectorMax = values[0];
+		for (int i = 1; i < values.length; i++) {
+			vectorMax = Math.max(vectorMax, values[i]);
+		}
+		return vectorMax;
+	}
+
+	/**
 	 * Checks if the Robot is within reasonable error to its goal position
 	 * @param goal the goal position for the robot to reach
 	 * @param errorX the reasonable error range for the Δx position with respect to the field
@@ -222,15 +307,7 @@ public class AutoDrivingNew {
 				drivePower, strafePower, turnPower
 		);
 
-		double maxCalculatedSpeed = Math.abs(wheelSpeeds[0]);
-		for (double speed : wheelSpeeds)
-			if (Math.abs(speed) > maxCalculatedSpeed)
-				maxCalculatedSpeed = Math.abs(speed);
-
-
-		if (maxCalculatedSpeed > maxVelocity)
-			for (int i = 0; i < wheelSpeeds.length; i++)
-				wheelSpeeds[i] *= maxVelocity / maxCalculatedSpeed;
+		scaleSpeeds(wheelSpeeds, maxVelocity);
 
 		return wheelSpeeds;
 	}
