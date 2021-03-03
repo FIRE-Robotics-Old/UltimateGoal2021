@@ -8,7 +8,8 @@ import org.firstinspires.ftc.teamcode.java.util.*;
  */
 public class PathFinder implements Runnable {
 
-    //TODO: Implement angle calculations in PathFinder
+    // TODO: Implement angle calculations in PathFinder
+	// TODO: Remove the Thread from PathFinder
 
     private final ActiveLocation activeLocation;
     private MovementData destination;

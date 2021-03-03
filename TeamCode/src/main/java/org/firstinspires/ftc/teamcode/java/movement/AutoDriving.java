@@ -34,6 +34,7 @@ public class AutoDriving {
 	private double defaultErrorAngle = 5;
 	RobotHardware robot;
 
+	// TODO: Either make Robot Hardware somehow implementable in the library or have a manual addition of the motors
     public AutoDriving(PidfController PIDFDrive, PidfController PIDFStrafe, PidfController PIDFTurn, RobotHardware robot) {
         this.PIDFDrive = PIDFDrive;
         this.PIDStrafe = PIDFStrafe;
