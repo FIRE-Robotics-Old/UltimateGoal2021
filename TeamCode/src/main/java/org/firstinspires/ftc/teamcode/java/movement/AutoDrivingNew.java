@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.java.movement;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
@@ -58,18 +59,57 @@ public class AutoDrivingNew {
 	public AutoDrivingNew(PidfController drivePid, PidfController strafePid,
 	                      PidfController turnPid, RobotHardware robot) {
 		// Connects PID Controllers with tuned variants
-		this.drivePid = drivePid;
-		this.strafePid = strafePid;
-		this.turnPid = turnPid;
+		this.drivePid   = drivePid;
+		this.strafePid  = strafePid;
+		this.turnPid    = turnPid;
 
 		// Assigns Hardware values to local copies
-		frontRight = robot.frontRightMotor;
-		frontLeft = robot.frontLeftMotor;
-		backLeft = robot.backLeftMotor;
-		backRight = robot.backRightMotor;
+		frontRight  = robot.frontRightMotor;
+		frontLeft   = robot.frontLeftMotor;
+		backLeft    = robot.backLeftMotor;
+		backRight   = robot.backRightMotor;
 
 		// Starts an ActiveLocation
 		activeLocation = new ActiveLocation(robot);
+		locationThread = new Thread(activeLocation);
+		locationThread.start();
+
+		// Starts a PathFinder
+		pathFinder = new PathFinder(activeLocation);
+		pathThread = new Thread(pathFinder);
+		pathThread.start();
+	}
+
+	/**
+	 * The Basic Constructor to Create a Basic Instance of AutoDriving
+	 * @param drivePid the forward and reverse {@link PidfController}
+	 * @param strafePid the left and right {@link PidfController}
+	 * @param turnPid the rotation {@link PidfController}
+	 * @param frontRightMotor the Front Right {@link DcMotor} on the Robot
+	 * @param frontLeftMotor the Front Left {@link DcMotor} on the Robot
+	 * @param backRightMotor the Back Right {@link DcMotor} on the Robot
+	 * @param backLeftMotor the Back Left {@link DcMotor} on the Robot
+	 * @param xAxisEncoder a {@link DcMotor} which is linked to the X Axis Encoder
+	 * @param yAxisEncoder a {@link DcMotor} which is linked to the Y Axis Encoder
+	 * @param gyroscope the imu (aka gyroscope) to determine the angle / orientation of the Robot
+	 */
+	public AutoDrivingNew(PidfController drivePid, PidfController strafePid,
+	                      PidfController turnPid, DcMotor frontRightMotor, DcMotor frontLeftMotor,
+	                      DcMotor backRightMotor, DcMotor backLeftMotor, DcMotor xAxisEncoder,
+	                      DcMotor yAxisEncoder, BNO055IMU gyroscope) {
+		// Connects PID Controllers with tuned variants
+		this.drivePid   = drivePid;
+		this.strafePid  = strafePid;
+		this.turnPid    = turnPid;
+
+		// Assigns Hardware values to local copies
+		frontRight  = (DcMotorEx) frontRightMotor;
+		frontLeft   = (DcMotorEx) frontLeftMotor;
+		backLeft    = (DcMotorEx) backLeftMotor;
+		backRight   = (DcMotorEx) backRightMotor;
+
+		// Starts an ActiveLocation
+		activeLocation = new ActiveLocation(xAxisEncoder, yAxisEncoder, gyroscope);
 		locationThread = new Thread(activeLocation);
 		locationThread.start();
 
