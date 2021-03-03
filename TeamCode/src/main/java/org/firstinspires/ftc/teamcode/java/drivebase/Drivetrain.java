@@ -76,13 +76,13 @@ public abstract class Drivetrain {
 	 * Finds the vector maximum of an array of doubles
 	 *
 	 * Vector Maximum means that both the direction (positive/negative) and the magnitude are taken
-	 * into acount, where positive numbers are all greater than negative numbers.
+	 * into account, where positive numbers are all greater than negative numbers.
 	 *
 	 * @param values an array of values from which the maximum must be found
 	 * @return the maximum
 	 * @throws IllegalArgumentException protects against arrays with no elements
 	 */
-	protected double vectorMaxMax(double[] values) throws IllegalArgumentException {
+	protected double vectorMax(double[] values) throws IllegalArgumentException {
 		if (values.length == 0)
 			throw new IllegalArgumentException("There must be at least one value in the array");
 
