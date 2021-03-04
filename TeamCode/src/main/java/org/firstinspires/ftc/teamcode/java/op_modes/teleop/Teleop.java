@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.java.op_modes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
@@ -63,10 +64,12 @@ public class Teleop extends LinearOpMode {
         backRightMotor = robot.backRightMotor;
 
         elevator = hardwareMap.get(DcMotor.class, "Elevator");
-        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        elevator.setDirection(DcMotor.Direction.FORWARD);
+        //elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         ringArm = hardwareMap.get(Servo.class, "ringArm");
+
 
         //colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
        // intakeAndDelivery = robot.intakeAndDelivery;
@@ -120,7 +123,7 @@ public class Teleop extends LinearOpMode {
                 if (gamepad1.a && !slowMode && !slowModePressed) {
                     slowModePressed = true;
                     slowMode = true;
-                    maxSpeed = 0.5;
+                    maxSpeed = 0.3;
                 } else if (gamepad1.a && slowMode && !slowModePressed) {
                     slowModePressed = true;
                     slowMode = false;
@@ -193,14 +196,18 @@ public class Teleop extends LinearOpMode {
                 */
                 if (gamepad1.dpad_up){
                     elevator.setPower(0.3);
+                    telemetry.speak("Yes");
                 }else if (gamepad1.dpad_down){
                     elevator.setPower(-0.3);
+                }
+                else{
+                    elevator.setPower(0);
                 }
                 if (gamepad1.left_bumper){
                     if (ringArm.getPosition()>.4){
                         ringArm.setPosition(0);
                     }else{
-                        ringArm.setPosition(.5);
+                        ringArm.setPosition(1);
                     }
                 }
                 //setting the speed to the motors

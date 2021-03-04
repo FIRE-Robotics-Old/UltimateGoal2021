@@ -78,8 +78,8 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	 */
 //	static final Scalar YELLOW_MAXIMUM = new Scalar(230, 172, 157.5); //TODO: Fine Tune
 	//Scalar YELLOW_MAXIMUM = new Scalar(160, 150, 103); //TODO: Fine Tune
-	Scalar YELLOW_MAXIMUM = new Scalar(rstart+20, gstart+20, rstart+20);
-	//Scalar YELLOW_MAXIMUM = new Scalar(220, 200, 100);
+	//Scalar YELLOW_MAXIMUM = new Scalar(rstart+20, gstart+20, rstart+20);
+	Scalar YELLOW_MAXIMUM = new Scalar(185, 180, 115);
 
 	final static int inc = 15;
 
@@ -137,18 +137,18 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	private volatile Height height = Height.A;
 
 	Mat yCrCb = new Mat();
-	
+
 
 
 	@Override
 	public void init(Mat mat) {
 		super.init(mat);
-		telemetry.speak("Never gonna give you up\n" +
-				"Never gonna let you down\n" +
-				"Never gonna run around and desert you\n" +
-				"Never gonna make you cry\n" +
-				"Never gonna say goodbye\n" +
-				"Never gonna tell a lie and hurt you");
+//		telemetry.speak("Never gonna give you up\n" +
+//				"Never gonna let you down\n" +
+//				"Never gonna run around and desert you\n" +
+//				"Never gonna make you cry\n" +
+//				"Never gonna say goodbye\n" +
+//				"Never gonna tell a lie and hurt you");
 	}
 
 	/**
@@ -238,7 +238,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		//                                              There is only     There is a full
 		//                                                one ring         stack of ring
 
-		updateMin();
+		//updateMin();
 //		telemetry.addData("Min",YELLOW_MINIMUM);
 //		telemetry.addData("max", YELLOW_MAXIMUM);
 //		if (height == Height.C){
