@@ -76,7 +76,7 @@ public class AutoAdjusting {
 	 * adjusting the pitch angle (using PIDF)
 	 */
 	public void calculatePitchPower() {
-		shooterRotationPower = PidfPitch.calculatePID(deltaZ);
+		shooterRotationPower = PidfPitch.calculate(deltaZ);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class AutoAdjusting {
 		double currentAngle = activeLocation.getAngle();
 		double yaw          = Math.atan2(deltaX, deltaY);
 		double error        = currentAngle - yaw;
-		robotTurnPower      = PidfYaw.calculatePID(error);
+		robotTurnPower      = PidfYaw.calculate(error);
 	}
 
 	public double getShooterPitchAngle() {

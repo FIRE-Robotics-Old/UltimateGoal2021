@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.java.util;
 
-public final class PIDFConstants {
+public final class PidfConstants {
 	//TODO get rid of this in libary
 		//US
 	public static final PidfController USDrive = new PidfController(0, 0, 0, 0);

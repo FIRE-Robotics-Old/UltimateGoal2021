@@ -34,6 +34,7 @@ public class AutoDriving {
 	private double defaultErrorAngle = 5;
 	RobotHardware robot;
 
+	// TODO: Either make Robot Hardware somehow implementable in the library or have a manual addition of the motors
     public AutoDriving(PidfController PIDFDrive, PidfController PIDFStrafe, PidfController PIDFTurn, RobotHardware robot) {
         this.PIDFDrive = PIDFDrive;
         this.PIDStrafe = PIDFStrafe;
@@ -126,9 +127,9 @@ public class AutoDriving {
     }
 
     public double[] calculateDrivePowers(double maxVelocity, double xError, double yError, double angleError) {
-        double strafe = PIDStrafe.calculatePID(xError);
-        double drive = PIDFDrive.calculatePID(yError);
-        double twist = PIDFTurn.calculatePID(angleError);
+        double strafe = PIDStrafe.calculate(xError);
+        double drive = PIDFDrive.calculate(yError);
+        double twist = PIDFTurn.calculate(angleError);
         //double twist = 0;
 
         double[] speeds = {
