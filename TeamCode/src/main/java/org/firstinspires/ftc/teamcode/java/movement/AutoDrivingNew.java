@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.java.drivebase.MecanumDrive;
 import org.firstinspires.ftc.teamcode.java.util.Angle;
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
-import org.firstinspires.ftc.teamcode.java.util.PidfController;
+import org.firstinspires.ftc.teamcode.java.util.PositionControl.PositionPidfController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 /**
@@ -17,9 +17,9 @@ import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
  */
 public class AutoDrivingNew {
 	/**
-	 * {@link PidfController} for the 3 Axes of Movement: X, Y, and θ
+	 * {@link PositionPidfController} for the 3 Axes of Movement: X, Y, and θ
 	 */
-	private final PidfController drivePid, strafePid, turnPid;
+	private final PositionPidfController drivePid, strafePid, turnPid;
 	/**
 	 * A Location Tracking {@link ActiveLocation} Object to Update the Current Location
 	 */
@@ -54,13 +54,13 @@ public class AutoDrivingNew {
 
 	/**
 	 * The Basic Constructor to Create a Basic Instance of AutoDriving
-	 * @param drivePid the forward and reverse {@link PidfController}
-	 * @param strafePid the left and right {@link PidfController}
-	 * @param turnPid the rotation {@link PidfController}
+	 * @param drivePid the forward and reverse {@link PositionPidfController}
+	 * @param strafePid the left and right {@link PositionPidfController}
+	 * @param turnPid the rotation {@link PositionPidfController}
 	 * @param robot the {@link RobotHardware} initiated with a HardwareMap
 	 */
-	public AutoDrivingNew(PidfController drivePid, PidfController strafePid,
-	                      PidfController turnPid, RobotHardware robot) {
+	public AutoDrivingNew(PositionPidfController drivePid, PositionPidfController strafePid,
+	                      PositionPidfController turnPid, RobotHardware robot) {
 		// Connects PID Controllers with tuned variants
 		this.drivePid   = drivePid;
 		this.strafePid  = strafePid;
@@ -85,9 +85,9 @@ public class AutoDrivingNew {
 
 	/**
 	 * The Basic Constructor to Create a Basic Instance of AutoDriving
-	 * @param drivePid the forward and reverse {@link PidfController}
-	 * @param strafePid the left and right {@link PidfController}
-	 * @param turnPid the rotation {@link PidfController}
+	 * @param drivePid the forward and reverse {@link PositionPidfController}
+	 * @param strafePid the left and right {@link PositionPidfController}
+	 * @param turnPid the rotation {@link PositionPidfController}
 	 * @param frontRightMotor the Front Right {@link DcMotor} on the Robot
 	 * @param frontLeftMotor the Front Left {@link DcMotor} on the Robot
 	 * @param backRightMotor the Back Right {@link DcMotor} on the Robot
@@ -96,8 +96,8 @@ public class AutoDrivingNew {
 	 * @param yAxisEncoder a {@link DcMotor} which is linked to the Y Axis Encoder
 	 * @param gyroscope the imu (aka gyroscope) to determine the angle / orientation of the Robot
 	 */
-	public AutoDrivingNew(PidfController drivePid, PidfController strafePid,
-	                      PidfController turnPid, DcMotor frontRightMotor, DcMotor frontLeftMotor,
+	public AutoDrivingNew(PositionPidfController drivePid, PositionPidfController strafePid,
+	                      PositionPidfController turnPid, DcMotor frontRightMotor, DcMotor frontLeftMotor,
 	                      DcMotor backRightMotor, DcMotor backLeftMotor, DcMotor xAxisEncoder,
 	                      DcMotor yAxisEncoder, BNO055IMU gyroscope) {
 		// Connects PID Controllers with tuned variants
