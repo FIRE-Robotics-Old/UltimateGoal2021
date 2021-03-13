@@ -18,12 +18,12 @@ public class Teleop extends LinearOpMode {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
 
-    //private DcMotor intakeAndDelivery;
+    private DcMotor intakeAndDelivery;
     private DcMotor leftShooter;
     private DcMotor rightShooter;
     //public RevColorSensorV3 colorSensor;
-    private DcMotor elevator;
-    private Servo ringArm;
+//    private DcMotor elevator;
+//    private Servo ringArm;
 
     private Servo lowerWobble;
     //private TouchSensor wobbleDetector;
@@ -63,16 +63,16 @@ public class Teleop extends LinearOpMode {
         backLeftMotor = robot.backLeftMotor;
         backRightMotor = robot.backRightMotor;
 
-        elevator = hardwareMap.get(DcMotor.class, "Elevator");
-        elevator.setDirection(DcMotor.Direction.FORWARD);
+//        elevator = hardwareMap.get(DcMotor.class, "Elevator");
+//        elevator.setDirection(DcMotor.Direction.FORWARD);
         //elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        ringArm = hardwareMap.get(Servo.class, "ringArm");
+        //ringArm = hardwareMap.get(Servo.class, "ringArm");
 
 
         //colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
-       // intakeAndDelivery = robot.intakeAndDelivery;
+       intakeAndDelivery = robot.intakeAndDelivery;
         //rightShooter = robot.rightShooter;
         //leftShooter = robot.leftShooter;
         lowerWobble =robot.lowerWobble;
@@ -140,6 +140,18 @@ public class Teleop extends LinearOpMode {
                     }
 
                 }
+                //choose gamepad
+                //if pressed setpower to 0.3
+                //else set power of intake and delivery to
+
+                if (gamepad2.y){
+                    intakeAndDelivery.setPower(0.3);
+                    sleep(1000);
+                    intakeAndDelivery.setPower(0);
+                }
+                //if (gamepad2.b){
+                    //intakeAndDelivery.setPower(0);
+                // }
 
 //                red = colorSensor.red();
 //
@@ -169,6 +181,7 @@ public class Teleop extends LinearOpMode {
                 if (gamepad1.start) {
                     activeLocation.resetAngle();
                 }
+
                 /*
                 // reversing the intake and delivery
                 if (gamepad2.back && !ifReversedIntakePressed) {
@@ -194,28 +207,28 @@ public class Teleop extends LinearOpMode {
                 telemetry.update();
                 sleep(1000);
                 */
-                if (gamepad1.dpad_up){
-                    elevator.setPower(0.3);
-                    telemetry.speak("Yes");
-                }else if (gamepad1.dpad_down){
-                    elevator.setPower(-0.3);
-                }
-                else{
-                    elevator.setPower(0);
-                }
-                if (gamepad1.left_bumper){
-                    if (ringArm.getPosition()>.4){
-                        ringArm.setPosition(0);
-                    }else{
-                        ringArm.setPosition(1);
-                    }
-                }
+//                if (gamepad1.dpad_up){
+//                    elevator.setPower(0.3);
+//                    telemetry.speak("Yes");
+//                }else if (gamepad1.dpad_down){
+//                    elevator.setPower(-0.3);
+//                }
+//                else{
+//                    elevator.setPower(0);
+//                }
+//                if (gamepad1.left_bumper){
+//                    if (ringArm.getPosition()>.4){
+//                        ringArm.setPosition(0);
+//                    }else{
+//                        ringArm.setPosition(1);
+//                    }
+//                }
                 //setting the speed to the motors
                 frontLeftMotor.setPower(speeds[0]);
                 frontRightMotor.setPower(speeds[1]);
                 backLeftMotor.setPower(speeds[2]);
                 backRightMotor.setPower(speeds[3]);
-                //intakeAndDelivery.setPower(intakeAndDeliveryPower);
+                intakeAndDelivery.setPower(intakeAndDeliveryPower);
                 //leftShooter.setPower(shooterPower);
                 // rightShooter.setPower(shooterPower);
                 telemetry.addData("Red", red);
