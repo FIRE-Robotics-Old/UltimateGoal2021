@@ -46,7 +46,8 @@ public final class Constants {
 	public static final double ALowerBorder = 1430;
 	public static final double BLowerBorder = 2000;
 	public static final double CLowerBorder = 2600;
-	public static final double wobbleY = 490;
+	public static final double wobbleY = 400;
+	public static final double wobbleX = -600;
 
 
 		//Hardware constants

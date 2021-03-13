@@ -15,6 +15,8 @@ import org.firstinspires.ftc.teamcode.java.vision.HeightDetector;
 import org.firstinspires.ftc.teamcode.java.vision.RingHeightPipeline;
 
 import static org.firstinspires.ftc.teamcode.java.util.Constants.TAU;
+import static org.firstinspires.ftc.teamcode.java.util.Constants.cornerAB;
+import static org.firstinspires.ftc.teamcode.java.util.Constants.lowerWobbleDown;
 
 
 @Autonomous(name="BasicRemoteAuton", group="Backup")
@@ -43,7 +45,13 @@ public class BasicRemoteAuton extends LinearOpMode {
     private int xDirect = 1;
     private double angleGoal;
     private double yGoal;
-
+    private double minPow = 0.15;
+    private double maxPow = 0.77;
+    private double ppd = (maxPow-minPow)/180;
+    private double slowdist = 900; //600
+    private double ppdst = (maxPow-minPow)/slowdist;
+    private double startdist = 100;
+    private double powerFator = 0.3;
 //    private PathFinder PF;
 //    private Thread pathThread;
 
@@ -101,52 +109,62 @@ public class BasicRemoteAuton extends LinearOpMode {
             //Path B:
 
 	        wobbleGrip.setPosition(Constants.lowerWobbleDown);
-	        sleep(100);
+            switch (position) {
+                case A:
+                    PathAB();
+                case B:
+                    PathAB();
+                case C:
+                    PathC();
+
+            }
+	        //sleep(100);
 	        //moveY(Constants.navLineY);
-	        sleep(1000);
-            moveY(2000);
-            wobbleGrip.setPosition(Constants.lowerWobbleUp);
-            telemetry.speak("Wobble one");
-            sleep(5000);
-            turnTo(0);
-            moveY(1780);
-            sleep(100);
-	        moveX(500);
+
+
+
+//	        sleep(1000);
+//            moveY(2000);
 //            sleep(100);
-            turnTo(180);
-            yDirect = -1;
-            xDirect = -1;
-//            ///sleep(1000);
-           moveY(Constants.wobbleY-45.5);
+//            moveX(-300);
+//            wobbleGrip.setPosition(Constants.lowerWobbleUp);
+//            telemetry.speak("Wobble one");
+//            sleep(100);
+//            //turnTo(0);
+//            moveY(1780);
+//            sleep(100);
+//	        moveX(Constants.wobbleX);
+//            sleep(100);
+//            turnTo(180);
+//            yDirect = -1;
+//            xDirect = -1;
+//            sleep(1000);
+//            moveY(Constants.wobbleY+30);//30
+//            sleep(100);
+//            moveX(Constants.wobbleX);
+//            sleep(100);
+//            turnTo(180);
 //			sleep(1000);
 //            wobbleGrip.setPosition(Constants.lowerWobbleDown);
 //            sleep(500);
-//            moveX(675);
+//            moveX(300);
 //            sleep(100);
+//            turnTo(180);
+//            sleep(100);
+//            moveY(Constants.ALowerBorder+300);
+
+
+
 //            moveY(Constants.BLowerBorder+350);
 //            wobbleGrip.setPosition(Constants.lowerWobbleUp);
 //            sleep(100);
 //            moveY(Constants.navLineY-200);
             //Path C
-	        /*
 
-	        wobbleGrip.setPosition(Constants.lowerWobbleDown);
-	        sleep(1000);
-	        //double startMove = runtime.milliseconds();
-	        //moveX(-300);
-	        moveY(Constants.CLowerBorder+200);
-	        sleep(100);
-	       // moveX(-800);
-	        sleep(1000);
+
+
 	        //turnTo(180);
 	        //moveX(-50);
-	        wobbleGrip.setPosition(Constants.lowerWobbleUp);
-	        moveY(AL.getFieldY()-100);
-	        turnTo(180);
-	        xDirect=-1;
-	        yDirect = -1;
-	        moveX(300);
-	        moveY(AL.getFieldY()+350);
 	        //moveY(Constants.CLowerBorder);
 	        //double moveTime = runtime.milliseconds()-startMove;
 	        //telemetry.speak(""+moveTime);
@@ -156,10 +174,6 @@ public class BasicRemoteAuton extends LinearOpMode {
 //	        moveX(300);
 //	        turnTo(180);
 //	        moveY(Constants.backFieldY);
-	        double runTime = runtime.milliseconds()+1000;
-	        while (runtime.milliseconds()<runTime) {
-		        elevator.setPower(.3);
-	        }
 	        //elevator.setPower(0);
 //	        //ringArm.setPosition();
 //	        sleep(500);
@@ -168,7 +182,6 @@ public class BasicRemoteAuton extends LinearOpMode {
 //	        //elevator.setTargetPosition(0);
 //	        moveY(Constants.navLineY);
 
-*/
 //	        if (runtime.milliseconds()+(2*moveTime)<25){
 //		        sleep(100);
 //		        turn(180);
@@ -320,18 +333,32 @@ public class BasicRemoteAuton extends LinearOpMode {
         }
     }
     public void moveY(double y){
+        if (Math.abs(AL.getFieldY()-y)<10){
+            return;
+        }
         int direct;
-        while (Math.abs(AL.getFieldY()-y)>17.55){
+        double power = maxPow;
+        double odist =Math.abs(AL.getFieldY()-y);
+        while (Math.abs(AL.getFieldY()-y)>20){
             if (AL.getFieldY()>y){
                 direct =-1*yDirect;
             } else{
                 direct = 1*yDirect;
             }
+            double dist = Math.abs(AL.getFieldY()-y);
+            if (odist-dist<startdist){
+                power =maxPow*powerFator;
+            } else if (dist >= slowdist){
+                power = maxPow;
+            }
+            else {
+                power=minPow+dist*ppdst;
+            }
             synchronized (this) {
-                frontLeftMotor.setPower(0.3 * direct);
-                frontRightMotor.setPower(0.3 * direct);
-                backLeftMotor.setPower(0.3 * direct);
-                backRightMotor.setPower(0.3 * direct);
+                frontLeftMotor.setPower(power * direct);
+                frontRightMotor.setPower(power * direct);
+                backLeftMotor.setPower(power * direct);
+                backRightMotor.setPower(power * direct);
             }
             telemetry.addData("In Loop: ",  AL.getFieldY());
             telemetry.update();
@@ -340,82 +367,103 @@ public class BasicRemoteAuton extends LinearOpMode {
         off();
     }
     public void moveX(double x){
+        if (Math.abs(AL.getFieldX()-x)<10){
+            return;
+        }
         int direct;
 	    double maxTime = runtime.milliseconds()+5000;
-        while (Math.abs(AL.getFieldX()-x)>50 && runtime.milliseconds()<maxTime){
+        double odist =Math.abs(AL.getFieldX()-x);
+        while (Math.abs(AL.getFieldX()-x)>20 /*&& runtime.milliseconds()<maxTime*/){
             //double xToMove = AL.getFieldX()-x;
 //            if (xToMove > 0){
 //                direct = 1;
 //            } else {
 //                direct = -1;
 //            }
-            if (AL.getFieldX()>x){
-                direct =-1*xDirect;
+            if (AL.getFieldX()<x){
+                 direct =-1*xDirect;
             } else{
                 direct = 1*xDirect;
             }
-
-            synchronized (this) {
-                frontLeftMotor.setPower(-0.3 * direct);
-                frontRightMotor.setPower(0.3 * direct);
-                backLeftMotor.setPower(0.3 * direct);
-                backRightMotor.setPower(-0.3 * direct);
+            double power = 0.3;
+            double dist = Math.abs(AL.getFieldX()-x);
+            if (odist-dist<startdist){
+                power =maxPow*powerFator;
+            } else if (dist >= slowdist){
+                power = maxPow;
             }
-            //telemetry.addData("In Loop: ",  AL.getFieldX());
-            //telemetry.update();
+            else {
+                power=minPow+dist*ppdst;
+            }
+            synchronized (this) {
+                frontLeftMotor.setPower(-power * direct);
+                frontRightMotor.setPower(power * direct);
+                backLeftMotor.setPower(power * direct);
+                backRightMotor.setPower(-power * direct);
+            }
+            telemetry.addData("In Loop: ",  AL.getFieldX());
+            telemetry.update();
             output("X"+x,AL.getFieldX());
         }
         off();
     }
     public void turnTo(double angle){
-    	if (Math.abs(AL.getAngleInDegrees()-angle) <3){
+    	if (Math.abs(AL.getAngleInDegrees()-angle) <1){
     		return;
 	    }
         double maxTime = runtime.milliseconds()+5000;
         int direct = 1;
+        double power = 0.1;
         double aToMove = angle - AL.getAngleInDegrees();
 //        if (aToMove > Math.PI) {
 //            aToMove = -(direct - aToMove);
 //        } else if (aToMove < -Math.PI) {
 //            aToMove = -(TAU - Math.abs(aToMove));
 //        }
-        while ((Math.abs(AL.getAngleInDegrees()-angle)>3) /*&& runtime.milliseconds()<maxTime*/){
+        while ((Math.abs(AL.getAngleInDegrees()-angle)>2) /*&& runtime.milliseconds()<maxTime*/){
             //double aToMove = Math.abs(AL.getAngleInDegrees()-angle);
+            aToMove = angle - AL.getAngleInDegrees();
             if (aToMove > 180) {
-                direct =(int) -((360 - aToMove)/(360 - aToMove));
+                direct = 1;
+                power = minPow+ppd*(360-aToMove);
             } else if (aToMove < -180) {
-                direct = (int)-((360 - Math.abs(aToMove))/(360 - Math.abs(aToMove)));
+                direct = -1;
+                power = minPow+ppd*(360+aToMove);
             }else{
-                direct = (int) (aToMove/aToMove);
+                direct = (int) -(Math.abs(aToMove)/aToMove);
+                power = minPow+ppd*(Math.abs(aToMove));
             }
 //            if (AL.getAngleInDegrees() > angle){
 //                direct = 1;
 //            } else {
 //                direct = -1;
 //            }
-            frontRightMotor.setPower(-0.3*direct);
-            frontLeftMotor.setPower(0.3*direct);
-            backRightMotor.setPower(-0.3*direct);
-            backLeftMotor.setPower(0.3*direct);
+
+            frontRightMotor.setPower(-power*direct);
+            frontLeftMotor.setPower(power*direct);
+            backRightMotor.setPower(-power*direct);
+            backLeftMotor.setPower(power*direct);
             output("A"+angle,AL.getAngleInDegrees());
             //telemetry.addData("loop", AL.getAngleInDegrees() < angle && runtime.milliseconds()<maxTime);
             //telemetry.update();
         }
         off();
     }
+    @Deprecated
     public void turn(double angle){
     	int direct;
-    	if (Math.abs(AL.getAngle()-angle)<1){
+    	if (Math.abs(AL.getAngle()-angle)<3){
     		return;
 	    }
 	    double maxTime = runtime.milliseconds()+500;
     	double aToMove = angle - AL.getAngleInDegrees();
 
-    	while (Math.abs(AL.getAngleInDegrees()-angle)<1 && runtime.milliseconds()<maxTime){
+    	while (Math.abs(AL.getAngleInDegrees()-angle)<3 && runtime.milliseconds()<maxTime){
             if (aToMove > 180) {
-                direct =(int) -((360 - aToMove)/(360 - aToMove));
+                direct =-1;//(int) -((360 - aToMove)/(360 - aToMove));
+
             } else if (aToMove < -180) {
-                direct = (int)-((360 - Math.abs(aToMove))/(360 - Math.abs(aToMove)));
+                direct = 1;//(int)-((360 - Math.abs(aToMove))/(360 - Math.abs(aToMove)));
             }else{
                 direct = (int) (aToMove/aToMove);
             }
@@ -443,6 +491,81 @@ public class BasicRemoteAuton extends LinearOpMode {
             moveY(Y);
         }
 */
+    }
+    public void PathAB(){
+        wobbleGrip.setPosition(Constants.lowerWobbleDown);
+        //sleep(100);
+        //moveY(Constants.navLineY);
+        sleep(1000);
+        moveY(2000);
+        sleep(100);
+        moveX(-300);
+        wobbleGrip.setPosition(Constants.lowerWobbleUp);
+        telemetry.speak("Wobble one");
+        sleep(100);
+        //turnTo(0);
+        moveY(1780);
+        sleep(100);
+        moveX(Constants.wobbleX);
+        sleep(100);
+        turnTo(180);
+        yDirect = -1;
+        xDirect = -1;
+        sleep(1000);
+        moveY(Constants.wobbleY+30);//30
+        sleep(100);
+        moveX(Constants.wobbleX);
+        sleep(100);
+        turnTo(180);
+        sleep(1000);
+        wobbleGrip.setPosition(Constants.lowerWobbleDown);
+        sleep(500);
+        moveX(300);
+        sleep(100);
+        turnTo(180);
+        sleep(100);
+        moveY(Constants.ALowerBorder+300);
+
+    }
+    public void PathC(){
+        wobbleGrip.setPosition(Constants.lowerWobbleDown);
+        sleep(100);
+        //double startMove = runtime.milliseconds();
+        //moveX(-300);
+        moveY(Constants.CLowerBorder+200);
+        sleep(100);
+        moveX(300);
+        sleep(100);
+        wobbleGrip.setPosition(Constants.lowerWobbleUp);
+        sleep(1000);
+        moveY(Constants.wobbleY+900);
+        sleep(100);
+        //moveY(Constants.CLowerBorder);
+        //sleep(100);
+        moveX(Constants.wobbleX+80);
+        sleep(100);
+        turnTo(180);
+        yDirect = -1;
+        xDirect = -1;
+        sleep(100);
+//	        moveY(Constants.wobbleY+600);
+//            sleep(100);
+        //moveX(Constants.wobbleX);
+        moveY(Constants.wobbleY+70);
+        sleep(100);
+        turnTo(180);
+        sleep(100);
+        wobbleGrip.setPosition(lowerWobbleDown);
+        sleep(100);
+        moveX(100);
+        sleep(100);
+        turnTo(0);
+        xDirect =1;
+        yDirect = 1;
+        sleep(100);
+        moveY(Constants.CLowerBorder);
+        sleep(100);
+        moveY(Constants.navLineY);
     }
     public void output(String label, double val){
         telemetry.addData(label,val);
