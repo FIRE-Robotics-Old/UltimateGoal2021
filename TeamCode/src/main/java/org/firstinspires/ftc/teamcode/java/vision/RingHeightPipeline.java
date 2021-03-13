@@ -61,7 +61,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	int gstart = 100;
 	int bstart = 40;
 	// FOUR STACK: (0, 100, 35)
-	Scalar YELLOW_MINIMUM = new Scalar(rstart, gstart, bstart);
+	Scalar YELLOW_MINIMUM = new Scalar(0, 100, 40);
 	//145 165 165
 	// 161 155 155
 
@@ -117,7 +117,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	 * The Width of the Camera, defaulted to 320 pixels
 	 */
 //	static final int CAMERA_WIDTH = 320;
-	static final int CAMERA_WIDTH = 100;
+	static final int CAMERA_WIDTH = 45;
 
 	/**
 	 * The Divider is used to divide the portion of the area considered and not considered
