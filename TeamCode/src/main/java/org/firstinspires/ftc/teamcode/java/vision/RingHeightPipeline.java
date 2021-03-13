@@ -57,9 +57,10 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	//Scalar YELLOW_MINIMUM = new Scalar(130, 160, 30);
     //rgb(156, 89, 60)
 	//165 150 95
-	int rstart = 15;
-	int gstart = 15;
-	int bstart = 30;
+	int rstart = 0;
+	int gstart = 100;
+	int bstart = 40;
+	// FOUR STACK: (0, 100, 35)
 	Scalar YELLOW_MINIMUM = new Scalar(rstart, gstart, bstart);
 	//145 165 165
 	// 161 155 155
@@ -78,25 +79,25 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	 */
 //	static final Scalar YELLOW_MAXIMUM = new Scalar(230, 172, 157.5); //TODO: Fine Tune
 	//Scalar YELLOW_MAXIMUM = new Scalar(160, 150, 103); //TODO: Fine Tune
-	//Scalar YELLOW_MAXIMUM = new Scalar(rstart+20, gstart+20, rstart+20);
-	Scalar YELLOW_MAXIMUM = new Scalar(185, 180, 115);
+	Scalar YELLOW_MAXIMUM = new Scalar(173, 204, 65);
+	//Scalar YELLOW_MAXIMUM = new Scalar(35, 35, 50);
 
-	final static int bigIncrement = 15;
-	final static int smallIncrement = bigIncrement / 3;
+	final static int bigIncrement = 5;
+	final static int smallIncrement = 2;//bigIncrement / 3;
 
 	public void updateMin() {
 		double[] thing = YELLOW_MINIMUM.val;
 		double[] newMax = YELLOW_MAXIMUM.val;
 
-		if (thing[0] < 255) {
-			thing[0]    += bigIncrement;
-			newMax[0]   += bigIncrement;
-		} else if (thing[1] < 255) {
+		if (thing[0] < 173) {
+			thing[0] += bigIncrement;
+			newMax[0] += bigIncrement;
+		} else if (thing[1] < 204) {
 			thing[1]    += bigIncrement;
 			newMax[1]   += bigIncrement;
 			thing[0]    = rstart;
 			newMax[0]   = rstart + 20;
-		} else if (newMax[2] < 255) {
+		} else if (newMax[2] < 85) {
 			thing[2]    += smallIncrement;
 			newMax[2]   += smallIncrement;
 			thing[1]    = gstart;
@@ -115,7 +116,8 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	/**
 	 * The Width of the Camera, defaulted to 320 pixels
 	 */
-	static final int CAMERA_WIDTH = 320;
+//	static final int CAMERA_WIDTH = 320;
+	static final int CAMERA_WIDTH = 100;
 
 	/**
 	 * The Divider is used to divide the portion of the area considered and not considered
@@ -183,11 +185,15 @@ public class RingHeightPipeline extends OpenCvPipeline {
 
 		// Only Study the Portion of the Mat within the rectangle (x and y might be swapped
 		// TODO: Change the rectangle value to the value that we want to use (FOR TESTING PURPOSES ONLY)
-		Rect studyRectangle = new Rect(new Point(0, 0), new Point(240, 320));
+		Rect studyRectangle = new Rect(new Point(140, 150), new Point(240, 195));
 		Mat toStudy = new Mat(mask, studyRectangle);
+		Mat inputSmaller = new Mat(input, studyRectangle);
 
 		// Draw a box around the rectangle we are studying in GREEN
 		Imgproc.rectangle(mask, studyRectangle, new Scalar(0, 255, 0), 5);
+		Imgproc.rectangle(toStudy, studyRectangle, new Scalar(0, 255, 0), 5);
+		Imgproc.rectangle(input, studyRectangle, new Scalar(0, 255, 0), 5);
+		Imgproc.rectangle(inputSmaller, studyRectangle, new Scalar(0, 255, 0), 5);
 
 		Imgproc.findContours(
 				toStudy, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE
@@ -204,7 +210,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 			Rect rectangle = Imgproc.boundingRect(copy);
 
 			int width = rectangle.width;
-			// Makes sure that the Rectangle is above the Horizontal Divider (a.k.a. Horizon)
+//			// Makes sure that the Rectangle is above the Horizontal Divider (a.k.a. Horizon)
 			if (width > maximumWidth && rectangle.y + rectangle.height > DIVIDER) {
 				maximumWidth = width;
 				maximumRectangle = rectangle;
@@ -219,6 +225,10 @@ public class RingHeightPipeline extends OpenCvPipeline {
 
 		// Draw a rectangle around the largest yellow/orange area (the detected rings) in BLUE
 		Imgproc.rectangle(mask, maximumRectangle, new Scalar(0, 0, 255), 5);
+		Imgproc.rectangle(toStudy, maximumRectangle, new Scalar(0, 0, 255), 5);
+		Imgproc.rectangle(input, maximumRectangle, new Scalar(0, 0, 255), 5);
+		Imgproc.rectangle(inputSmaller, maximumRectangle, new Scalar(0, 0, 255), 5);
+		telemetry.addData("Rectangle", maximumRectangle.toString());
 
 		// NOTE: the reason that a DIVIDER exists is because YCrCb is unreliable when
 		// differentiating between RED and ORANGE. Thus, the DIVIDER prevents the Pipeline from
@@ -228,6 +238,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		// the height of the stack relative to the width, giving us a good measure of how many
 		// rings there are.
 		double aspectRatio = (double) maximumRectangle.height / maximumRectangle.width;
+		telemetry.addData("Aspect Ratio", aspectRatio);
 		height = (maximumWidth >= MINIMUM_WIDTH ? (aspectRatio > HEIGHT_FACTOR ? Height.C : Height.B) : Height.A);
 
 		// The Above Ternary Expression Might be a little confusing to those with less experience
@@ -244,14 +255,14 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		//                                              There is only     There is a full
 		//                                                one ring         stack of ring
 
-		//updateMin();
+		updateMin();
 //		telemetry.addData("Min",YELLOW_MINIMUM);
-//		telemetry.addData("max", YELLOW_MAXIMUM);
+//		telemetry.addData("Max", YELLOW_MAXIMUM);
 //		if (height == Height.C){
-//			//telemetry.speak("Gottem");
-////			telemetry.speak(""+YELLOW_MAXIMUM);
+//			telemetry.speak("Gottem");
+//			telemetry.speak(""+YELLOW_MAXIMUM);
 //			telemetry.addData("Values",YELLOW_MINIMUM);
-//
+////
 //		}
 //		telemetry.update();
 //		try {
@@ -259,8 +270,10 @@ public class RingHeightPipeline extends OpenCvPipeline {
 //		} catch (InterruptedException e) {
 //			// Do Nothing
 //		}
-		return mask;
-//		return input;
+//		return mask;
+		Imgproc.resize(toStudy, toStudy, new Size(240, 320));
+		Imgproc.resize(inputSmaller, inputSmaller, new Size(240, 320));
+		return inputSmaller;
 	}
 
 	public Height getHeight() {
