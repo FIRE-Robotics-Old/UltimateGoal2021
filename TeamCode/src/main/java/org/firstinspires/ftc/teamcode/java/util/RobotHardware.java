@@ -66,7 +66,7 @@ public class RobotHardware {
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
-//        intakeAndDelivery = hardwareMap.get(DcMotor.class, "intakeAndDelivery");
+        intakeAndDelivery = hardwareMap.get(DcMotor.class, "intakeAndDelivery");
 //        rightShooter = hardwareMap.get(DcMotor.class, "rightShooter");
 //        leftShooter = hardwareMap.get(DcMotor.class, "leftShooter");
 
@@ -76,7 +76,7 @@ public class RobotHardware {
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        //intakeAndDelivery.setDirection(DcMotor.Direction.FORWARD);
+        intakeAndDelivery.setDirection(DcMotor.Direction.FORWARD);
 //        rightShooter.setDirection(DcMotor.Direction.FORWARD);
 //        leftShooter.setDirection(DcMotor.Direction.REVERSE);
 
@@ -97,14 +97,14 @@ public class RobotHardware {
 
 //        rightShooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 //        leftShooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-          //intakeAndDelivery.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+          intakeAndDelivery.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         // Turn off all motors
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
-        //intakeAndDelivery.setPower(0);
+        intakeAndDelivery.setPower(0);
 //        rightShooter.setPower(0);
 //        leftShooter.setPower(0);
     }

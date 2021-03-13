@@ -52,7 +52,7 @@ public class ParkAuton extends LinearOpMode {
 			double currentTime = 0;
 
 			while (currentTime < startTime + 4500) {
-				frontLeftMotor.setPower(0.5);
+				frontLeftMotor.setPower(0.3);
 				frontRightMotor.setPower(0.3);
 				backLeftMotor.setPower(0.3);
 				backRightMotor.setPower(0.3);
