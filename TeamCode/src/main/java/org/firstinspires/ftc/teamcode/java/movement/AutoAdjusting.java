@@ -18,6 +18,8 @@ public class AutoAdjusting {
 
 	private static final double shooterLength   = 420.69; // Temporary Value
 	private static final double velocityGoal    = 420.69; // Temporary Value
+	private static final double angleOffset     = 45;  // TODO: change it to the real angle offset
+	private static final double maxAngle =  45 ; // TODO:  chang to the angle
 	public  static final Goal initialGoal       = Goal.POWER_SHOT_1;
 
 	private final AnalogInput       potentiometer;
@@ -101,7 +103,7 @@ public class AutoAdjusting {
 	}
 
 	public double getShooterPitchAngle() {
-		return (potentiometer.getVoltage() * 81.8);
+		return (potentiometer.getVoltage() * 81.8) + angleOffset ;
 	}
 
 	private double getCurrentHeight() {
@@ -119,7 +121,8 @@ public class AutoAdjusting {
 	}
 
 	public double getShooterTurnPower() {
-		calculatePitchPower();
+
+		if(shooterRotationPower > 0 && getShooterPitchAngle() >= maxAngle) {return 0;}//safety check
 		return shooterRotationPower;
 	}
 }
