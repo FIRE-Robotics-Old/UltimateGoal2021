@@ -20,6 +20,31 @@ import java.util.List;
 public class RingHeightPipeline extends OpenCvPipeline {
 
 	Telemetry telemetry;
+	boolean trimPhoto;
+	/**
+	 * The Width of the Camera, defaulted to 320 pixels
+	 */
+	static final int CAMERA_WIDTH = 320;
+	static final int CAMERA_WIDTH_TRIMMED = 45;
+	/**
+	 * The Divider is used to divide the portion of the area considered and not considered
+	 */
+	int DIVIDER;
+
+	/**
+	 * A Calibration Factor to ensure that a full ring is detected
+	 */
+	int MINIMUM_WIDTH;
+
+	/**
+	 * A Factor Used to determine the height of a stack of rings
+	 */
+	static final double HEIGHT_FACTOR = 0.7;
+
+	/**
+	 * This will store the value of the height of the stack to allow us to know where to move the robot.
+	 */
+	private volatile Height height = Height.A;
 
 	public enum Height {
 		A, // No Rings
@@ -41,12 +66,32 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		}
 	}
 
+	public RingHeightPipeline(boolean trimPhoto) {
+		this.trimPhoto = trimPhoto;
+		updateValues();
+	}
+
+	public RingHeightPipeline(Telemetry telemetry, boolean trimPhoto) {
+		this.telemetry = telemetry;
+		this.trimPhoto = trimPhoto;
+		updateValues();
+	}
+
 	public RingHeightPipeline(Telemetry telemetry) {
 		this.telemetry = telemetry;
+		this.trimPhoto = true;
+		updateValues();
 	}
 
 	public RingHeightPipeline() {
 		this.telemetry = null;
+		trimPhoto = false;
+		updateValues();
+	}
+
+	void updateValues() {
+		DIVIDER = (int) (100. / 320. * (trimPhoto ? CAMERA_WIDTH_TRIMMED : CAMERA_WIDTH));
+		MINIMUM_WIDTH = (int) (50. / 320. * (trimPhoto ? CAMERA_WIDTH_TRIMMED : CAMERA_WIDTH));
 	}
 
 	/**
@@ -61,7 +106,8 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	int gstart = 100;
 	int bstart = 40;
 	// FOUR STACK: (0, 100, 35)
-	Scalar YELLOW_MINIMUM = new Scalar(0, 100, 40);
+//	Scalar YELLOW_MINIMUM = new Scalar(0, 100, 40);
+	Scalar YELLOW_MINIMUM = new Scalar(0, 0, 0);
 	//145 165 165
 	// 161 155 155
 
@@ -78,9 +124,8 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	 * This is the maximum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MAXIMUM = new Scalar(230, 172, 157.5); //TODO: Fine Tune
-	//Scalar YELLOW_MAXIMUM = new Scalar(160, 150, 103); //TODO: Fine Tune
-	Scalar YELLOW_MAXIMUM = new Scalar(173, 204, 65);
-	//Scalar YELLOW_MAXIMUM = new Scalar(35, 35, 50);
+//	Scalar YELLOW_MAXIMUM = new Scalar(173, 204, 65);
+	Scalar YELLOW_MAXIMUM = new Scalar(255, 255, 255);
 
 	final static int bigIncrement = 5;
 	final static int smallIncrement = 2;//bigIncrement / 3;
@@ -113,31 +158,6 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		}
 	}
 
-	/**
-	 * The Width of the Camera, defaulted to 320 pixels
-	 */
-//	static final int CAMERA_WIDTH = 320;
-	static final int CAMERA_WIDTH = 45;
-
-	/**
-	 * The Divider is used to divide the portion of the area considered and not considered
-	 */
-	static final int DIVIDER = (int) (100. / 320. * CAMERA_WIDTH);
-
-	/**
-	 * A Calibration Factor to ensure that a full ring is detected
-	 */
-	static final int MINIMUM_WIDTH = (int) (50. / 320. * CAMERA_WIDTH);
-
-	/**
-	 * A Factor Used to determine the height of a stack of rings
-	 */
-	static final double HEIGHT_FACTOR = 0.7;
-
-	/**
-	 * This will store the value of the height of the stack to allow us to know where to move the robot.
-	 */
-	private volatile Height height = Height.A;
 
 	Mat yCrCb = new Mat();
 	
@@ -185,7 +205,9 @@ public class RingHeightPipeline extends OpenCvPipeline {
 
 		// Only Study the Portion of the Mat within the rectangle (x and y might be swapped
 		// TODO: Change the rectangle value to the value that we want to use (FOR TESTING PURPOSES ONLY)
-		Rect studyRectangle = new Rect(new Point(140, 150), new Point(240, 195));
+		Rect studyRectangle = trimPhoto
+							? new Rect(new Point(140, 150), new Point(240, 195))
+							: new Rect(new Point(0, 0), new Point(240, 320));
 		Mat toStudy = new Mat(mask, studyRectangle);
 		Mat inputSmaller = new Mat(input, studyRectangle);
 
@@ -273,7 +295,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 //		return mask;
 		Imgproc.resize(toStudy, toStudy, new Size(240, 320));
 		Imgproc.resize(inputSmaller, inputSmaller, new Size(240, 320));
-		return inputSmaller;
+		return toStudy;
 	}
 
 	public Height getHeight() {
