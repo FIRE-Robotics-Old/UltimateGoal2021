@@ -52,28 +52,11 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	/**
 	 * This is the minimum threshold for Yellow/Orange which we will detect
 	 */
-//	static final Scalar YELLOW_MINIMUM = new Scalar(50, 44.5, 30); //TODO: Fine Tune
-	//Scalar YELLOW_MINIMUM = new Scalar(140, 130, 83); //TODO: Fine Tune
-	//Scalar YELLOW_MINIMUM = new Scalar(130, 160, 30);
-    //rgb(156, 89, 60)
-	//165 150 95
 	int rstart = 0;
 	int gstart = 100;
 	int bstart = 40;
 	// FOUR STACK: (0, 100, 35)
 	Scalar YELLOW_MINIMUM = new Scalar(rstart, gstart, bstart);
-	//145 165 165
-	// 161 155 155
-
-	//165 190 180
-	//180
-
-	//165 150 95
-	//145 165 165
-	// 161 155 155
-
-	//165 190 180
-	//180
 	/**
 	 * This is the maximum threshold for Yellow/Orange which we will detect
 	 */
@@ -255,7 +238,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		//                                              There is only     There is a full
 		//                                                one ring         stack of ring
 
-		updateMin();
+		//updateMin();
 //		telemetry.addData("Min",YELLOW_MINIMUM);
 //		telemetry.addData("Max", YELLOW_MAXIMUM);
 //		if (height == Height.C){

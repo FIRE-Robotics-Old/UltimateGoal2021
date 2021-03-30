@@ -4,16 +4,19 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 //import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 //import org.firstinspires.ftc.teamcode.java.fieldmapping.ActiveLocation;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.util.*;
 import org.firstinspires.ftc.teamcode.java.vision.HeightDetector;
 import org.firstinspires.ftc.teamcode.java.vision.RingHeightPipeline;
 
+import static org.firstinspires.ftc.teamcode.java.util.Constants.COS_30;
 import static org.firstinspires.ftc.teamcode.java.util.Constants.TAU;
 import static org.firstinspires.ftc.teamcode.java.util.Constants.cornerAB;
 import static org.firstinspires.ftc.teamcode.java.util.Constants.lowerWobbleDown;
@@ -30,9 +33,12 @@ public class BasicRemoteAuton extends LinearOpMode {
     private DcMotor frontLeftMotor;
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
+    private DcMotor intakeAndDelivery;
+    private DcMotorEx rightShooter;
     private DcMotor elevator;
     private Servo wobbleGrip;
     private Servo ringArm;
+    private Servo ringGrabber;
     private BNO055IMU imu;
     private ActiveLocation AL;
     private Thread locationThread;
@@ -46,11 +52,11 @@ public class BasicRemoteAuton extends LinearOpMode {
     private double angleGoal;
     private double yGoal;
     private double minPow = 0.15;
-    private double maxPow = 0.77;
+    private double maxPow = 0.8;
     private double ppd = (maxPow-minPow)/180;
-    private double slowdist = 900; //600
+    private double slowdist = 1000; //600
     private double ppdst = (maxPow-minPow)/slowdist;
-    private double startdist = 100;
+    private double startdist = 150;
     private double powerFator = 0.3;
 //    private PathFinder PF;
 //    private Thread pathThread;
@@ -67,6 +73,11 @@ public class BasicRemoteAuton extends LinearOpMode {
         frontRightMotor = robot.frontRightMotor;
         backRightMotor = robot.backRightMotor;
         backLeftMotor = robot.backLeftMotor;
+        intakeAndDelivery = robot.intakeAndDelivery;
+        rightShooter = robot.rightShooter;
+
+
+
 
 //        elevator = hardwareMap.get(DcMotor.class, "Elevator");
 //	    elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -75,7 +86,8 @@ public class BasicRemoteAuton extends LinearOpMode {
 
 
         wobbleGrip = hardwareMap.get(Servo.class, "wobbleGrip");
-//        ringArm = hardwareMap.get(Servo.class, "ringArm");
+        ringArm = hardwareMap.get(Servo.class, "ringArm");
+        ringGrabber = hardwareMap.get(Servo.class, "ringGrabber");
 
 //        colorSensor = hardwareMap.get(RevColorSensorV3.class,"colorSensor");
 //        if (colorSensor instanceof SwitchableLight) {
@@ -105,19 +117,75 @@ public class BasicRemoteAuton extends LinearOpMode {
             double currentTime = 0;
             //wobbleGrip.setPosition(Constants.lowerWobbleDown);
             AL.setStartPosition(0, 0,0);
-
+            ringGrabber.setPosition(0);
             //Path B:
-
+//            rightShooter.setPower(Constants.highGoalPower);
+            //ENCODERS!!!!
+            //rightShooter.setVelocity(95);
+            rightShooter.setVelocity(20,AngleUnit.RADIANS);
 	        wobbleGrip.setPosition(Constants.lowerWobbleDown);
+
+//	        moveX(-600);
+//	        sleep(100);
+//	        turnTo(5);
+//	        double recoveryTime = 0;
+//	        double it = 0;
+//	        double last = 0;
+//	        while (runtime.milliseconds()<25000){
+//	            if (rightShooter.getPower() >= Constants.highGoalPower){
+//	                telemetry.speak("ready");
+//	                if (runtime.milliseconds()-last>1){
+//                        recoveryTime+=(runtime.milliseconds()-last);
+//                        last = runtime.milliseconds();
+//                        it++;
+//                    }
+//                }
+//            }
+//	        telemetry.addData("RecoveryTime",(recoveryTime/it));
+
+//	        for (int num = 0; num<3; num++) {
+//                while(rightShooter.getPower()<0.77){
+//
+//                }
+//                intakeAndDelivery.setPower(Constants.deliveryPower);
+//                sleep(2000);
+//                intakeAndDelivery.setPower(0);
+//                sleep(1000);
+//            }
+//            sleep(25000);
+//            rightShooter.setPower(0);
+            moveY(152);
+            turnTo(18.5);
+            while(runtime.milliseconds()<5500 || rightShooter.getVelocity(AngleUnit.RADIANS) > 490){
+
+            }
+            intakeAndDelivery.setPower(-.7);
+            sleep(2500);
+            ringGrabber.setPosition(0.3);
+            sleep(5000);
+
+            //ringArm.setPosition(1);
+//            turnTo(0);
+            //sleep(100);
+            intakeAndDelivery.setPower(0);
+//            moveX(0);
+            rightShooter.setPower(0);
+//            moveY(Constants.navLineY);
             switch (position) {
                 case A:
                     PathAB();
+                    telemetry.speak("Case");
+                    break;
+                    //PathC();
                 case B:
                     PathAB();
-                case C:
+                    break;
+                default:
                     PathC();
-
             }
+            telemetry.speak("Done");
+
+            //stop();
 	        //sleep(100);
 	        //moveY(Constants.navLineY);
 
@@ -452,7 +520,7 @@ public class BasicRemoteAuton extends LinearOpMode {
     @Deprecated
     public void turn(double angle){
     	int direct;
-    	if (Math.abs(AL.getAngle()-angle)<3){
+    	if (Math.abs(AL.getAngle()-angle)<2){
     		return;
 	    }
 	    double maxTime = runtime.milliseconds()+500;
@@ -493,38 +561,45 @@ public class BasicRemoteAuton extends LinearOpMode {
 */
     }
     public void PathAB(){
+        telemetry.speak("start");
         wobbleGrip.setPosition(Constants.lowerWobbleDown);
         //sleep(100);
         //moveY(Constants.navLineY);
-        sleep(1000);
+        sleep(100);
         moveY(2000);
         sleep(100);
         moveX(-300);
         wobbleGrip.setPosition(Constants.lowerWobbleUp);
-        telemetry.speak("Wobble one");
         sleep(100);
-        //turnTo(0);
-        moveY(1780);
-        sleep(100);
-        moveX(Constants.wobbleX);
-        sleep(100);
-        turnTo(180);
-        yDirect = -1;
-        xDirect = -1;
-        sleep(1000);
-        moveY(Constants.wobbleY+30);//30
-        sleep(100);
-        moveX(Constants.wobbleX);
-        sleep(100);
-        turnTo(180);
-        sleep(1000);
-        wobbleGrip.setPosition(Constants.lowerWobbleDown);
-        sleep(500);
-        moveX(300);
-        sleep(100);
-        turnTo(180);
-        sleep(100);
-        moveY(Constants.ALowerBorder+300);
+//        telemetry.speak("Wobble one");
+//        sleep(100);
+//        //turnTo(0);
+//        moveY(1780);
+//        sleep(100);
+//        moveX(Constants.wobbleX);
+//        sleep(100);
+//        turnTo(180);
+//        yDirect = -1;
+//        xDirect = -1;
+//        sleep(100);
+//        moveY(Constants.wobbleY+70);//30
+//        sleep(100);
+//        moveX(Constants.wobbleX);
+//        sleep(100);
+//        turnTo(180);
+//        moveY(Constants.wobbleY);
+//        //sleep(00);
+//        wobbleGrip.setPosition(Constants.lowerWobbleDown);
+//        sleep(100);
+//        moveX(250);
+//        sleep(100);
+//        turnTo(180);
+//        sleep(100);
+//        moveY(Constants.ALowerBorder+300);
+//        wobbleGrip.setPosition(Constants.lowerWobbleUp);
+//       //moveY(Constants.ALowerBorder+300);
+//        telemetry.speak("Parked");
+        moveY(Constants.navLineY);
 
     }
     public void PathC(){
@@ -538,33 +613,34 @@ public class BasicRemoteAuton extends LinearOpMode {
         sleep(100);
         wobbleGrip.setPosition(Constants.lowerWobbleUp);
         sleep(1000);
-        moveY(Constants.wobbleY+900);
-        sleep(100);
-        //moveY(Constants.CLowerBorder);
-        //sleep(100);
-        moveX(Constants.wobbleX+80);
-        sleep(100);
-        turnTo(180);
-        yDirect = -1;
-        xDirect = -1;
-        sleep(100);
-//	        moveY(Constants.wobbleY+600);
-//            sleep(100);
-        //moveX(Constants.wobbleX);
-        moveY(Constants.wobbleY+70);
-        sleep(100);
-        turnTo(180);
-        sleep(100);
-        wobbleGrip.setPosition(lowerWobbleDown);
-        sleep(100);
-        moveX(100);
-        sleep(100);
-        turnTo(0);
-        xDirect =1;
-        yDirect = 1;
-        sleep(100);
-        moveY(Constants.CLowerBorder);
-        sleep(100);
+//        moveY(Constants.wobbleY+900);
+//        sleep(100);
+//        //moveY(Constants.CLowerBorder);
+//        //sleep(100);
+//        moveX(Constants.wobbleX+80);
+//        sleep(100);
+//        turnTo(180);
+//        yDirect = -1;
+//        xDirect = -1;
+//        sleep(100);
+////	        moveY(Constants.wobbleY+600);
+////            sleep(100);
+//        //moveX(Constants.wobbleX);
+//        moveY(Constants.wobbleY+70);
+//        sleep(100);
+//        turnTo(180);
+//        sleep(100);
+//        wobbleGrip.setPosition(lowerWobbleDown);
+//        sleep(100);
+//        moveX(100);
+//        sleep(100);
+//        turnTo(0);
+//        xDirect =1;
+//        yDirect = 1;
+//        sleep(100);
+//        moveY(Constants.CLowerBorder);
+//        wobbleGrip.setPosition(Constants.lowerWobbleUp);
+//        sleep(100);
         moveY(Constants.navLineY);
     }
     public void output(String label, double val){

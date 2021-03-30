@@ -48,6 +48,10 @@ public final class Constants {
 	public static final double CLowerBorder = 2600;
 	public static final double wobbleY = 400;
 	public static final double wobbleX = -600;
+	public static final double backAngle = 17;
+
+	public static final double highGoalPower = 1;
+	public static final double deliveryPower = 0.50;
 
 
 		//Hardware constants
