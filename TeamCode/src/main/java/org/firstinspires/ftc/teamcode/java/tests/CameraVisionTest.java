@@ -15,7 +15,7 @@ public class CameraVisionTest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-		RingHeightPipeline pipeline = new RingHeightPipeline(telemetry);
+		RingHeightPipeline pipeline = new RingHeightPipeline(telemetry, false);
 
 	    OpenCvInternalCamera camera;
 	    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
