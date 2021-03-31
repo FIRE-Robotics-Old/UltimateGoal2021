@@ -14,7 +14,7 @@ public class BasicOmnidirectionalTeleOp extends LinearOpMode {
     public DcMotor fR;
     public DcMotor bL;
     public DcMotor bR;
-    public DcMotor liftMotor;
+    //public DcMotor liftMotor;
     private Servo wobbleGrip;
     private Servo wobble2;
     private double open = .9;
@@ -29,7 +29,7 @@ public class BasicOmnidirectionalTeleOp extends LinearOpMode {
         fR = hardwareMap.dcMotor.get("frontRightMotor");
         bL = hardwareMap.dcMotor.get("backLeftMotor");
         bR = hardwareMap.dcMotor.get("backRightMotor");
-        liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
+        //liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
         wobbleGrip = hardwareMap.get(Servo.class, "wobbleGrip");
         wobble2 = hardwareMap.get(Servo.class, "wobble2");
 
@@ -87,14 +87,14 @@ public class BasicOmnidirectionalTeleOp extends LinearOpMode {
                 telemetry.speak("close");
             }
             telemetry.update();
-            if (up>.3 && down <.3){
-                liftMotor.setPower(up);
-            }
-            else if (down>.3 && up <.3){
-                liftMotor.setPower(-1*down);
-            }else{
-                liftMotor.setPower(0);
-            }
+//            if (up>.3 && down <.3){
+//                liftMotor.setPower(up);
+//            }
+//            else if (down>.3 && up <.3){
+//                liftMotor.setPower(-1*down);
+//            }else{
+//                liftMotor.setPower(0);
+//            }
 
 
         }
