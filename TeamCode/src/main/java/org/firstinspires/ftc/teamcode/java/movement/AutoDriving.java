@@ -309,6 +309,9 @@ public class AutoDriving {
     public String errorReport(double x,double y,double z){
         return this.errorReport(MovementData.withDegrees(x,y,z));
     }
+    public Double getAngleInDegrees(){
+        return activeLocation.getAngleInDegrees();
+    }
 
 
     private void setMotorPowers(double[] speeds) {

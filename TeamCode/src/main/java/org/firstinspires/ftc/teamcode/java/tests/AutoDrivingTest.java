@@ -100,7 +100,7 @@ public class AutoDrivingTest extends LinearOpMode {
                 //frontLeftMotor.setPower(.29);
                 autoDriving.setStartLocation(0,0,0);
                 autoDriving.setDefaultErrorRanges(50,100,5);
-                autoDriving.stopAt(new MovementData(0,0,Angle.fromDegrees(90.0)),.5);
+                autoDriving.stopAt(new MovementData(0,0,Angle.fromDegrees(180.0)),.90);
                 movement +=1; //??? Might cause issue
                 //autoDriving.driveX(600);
 //                autoDriving.stopAt(MovementData.withDegrees(-600, 00,0), .3);
@@ -138,14 +138,14 @@ public class AutoDrivingTest extends LinearOpMode {
                 //String report = autoDriving.errorReport(new MovementData(600, 600, 90));
                 //telemetry.addData("Error Report", report);
                 //telemetry.speak("Hello" + stat);
-            /*telemetry.addData("Angle", PIDF.getAngleErrorDegrees());
-            telemetry.addData("FL", frontLeftMotor.getPower());
+            telemetry.addData("Angle", autoDriving.getAngleInDegrees());
+            /*telemetry.addData("FL", frontLeftMotor.getPower());
             telemetry.addData("FR", frontRightMotor.getPower());
             telemetry.addData("BL", backLeftMotor.getPower());
             telemetry.addData("BR", backRightMotor.getPower());
 
              */
-                //telemetry.update();
+                telemetry.update();
                 //sleep(200);
 
                 if (runtime.milliseconds() >= 29000 || movement>1) {
