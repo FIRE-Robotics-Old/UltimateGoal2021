@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.java.util.Goal;
 import org.firstinspires.ftc.teamcode.java.util.GoalPosition;
-import org.firstinspires.ftc.teamcode.java.util.PositionControl.PositionPidfController;
+import org.firstinspires.ftc.teamcode.java.util.PositionControl.PidfController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.java.util.Side;
 
@@ -29,7 +29,7 @@ public class AutoAdjusting {
 
 	private final ActiveLocation    activeLocation;
 
-	private final PositionPidfController PidfYaw, PidfPitch;
+	private final PidfController PidfYaw, PidfPitch;
 
 	public double deltaX            = 0;
 	public double deltaY            = 0;
@@ -58,8 +58,8 @@ public class AutoAdjusting {
 		this.activeLocation = activeLocation;
 
 		// TODO: Calibrate turn and Pitch Values
-		this.PidfYaw    = new PositionPidfController(0.35, 0.00000, 0.395, 0);
-		this.PidfPitch  = new PositionPidfController(1,0,0,1);
+		this.PidfYaw    = new PidfController(0.35, 0.00000, 0.395, 0);
+		this.PidfPitch  = new PidfController(1,0,0,1);
 
 		this.side = side;
 		activeGoal = GoalPosition.generate(side, initialGoal);
