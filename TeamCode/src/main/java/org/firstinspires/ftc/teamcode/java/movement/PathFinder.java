@@ -165,12 +165,12 @@ public class PathFinder implements Runnable {
         //subtract angles to figure out direction?
         synchronized (this) {
             if (activeLocation == null || destination == null) return;
-            aToMove = (destination.getAngleInRadians() - activeLocation.getAngle());
-            if (aToMove > PI) {
-                aToMove = -(TAU - aToMove);
-            } else if (aToMove < -PI) {
-                aToMove = -(TAU - Math.abs(aToMove));
-            }
+            aToMove = Angle.fromRadians(destination.getAngleInRadians() - Angle.fromRadians(activeLocation.getAngle()).getAngleInRadians()).getAngleInRadians();
+//            if (aToMove > PI) {
+//                aToMove = -(TAU - aToMove);
+//            } else if (aToMove < -PI) {
+//                aToMove = -(TAU - Math.abs(aToMove));
+//            }
         }
     }
 

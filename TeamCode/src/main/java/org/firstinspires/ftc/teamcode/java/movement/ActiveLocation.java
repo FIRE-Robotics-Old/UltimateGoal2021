@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.java.movement;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
@@ -134,7 +137,7 @@ public class ActiveLocation implements Runnable {
     private void updateSensors() {
         yEncoder = yDirectionEncoder.getCurrentPosition();
         xEncoder = xDirectionEncoder.getCurrentPosition();
-        angle = ((imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle) + startAngle - resetAngle);
+        angle = ((imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle) + startAngle - resetAngle);
         angle = ((angle + (2 * Math.PI)) % (2 * Math.PI));
     }
 
