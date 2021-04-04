@@ -12,6 +12,10 @@ public class Angle {
 		this.angle = angle;
 	}
 
+	public Angle makePositive() {
+		return new Angle(angle < 0 ? -angle : angle);
+	}
+
 	public static Angle fromDegrees(double angle, boolean reflectDirection) {
 		return new Angle((reflectDirection ? -1 : 1) * Math.toRadians(angle % 360));
 	}

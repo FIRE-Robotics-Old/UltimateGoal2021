@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.java.drivebase.MecanumDrive;
 import org.firstinspires.ftc.teamcode.java.util.Angle;
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
@@ -48,6 +49,8 @@ public class AutoDrivingNew {
 	 * The default Error Ranges for Rotational Movement as an {@link Angle} in case it is not passed through
 	 */
 	private Angle defaultErrorAngle = Angle.fromDegrees(5);
+
+	public Telemetry telemetry;
 
 	/**
 	 * The Basic Constructor to Create a Basic Instance of AutoDriving
@@ -119,6 +122,22 @@ public class AutoDrivingNew {
 		pathThread.start();
 	}
 
+	public double getDefaultMaxVelocity() {
+		return defaultMaxVelocity;
+	}
+
+	public double getDefaultErrorX() {
+		return defaultErrorX;
+	}
+
+	public double getDefaultErrorY() {
+		return defaultErrorY;
+	}
+
+	public Angle getDefaultErrorAngle() {
+		return defaultErrorAngle;
+	}
+
 	/**
 	 * Set the start location for the Robot
 	 * @param startLocation the new start location
@@ -142,7 +161,7 @@ public class AutoDrivingNew {
 	public void setDefaultErrorRanges(MovementData errorRanges) {
 		this.defaultErrorX = errorRanges.getX();
 		this.defaultErrorY = errorRanges.getY();
-		this.defaultErrorAngle = errorRanges.getAngle();
+		this.defaultErrorAngle = errorRanges.getAngle().makePositive();
 	}
 
 	/**
@@ -263,11 +282,11 @@ public class AutoDrivingNew {
 	 * @return whether or not the robot is within a reasonable error range
 	 */
 	private boolean arrivedAt(MovementData goal, double errorX, double errorY, Angle errorAngle) {
-		return  Math.abs(activeLocation.getFieldX() - goal.getX()) < errorX &&
-				Math.abs(activeLocation.getFieldY() - goal.getY()) < errorY &&
+		return  Math.abs(activeLocation.getFieldX() - goal.getX()) <= errorX &&
+				Math.abs(activeLocation.getFieldY() - goal.getY()) <= errorY &&
 				Math.abs(
 						activeLocation.getAngle() - goal.getAngleInRadians()
-				) < errorAngle.getAngleInRadians();
+				) <= errorAngle.getAngleInRadians();
 	}
 
 	/**

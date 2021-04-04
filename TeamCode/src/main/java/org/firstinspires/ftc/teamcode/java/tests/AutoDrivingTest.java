@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDrivingNew;
 import org.firstinspires.ftc.teamcode.java.util.*;
 
@@ -67,6 +68,8 @@ public class AutoDrivingTest extends LinearOpMode {
         //PIDFTurn = new PIDFController(0, 0, 0, 0); //38
 
         autoDriving = new AutoDrivingNew(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
+        //autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn,robot);
+
 
 
         telemetry.addData("Status", "Initialized");
@@ -100,11 +103,13 @@ public class AutoDrivingTest extends LinearOpMode {
                 //frontLeftMotor.setPower(.29);
 	            autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
 //                autoDriving.setStartLocation(0,0,0);
-	            autoDriving.setDefaultErrorRanges(new MovementData(50, 100, Angle.fromDegrees(7)));
+	            autoDriving.setDefaultErrorRanges(new MovementData(500, 600, Angle.fromDegrees(5, false)));
+	            autoDriving.telemetry = telemetry;
+	            telemetry.speak("" + autoDriving.getDefaultErrorY());
 //                autoDriving.setDefaultErrorRanges(50,100,7);
-	            autoDriving.stopAt(new MovementData(0, 0, Angle.fromDegrees(0)), 0.9);
+	            autoDriving.stopAt(new MovementData(0, 600, Angle.fromDegrees(0)), 0.9);
 //                autoDriving.stopAt(new MovementData(0,0,Angle.fromDegrees(0)),.90);
-//                movement +=1; //??? Might cause issue
+                movement +=1; //??? Might cause issue
                 //autoDriving.driveX(600);
 //                autoDriving.stopAt(MovementData.withDegrees(-600, 00,0), .3);
 //                sleep(1000);
@@ -151,7 +156,7 @@ public class AutoDrivingTest extends LinearOpMode {
                 telemetry.update();
                 //sleep(200);
 
-                if (runtime.milliseconds() >= 29000 || movement>1) {
+                if (runtime.milliseconds() >= 29000 || movement>=1) {
                     location = false;
                     frontRightMotor.setPower(0);
                     frontLeftMotor.setPower(0);
