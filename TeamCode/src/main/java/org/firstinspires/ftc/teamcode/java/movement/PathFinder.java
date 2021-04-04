@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.java.movement;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.java.util.*;
 
 import static org.firstinspires.ftc.teamcode.java.util.Constants.PI;
@@ -165,7 +166,7 @@ public class PathFinder implements Runnable {
         //subtract angles to figure out direction?
         synchronized (this) {
             if (activeLocation == null || destination == null) return;
-            aToMove = Angle.fromRadians(destination.getAngleInRadians() - Angle.fromRadians(activeLocation.getAngle()).getAngleInRadians()).getAngleInRadians();
+            aToMove = Angle.fromRadians(destination.getAngleInRadians() - Angle.fromRadians(activeLocation.getAngle()).getAngleInRadians()).getTrimmedAngleInRadians();
 //            if (aToMove > PI) {
 //                aToMove = -(TAU - aToMove);
 //            } else if (aToMove < -PI) {

@@ -43,7 +43,7 @@ public class Angle {
 	public double getTrimmedAngleInRadians() {
 		if (angle > PI) {
 			return angle - TAU;
-		} else if (angle <= PI) {
+		} else if (angle < -PI) {
 			return angle + TAU;
 		} else return angle;
 	}

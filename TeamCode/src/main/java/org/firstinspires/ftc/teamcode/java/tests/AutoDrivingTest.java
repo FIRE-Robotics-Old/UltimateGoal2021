@@ -70,8 +70,6 @@ public class AutoDrivingTest extends LinearOpMode {
         autoDriving = new AutoDrivingNew(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
         //autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn,robot);
 
-
-
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -103,11 +101,9 @@ public class AutoDrivingTest extends LinearOpMode {
                 //frontLeftMotor.setPower(.29);
 	            autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
 //                autoDriving.setStartLocation(0,0,0);
-	            autoDriving.setDefaultErrorRanges(new MovementData(500, 600, Angle.fromDegrees(5, false)));
-	            autoDriving.telemetry = telemetry;
-	            telemetry.speak("" + autoDriving.getDefaultErrorY());
+	            autoDriving.setDefaultErrorRanges(new MovementData(500, 600, Angle.fromDegrees(7, false)));
 //                autoDriving.setDefaultErrorRanges(50,100,7);
-	            autoDriving.stopAt(new MovementData(0, 600, Angle.fromDegrees(0)), 0.9);
+	            autoDriving.stopAt(new MovementData(0, 600, Angle.fromDegrees(90)), 0.9);
 //                autoDriving.stopAt(new MovementData(0,0,Angle.fromDegrees(0)),.90);
                 movement +=1; //??? Might cause issue
                 //autoDriving.driveX(600);
@@ -179,6 +175,8 @@ public class AutoDrivingTest extends LinearOpMode {
             //PF.stop();
         } catch (Exception e) {
             telemetry.addData("error:", e.getStackTrace());
+            telemetry.addData("Cause", e.getCause());
+            telemetry.addData("Message", e.getMessage());
             telemetry.addData("bob", location);
             telemetry.update();
             //AL.Stop();
