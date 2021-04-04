@@ -68,6 +68,7 @@ public class AutoDrivingTest extends LinearOpMode {
         //PIDFTurn = new PIDFController(0, 0, 0, 0); //38
 
         autoDriving = new AutoDrivingNew(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
+        autoDriving.telemetry = telemetry;
         //autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn,robot);
 
         telemetry.addData("Status", "Initialized");

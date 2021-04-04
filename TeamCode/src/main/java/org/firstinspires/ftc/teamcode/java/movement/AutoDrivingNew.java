@@ -50,6 +50,8 @@ public class AutoDrivingNew {
 	 */
 	private Angle defaultErrorAngle = Angle.fromDegrees(5);
 
+	public Telemetry telemetry;
+
 	/**
 	 * The Basic Constructor to Create a Basic Instance of AutoDriving
 	 * @param drivePid the forward and reverse {@link PidfController}
