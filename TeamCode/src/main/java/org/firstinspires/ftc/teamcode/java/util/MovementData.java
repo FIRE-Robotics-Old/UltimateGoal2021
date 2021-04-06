@@ -72,6 +72,8 @@ public final class MovementData {
         return angle.getAngleInRadians();
     }
 
+    public double getTrimAngleInRadians(){return angle.getTrimmedAngleInRadians();}
+
     public double getAngleInDegrees() {
         return angle.getAngleInDegrees();
     }

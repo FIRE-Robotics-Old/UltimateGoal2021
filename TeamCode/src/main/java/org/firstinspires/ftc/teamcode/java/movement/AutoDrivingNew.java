@@ -282,6 +282,14 @@ public class AutoDrivingNew {
 	 * @return whether or not the robot is within a reasonable error range
 	 */
 	private boolean arrivedAt(MovementData goal, double errorX, double errorY, Angle errorAngle) {
+		telemetry.addData("Error X", activeLocation.getFieldX() - goal.getX());
+		telemetry.addData("Status X ",Math.abs(activeLocation.getFieldX() - goal.getX()) <= errorX);
+		telemetry.addData("ErrorY", activeLocation.getFieldY() - goal.getY());
+		telemetry.addData("Status Y ", Math.abs(activeLocation.getFieldY() - goal.getY()) <= errorY);
+		telemetry.addData("Error Aaaa", goal.getAngleInRadians());
+		telemetry.addData("Status A ", Math.abs(activeLocation.getAngle() - goal.getAngleInRadians()) <= errorAngle.getAngleInRadians());
+		telemetry.addData("Angle",activeLocation.getAngle());
+		telemetry.update();
 		return  Math.abs(activeLocation.getFieldX() - goal.getX()) <= errorX &&
 				Math.abs(activeLocation.getFieldY() - goal.getY()) <= errorY &&
 				Math.abs(

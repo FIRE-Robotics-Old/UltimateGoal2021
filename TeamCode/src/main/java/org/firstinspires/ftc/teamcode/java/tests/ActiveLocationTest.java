@@ -75,12 +75,12 @@ public class ActiveLocationTest extends LinearOpMode {
             telemetry.update();
         }*/
             while (opModeIsActive()) {
-//                telemetry.addData("X", activeLocation.getFieldX());
+                //telemetry.addData("X", activeLocation.getFieldX());
 //                telemetry.addData("Y", activeLocation.getFieldY());
 ////                telemetry.addData("Angle", Math.toDegrees(imu.getAngularOrientation().firstAngle));
 ////                telemetry.addData("Pain", activeLocation.getAngleInDegrees());
 //	            telemetry.addData("Angle", imu.getAngularOrientation().firstAngle);
-//	            telemetry.addData("Pain", activeLocation.getAngle());
+	            telemetry.addData("Pain", activeLocation.getAngle());
 	            pathFinder.getEncoderPath();
 //	            telemetry.addData("Path: ", pathFinder.getEncoderPath());
 //                telemetry.addData("Raw SPain", pathFinder.getEncoderPath().getAngleInDegrees());
