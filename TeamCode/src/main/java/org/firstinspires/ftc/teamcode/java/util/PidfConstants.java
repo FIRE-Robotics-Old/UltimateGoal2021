@@ -8,7 +8,7 @@ public final class PidfConstants {
 	public static final PidfController USStrafe = new PidfController(0, 0, 0, 0);
 	//public static final PIDFController USStrafe = new PIDFController(0.00125, 0, 0, 0);
 	//public static final PidfController USTurn = new PidfController(0, 0, 0, 0);
-	public static final PidfController USTurn = new PidfController(0.27, 0, 0./*3695*/, 0); //.35
+	public static final PidfController USTurn = new PidfController(0.1517, 0, 0./*3695*/, 0); //.35
 	//turn decent: 0.27
 		//Israel
 	public static final PidfController ISDrive = new PidfController(0,0,0,0);
