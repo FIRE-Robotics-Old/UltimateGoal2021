@@ -141,6 +141,8 @@ public class ActiveLocation implements Runnable {
         angle = ((angle + (2 * Math.PI)) % (2 * Math.PI));
     }
 
+    //"-" is there because directions are backwards    /
+
     /**
      * Updates the current position of the Robot on the Field
      *

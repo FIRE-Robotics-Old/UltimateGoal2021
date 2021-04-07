@@ -53,12 +53,12 @@ public class PathFinder implements Runnable {
         this.activeLocation = activeLocation;
     }
 
-    /**
-     * Construct a PathFinder object using the destination and the current location
-     *
-     * @param activeLocation the Active Location of the Robot
-     * @param destination the Destination the Robot needs to travel to
-     */
+
+    public double getaToMove(){
+        return aToMove;
+    }
+
+
     public PathFinder(ActiveLocation activeLocation, MovementData destination) {
         this.activeLocation = activeLocation;
         this.destination = destination;
@@ -181,7 +181,7 @@ public class PathFinder implements Runnable {
     public MovementData getEncoderPath() {
         updateEncoderPath();
         //calculateTurn();
-        return MovementData.withRadians(xToMove, yToMove, aToMove);
+        return new MovementData(xToMove, yToMove, Angle.fromRadians(aToMove, false));
     }
 
 

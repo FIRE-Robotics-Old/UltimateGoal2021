@@ -17,7 +17,7 @@ public class Angle {
 	}
 
 	public static Angle fromDegrees(double angle, boolean reflectDirection) {
-		return new Angle((reflectDirection ? -1 : 1) * Math.toRadians(angle % 360));
+		return fromRadians(Math.toRadians(angle), reflectDirection);
 	}
 
 	public static Angle fromDegrees(double angle) {
@@ -25,7 +25,9 @@ public class Angle {
 	}
 
 	public static Angle fromRadians(double angle, boolean reflectDirection) {
-		return new Angle((reflectDirection ? -1 : 1) * (angle % (TAU)));
+		// If Angle < 0, We want to maintain the sign but fix the modulus, which means that we reflect
+		// it again, use the modulus, and undo the reflection. Otherwise, simply apply the modulus operation.
+		return new Angle((reflectDirection ? -1 : 1) * (angle < 0 ? -((-angle) % TAU) : (angle % TAU)));
 	}
 
 	public static Angle fromRadians(double angle) {

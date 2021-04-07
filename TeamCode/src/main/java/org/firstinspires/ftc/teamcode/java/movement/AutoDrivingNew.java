@@ -289,6 +289,7 @@ public class AutoDrivingNew {
 		telemetry.addData("Error Aaaa", goal.getAngleInRadians());
 		telemetry.addData("Status A ", Math.abs(activeLocation.getAngle() - goal.getAngleInRadians()) <= errorAngle.getAngleInRadians());
 		telemetry.addData("Angle",activeLocation.getAngle());
+		telemetry.addData("Angle Error", pathFinder.getEncoderPath().getAngleInRadians());
 		telemetry.update();
 		return  Math.abs(activeLocation.getFieldX() - goal.getX()) <= errorX &&
 				Math.abs(activeLocation.getFieldY() - goal.getY()) <= errorY &&
