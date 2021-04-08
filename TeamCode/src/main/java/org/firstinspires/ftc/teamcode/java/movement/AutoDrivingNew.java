@@ -282,20 +282,24 @@ public class AutoDrivingNew {
 	 * @return whether or not the robot is within a reasonable error range
 	 */
 	private boolean arrivedAt(MovementData goal, double errorX, double errorY, Angle errorAngle) {
-		telemetry.addData("Error X", activeLocation.getFieldX() - goal.getX());
-		telemetry.addData("Status X ",Math.abs(activeLocation.getFieldX() - goal.getX()) <= errorX);
-		telemetry.addData("ErrorY", activeLocation.getFieldY() - goal.getY());
-		telemetry.addData("Status Y ", Math.abs(activeLocation.getFieldY() - goal.getY()) <= errorY);
-		telemetry.addData("Error Aaaa", goal.getAngleInRadians());
-		telemetry.addData("Status A ", Math.abs(activeLocation.getAngle() - goal.getAngleInRadians()) <= errorAngle.getAngleInRadians());
+//		telemetry.addData("Error X", activeLocation.getFieldX() - goal.getX());
+//		telemetry.addData("Status X ",Math.abs(activeLocation.getFieldX() - goal.getX()) <= errorX);
+//		telemetry.addData("ErrorY", activeLocation.getFieldY() - goal.getY());
+//		telemetry.addData("Status Y ", Math.abs(activeLocation.getFieldY() - goal.getY()) <= errorY);
+		telemetry.addData("Error A", goal.getAngleInRadians());
+		telemetry.addData("Status A ", Math.abs(activeLocation.getAngle() - Math.abs(goal.getAngleInRadians())) <= errorAngle.getAngleInRadians());
 		telemetry.addData("Angle",activeLocation.getAngleInDegrees());
 		telemetry.addData("Angle Error", pathFinder.getEncoderPath().getAngleInRadians());
+		telemetry.addData("Error Range", errorAngle.getAngleInRadians());
+		telemetry.addData("Math", Math.abs(activeLocation.getAngle() - goal.getAngleInRadians()));
+
 		telemetry.update();
 		return  Math.abs(activeLocation.getFieldX() - goal.getX()) <= errorX &&
 				Math.abs(activeLocation.getFieldY() - goal.getY()) <= errorY &&
-				Math.abs(
-						activeLocation.getAngle() - goal.getAngleInRadians()
+				Math.abs(//TODO remove positive once angle is implemented in active location
+						activeLocation.getAngle() + goal.getAngleInRadians()
 				) <= errorAngle.getAngleInRadians();
+
 	}
 
 	/**
