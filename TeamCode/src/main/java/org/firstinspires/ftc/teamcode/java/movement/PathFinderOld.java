@@ -1,25 +1,26 @@
 package org.firstinspires.ftc.teamcode.java.movement;
 
-import org.firstinspires.ftc.teamcode.java.util.Angle;
-import org.firstinspires.ftc.teamcode.java.util.Coordinate;
-import org.firstinspires.ftc.teamcode.java.util.MovementData;
-import org.firstinspires.ftc.teamcode.java.util.Vector2d;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.java.util.*;
+
+import static org.firstinspires.ftc.teamcode.java.util.Constants.PI;
+import static org.firstinspires.ftc.teamcode.java.util.Constants.TAU;
 
 
 /**
- * The PathFinder finds the correct path the Robot Needs to Take to move to a different point.
+ * The PathFinderOld finds the correct path the Robot Needs to Take to move to a different point.
  */
-public class PathFinder implements Runnable {
+public class PathFinderOld implements Runnable {
 
-    // TODO: Implement angle calculations in PathFinder
-	// TODO: Remove the Thread from PathFinder
+    // TODO: Implement angle calculations in PathFinderOld
+	// TODO: Remove the Thread from PathFinderOld
 
     /**
      * The ActiveLocation Object to Use for Reference Calculations
      */
-    private final ActiveLocation activeLocation;
+    private final ActiveLocationOld activeLocation;
     /**
-     * The Destination the PathFinder is calculating for
+     * The Destination the PathFinderOld is calculating for
      */
     private MovementData destination;
 
@@ -33,57 +34,57 @@ public class PathFinder implements Runnable {
     private double yToMove = 0;
     /**
      * The Movement Necessary in the θ axis
-     *g
+     *
      * TODO: Change to {@link Angle}?
      */
-    private Angle aToMove = Angle.fromRadians(0);
+    private double aToMove = 0;
 
     /**
-     * A Boolean to Determine if PathFinder is Still Running
+     * A Boolean to Determine if PathFinderOld is Still Running
      */
     private volatile boolean isRunning = true;
 
     /**
-     * Construct a PathFinder without a Destination
+     * Construct a PathFinderOld without a Destination
      *
      * @param activeLocation the Active Location of the Robot
      */
-    public PathFinder(ActiveLocation activeLocation) {
+    public PathFinderOld(ActiveLocationOld activeLocation) {
         this.activeLocation = activeLocation;
     }
 
 
-    public Angle getNecessaryMovement(){
+    public double getaToMove(){
         return aToMove;
     }
 
 
-    public PathFinder(ActiveLocation activeLocation, MovementData destination) {
+    public PathFinderOld(ActiveLocationOld activeLocation, MovementData destination) {
         this.activeLocation = activeLocation;
         this.destination = destination;
     }
 
     /**
-     * Constructs PathFinder without an Angle
+     * Constructs PathFinderOld without an Angle
      *
      * @param activeLocation the Active Location of the Robot
      * @param x the destination x coordinate
      * @param y the destination y coordinate
      */
-    public PathFinder(ActiveLocation activeLocation, double x, double y) {
+    public PathFinderOld(ActiveLocationOld activeLocation, double x, double y) {
         // TODO: Should the default angle be zero or the current angle?
-        this(activeLocation, new MovementData(x, y, activeLocation.getAngle()));
+        this(activeLocation, new MovementData(x, y, Angle.fromDegrees(0)));
     }
 
     /**
-     * Constructs a PathFinder without Abstraction of MovementData
+     * Constructs a PathFinderOld without Abstraction of MovementData
      *
      * @param activeLocation the Active Location of the Robot
      * @param x the destination x coordinate
      * @param y the destination y coordinate
      * @param angle the destination angle
      */
-    public PathFinder(ActiveLocation activeLocation, double x, double y, Angle angle) {
+    public PathFinderOld(ActiveLocationOld activeLocation, double x, double y, Angle angle) {
         this(activeLocation, new MovementData(x, y, angle));
     }
 
@@ -115,7 +116,7 @@ public class PathFinder implements Runnable {
      * @param y the destination y coordinate
      */
     public void setDestination(double x, double y) {
-        this.setDestination(new MovementData(x, y, Angle.fromRadians(0)));
+        this.setDestination(MovementData.withDegrees(x, y, 0));
     }
 
     // TODO: Add more consistent naming (rotation → Angle or alpha)
@@ -126,8 +127,8 @@ public class PathFinder implements Runnable {
      * @param y the destination y coordinate
      * @param rotation the destination angle
      */
-    public void setDestination(double x, double y, Angle rotation) {
-        this.setDestination(new MovementData(x, y, rotation));
+    public void setDestination(double x, double y, double rotation) {
+        this.setDestination(MovementData.withDegrees(x, y, rotation));
     }
 
     /**
@@ -151,8 +152,8 @@ public class PathFinder implements Runnable {
             final double deltaX = destination.getX() - activeLocation.getFieldX();
             final double deltaY = destination.getY() - activeLocation.getFieldY();
 
-            xToMove = deltaX * Math.cos(activeLocation.angle.getAngleInRadians()) + deltaY * Math.sin(activeLocation.angle.getAngleInRadians());
-            yToMove = deltaY * Math.cos(activeLocation.angle.getAngleInRadians()) - deltaX * Math.sin(activeLocation.angle.getAngleInRadians());
+            xToMove = deltaX * Math.cos(activeLocation.angle) + deltaY * Math.sin(activeLocation.angle);
+            yToMove = deltaY * Math.cos(activeLocation.angle) - deltaX * Math.sin(activeLocation.angle);
             calculateTurn();
         }
     }
@@ -165,7 +166,12 @@ public class PathFinder implements Runnable {
         //subtract angles to figure out direction?
         synchronized (this) {
             if (activeLocation == null || destination == null) return;
-            aToMove = Angle.fromRadians(destination.getAngleInRadians() - activeLocation.getAngleInRadians());
+            aToMove = Angle.fromRadians(destination.getAngleInRadians() - Angle.fromRadians(activeLocation.getAngle()).getAngleInRadians()).getTrimmedAngleInRadians();
+//            if (aToMove > PI) {
+//                aToMove = -(TAU - aToMove);
+//            } else if (aToMove < -PI) {
+//                aToMove = -(TAU - Math.abs(aToMove));
+//            }
         }
     }
 
@@ -174,8 +180,8 @@ public class PathFinder implements Runnable {
      */
     public MovementData getEncoderPath() {
         updateEncoderPath();
-        //TODO Check if correct Angle is returned for aToMove
-        return new MovementData(xToMove, yToMove, aToMove);
+        //calculateTurn();
+        return new MovementData(xToMove, yToMove, Angle.fromRadians(aToMove, false));
     }
 
 
@@ -196,7 +202,7 @@ public class PathFinder implements Runnable {
     }
 
     /**
-     * Constantly Updates Encoder Path in PathFinder
+     * Constantly Updates Encoder Path in PathFinderOld
      *
      * TODO: Check if keeping this in a thread is really necessary
      */
