@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode.java.movement;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.java.util.Angle;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.java.util.MovementData;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
-import static org.firstinspires.ftc.teamcode.java.util.Constants.*;
 
 
 /**
@@ -15,7 +16,7 @@ import static org.firstinspires.ftc.teamcode.java.util.Constants.*;
  * This, along with a PathFinder, helps create a Field Mapping to allow us to
  * accurately move to specific positions in autonomous.
  */
-public class ActiveLocation implements Runnable {
+public class ActiveLocationOld implements Runnable {
 
     // Hardware setup
     private final BNO055IMU imu;
@@ -31,9 +32,9 @@ public class ActiveLocation implements Runnable {
     // Used for sensor values
     private double yEncoder = 0;
     private double xEncoder = 0;
-    Angle angle = Angle.fromRadians(0);
-    Angle resetAngle = Angle.fromRadians(0);
-    Angle startAngle = Angle.fromRadians(0);
+    double angle = 0;
+    double resetAngle = 0;
+    double startAngle = 0;
 
     // Field location
     double fieldXPosition = 0;
@@ -44,14 +45,16 @@ public class ActiveLocation implements Runnable {
 
     // Static values for calculations
     final static double tickPerRotation = 8192;
-    final static double wheelCircumference = 90 * PI;
+    final static double wheelCircumference = 90 * Math.PI;
+
+    double startX;
 
     /**
      * Creates an Active Location Tracker for the Robot given by a {@link RobotHardware}
      *
      * @param robot the HardwareMap set of the Robot
      */
-    public ActiveLocation(RobotHardware robot){
+    public ActiveLocationOld(RobotHardware robot){
         yDirectionEncoder = robot.frontLeftMotor;
         xDirectionEncoder = robot.backRightMotor;
         imu = robot.imu;
@@ -64,7 +67,7 @@ public class ActiveLocation implements Runnable {
      * @param yDirectionEncoder the encoder set up in the Y Direction
      * @param gyroscope the imu (aka gyroscope) to determine the angle of the robot
      */
-    public ActiveLocation(DcMotor xDirectionEncoder, DcMotor yDirectionEncoder, BNO055IMU gyroscope) {
+    public ActiveLocationOld(DcMotor xDirectionEncoder, DcMotor yDirectionEncoder, BNO055IMU gyroscope) {
         this.yDirectionEncoder = yDirectionEncoder;
         this.xDirectionEncoder = xDirectionEncoder;
         this.imu = gyroscope;
@@ -106,12 +109,12 @@ public class ActiveLocation implements Runnable {
      *
      * @param startX The current X position mm
      * @param startY The current Y position mm
-     * @param startAngle       The starting angle
+     * @param startAngle       The starting angle in degrees
      */
-    public void setStartPosition(double startX, double startY, Angle startAngle) {
-        this.startAngle = startAngle;
-        this.internalCurrentX = startX * Math.cos(startAngle.getAngleInRadians()) - startY * Math.sin(startAngle.getAngleInRadians());
-        this.internalCurrentY = startX * Math.sin(startAngle.getAngleInRadians()) + startY * Math.cos(startAngle.getAngleInRadians());
+    public void setStartPosition(double startX, double startY, double startAngle) {
+        this.startAngle = Math.toRadians(startAngle);
+        this.internalCurrentX = startX * Math.cos(this.startAngle) - startY * Math.sin(this.startAngle);
+        this.internalCurrentY = startX * Math.sin(this.startAngle) + startY * Math.cos(this.startAngle);
 
 
     }
@@ -120,8 +123,8 @@ public class ActiveLocation implements Runnable {
      * Sets the start position
      * @param location A movement data containing x and y position in mm and the angle in degrees
      */
-    public void setStartPosition(MovementData location) {
-        this.setStartPosition(location.getX(), location.getY(), location.getAngle());
+    public void setStartPosition(MovementData location){
+        this.setStartPosition(location.getX(), location.getY(), location.getAngleInDegrees());
 
     }
 
@@ -134,8 +137,8 @@ public class ActiveLocation implements Runnable {
     private void updateSensors() {
         yEncoder = yDirectionEncoder.getCurrentPosition();
         xEncoder = xDirectionEncoder.getCurrentPosition();
-        angle = Angle.fromRadians(-((imu.getAngularOrientation().firstAngle) + startAngle.getAngleInRadians() - resetAngle.getAngleInRadians()));
-//        angle = ((angle + (2 * Math.PI)) % (2 * Math.PI));
+        angle = -((imu.getAngularOrientation(/*AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS*/).firstAngle) + startAngle - resetAngle);
+        angle = ((angle + (2 * Math.PI)) % (2 * Math.PI));
     }
 
     //"-" is there because directions are backwards    /
@@ -156,8 +159,8 @@ public class ActiveLocation implements Runnable {
         // Change in internal x and y values
         double deltaY = internalCurrentY - internalPreviousY;
         double deltaX = internalCurrentX - internalPreviousX;
-        fieldXPosition += deltaX * Math.cos(angle.getAngleInRadians()) - deltaY * Math.sin(angle.getAngleInRadians());
-        fieldYPosition += deltaX * Math.sin(angle.getAngleInRadians()) + deltaY * Math.cos(angle.getAngleInRadians());
+        fieldXPosition += deltaX * Math.cos(angle) - deltaY * Math.sin(angle);
+        fieldYPosition += deltaX * Math.sin(angle) + deltaY * Math.cos(angle);
     }
 
     /**
@@ -188,7 +191,7 @@ public class ActiveLocation implements Runnable {
      * 
      * @return returns angle
      */
-    public Angle getAngle() {
+    public double getAngle() {
         updateSensors();
         return angle;
     }
@@ -197,24 +200,15 @@ public class ActiveLocation implements Runnable {
      * Get's the Robot's Angle on the field, in degrees
      * @return returns angle in degrees
      */
-    public double getAngleInRadians() {
+    public double getAngleInDegrees(){
         updateSensors();
-        return angle.getAngleInRadians();
-    }
-
-    /**
-     * Get's the Robot's Angle on the field, in degrees
-     * @return returns angle in degrees
-     */
-    public double getAngleInDegrees() {
-        updateSensors();
-        return angle.getAngleInDegrees();
+        return ((Math.toDegrees(angle) + 360) % 360);
     }
 
     /**
      * Takes the current angle and sets that value to 0 in the robots point of view
      */
-    public void resetAngle() {
+    public void resetAngle(){
         updateSensors();
         resetAngle = angle;
     }
