@@ -16,22 +16,22 @@ import static org.firstinspires.ftc.teamcode.java.util.MathUtil.squared;
  */
 public class AutoAdjusting {
 
-	private static final double shooterLength   = 420.69; // Temporary Value
-	private static final double velocityGoal    = 420.69; // Temporary Value
-	private static final double angleOffset     = 45;  // TODO: change it to the real angle offset
-	private static final double maxAngle =  45 ; // TODO:  chang to the angle
-	public  static final Goal initialGoal       = Goal.POWER_SHOT_1;
+	private static final double shooterLength = 420.69; // Temporary Value
+	private static final double velocityGoal = 420.69; // Temporary Value
+	private static final double angleOffset = 45; // TODO: change it to the real angle offset
+	private static final double maxAngle = 45; // TODO: chang to the angle
+	public static final Goal initialGoal = Goal.POWER_SHOT_1;
 
-	private final AnalogInput       potentiometer;
-	private final BNO055IMU         imu;
+	private final AnalogInput potentiometer;
+	private final BNO055IMU imu;
 
-	private final ActiveLocation    activeLocation;
+	private final ActiveLocation activeLocation;
 
 	private final PidfController PidfYaw, PidfPitch;
 
-	public double deltaX            = 0;
-	public double deltaY            = 0;
-	public double deltaZ            = 0;
+	public double deltaX = 0;
+	public double deltaY = 0;
+	public double deltaZ = 0;
 
 	private double shooterRotationPower = 0;
 	private double robotTurnPower = 0;
@@ -41,14 +41,14 @@ public class AutoAdjusting {
 	private int goalPositionIndex = 0;
 
 	public AutoAdjusting(RobotHardware robot, ActiveLocation activeLocation, Side side) {
-		this.potentiometer  = robot.potentiometer;
-		this.imu            = robot.imu;
+		this.potentiometer = robot.potentiometer;
+		this.imu = robot.imu;
 
 		this.activeLocation = activeLocation;
 
 		// TODO: Calibrate turn and Pitch Values
-		this.PidfYaw    = new PidfController(0.35, 0.00000, 0.395, 0);
-		this.PidfPitch  = new PidfController(0,0,0,0);
+		this.PidfYaw = new PidfController(0.35, 0.00000, 0.395, 0);
+		this.PidfPitch = new PidfController(0, 0, 0, 0);
 
 		this.side = side;
 		activeGoal = GoalPosition.generate(side, initialGoal);
@@ -57,20 +57,20 @@ public class AutoAdjusting {
 	private void update() {
 		deltaX = activeGoal.xPosition - activeLocation.getFieldX();
 		deltaY = activeGoal.yPosition - activeLocation.getFieldY();
-		deltaZ = activeGoal.height    - getCurrentHeight();
+		deltaZ = activeGoal.height - getCurrentHeight();
 	}
 
 	public void cycleRight() {
-		goalPositionIndex = activeGoal.side == Side.RED
-				? (goalPositionIndex + 1) % Goal.values().length
-				: (goalPositionIndex + Goal.values().length - 1) % Goal.values().length;
+		goalPositionIndex =
+				activeGoal.side == Side.RED ? (goalPositionIndex + 1) % Goal.values().length
+						: (goalPositionIndex + Goal.values().length - 1) % Goal.values().length;
 		activeGoal = GoalPosition.generate(side, Goal.values()[goalPositionIndex]);
 	}
 
 	public void cycleLeft() {
-		goalPositionIndex = activeGoal.side == Side.BLUE
-				? (goalPositionIndex + 1) % Goal.values().length
-				: (goalPositionIndex + Goal.values().length - 1) % Goal.values().length;
+		goalPositionIndex =
+				activeGoal.side == Side.BLUE ? (goalPositionIndex + 1) % Goal.values().length
+						: (goalPositionIndex + Goal.values().length - 1) % Goal.values().length;
 		activeGoal = GoalPosition.generate(side, Goal.values()[goalPositionIndex]);
 	}
 
@@ -84,34 +84,29 @@ public class AutoAdjusting {
 	/**
 	 * adjusting the yaw angle (using PID)
 	 * <p>
-	 *           X
-	 *     — — — — — — — S
-	 *    |
-	 *    |
-	 * Y  |
-	 *    |
-	 *    |
-	 *    |
+	 * X — — — — — — — S | | Y | | | |
 	 * <p>
 	 * Calculates the angle between the Robot and the Goal and returns the Necessary Adjustment
 	 */
 	public void calculateYawPower() {
-		double currentAngle = activeLocation.getAngle();
-		double yaw          = Math.atan2(deltaX, deltaY);
-		double error        = currentAngle - yaw;
-		robotTurnPower      = PidfYaw.calculate(error);
+		double currentAngle = activeLocation.getAngleInRadians();
+		double yaw = Math.atan2(deltaX, deltaY);
+		double error = currentAngle - yaw;
+		robotTurnPower = PidfYaw.calculate(error);
 	}
 
 	public double getShooterPitchAngle() {
-		return (potentiometer.getVoltage() * 81.8) + angleOffset ;
+		return (potentiometer.getVoltage() * 81.8) + angleOffset;
 	}
 
 	private double getCurrentHeight() {
 		update();
 		double distance = Math.sqrt(squared(deltaX) + squared(deltaY));
 		double theta = getShooterPitchAngle();
-		return  Math.tan(theta) * distance
-				- imu.getGravity().zAccel * distance / (2 * squared(velocityGoal) * squared(Math.cos(theta))) // TODO: Figure out IMU Axis
+		return Math.tan(theta) * distance
+				- imu.getGravity().zAccel * distance
+				// TODO: Figure out IMU Axis
+				/ (2 * squared(velocityGoal) * squared(Math.cos(theta)))
 				+ shooterLength * Math.sin(theta);
 	}
 
@@ -122,8 +117,9 @@ public class AutoAdjusting {
 
 	public double getShooterTurnPower() {
 
-		if(shooterRotationPower > 0 && getShooterPitchAngle() >= maxAngle) {return 0;}//safety check
+		if (shooterRotationPower > 0 && getShooterPitchAngle() >= maxAngle) {
+			return 0;
+		} // safety check
 		return shooterRotationPower;
 	}
 }
-
