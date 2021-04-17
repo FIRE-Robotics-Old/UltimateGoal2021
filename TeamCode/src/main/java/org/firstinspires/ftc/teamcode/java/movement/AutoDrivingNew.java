@@ -62,7 +62,7 @@ public class AutoDrivingNew {
 	 * @param robot the {@link RobotHardware} initiated with a HardwareMap
 	 */
 	public AutoDrivingNew(PidfController drivePid, PidfController strafePid, PidfController turnPid,
-			RobotHardware robot) {
+			RobotHardware robot, Telemetry telemetry) {
 		// Connects PID Controllers with tuned variants
 		this.drivePid = drivePid;
 		this.strafePid = strafePid;
@@ -83,6 +83,7 @@ public class AutoDrivingNew {
 		pathFinder = new PathFinder(activeLocation);
 		pathThread = new Thread(pathFinder);
 		pathThread.start();
+		this.telemetry = telemetry;
 	}
 
 	/**
@@ -299,19 +300,19 @@ public class AutoDrivingNew {
 		// telemetry.addData("ErrorY", activeLocation.getFieldY() - goal.getY());
 		// telemetry.addData("Status Y ", Math.abs(activeLocation.getFieldY() -
 		// goal.getY()) <= errorY);
-		telemetry.addData("Error A", goal.getAngleInRadians());
-		telemetry
-				.addData("Status A ",
-						Math.abs(activeLocation.getAngleInRadians()
-								- Math.abs(goal.getAngleInRadians())) <= errorAngle
-										.getAngleInRadians());
-		telemetry.addData("Angle", activeLocation.getAngleInDegrees());
-		telemetry.addData("Angle Error", pathFinder.getEncoderPath().getAngleInRadians());
-		telemetry.addData("Error Range", errorAngle.getAngleInRadians());
-		telemetry.addData("Math",
-				Math.abs(activeLocation.getAngleInRadians() - goal.getAngleInRadians()));
-
-		telemetry.update();
+//		telemetry.addData("Error A", goal.getAngleInRadians());
+//		telemetry
+//				.addData("Status A ",
+//						Math.abs(activeLocation.getAngleInRadians()
+//								- Math.abs(goal.getAngleInRadians())) <= errorAngle
+//										.getAngleInRadians());
+//		telemetry.addData("Angle", activeLocation.getAngleInDegrees());
+//		telemetry.addData("Angle Error", pathFinder.getEncoderPath().getAngleInRadians());
+//		telemetry.addData("Error Range", errorAngle.getAngleInRadians());
+//		telemetry.addData("Math",
+//				Math.abs(activeLocation.getAngleInRadians() - goal.getAngleInRadians()));
+//
+//		telemetry.update();
 		return Math.abs(activeLocation.getFieldX() - goal.getX()) <= errorX
 				&& Math.abs(activeLocation.getFieldY() - goal.getY()) <= errorY
 				&& Math.abs(activeLocation.getAngleInRadians()
@@ -352,8 +353,15 @@ public class AutoDrivingNew {
 	public double[] calculateDrivePowers(double maxVelocity, double xError, double yError,
 			double angleError) {
 		double strafePower = strafePid.calculate(xError);
+		telemetry.addData("X Error", xError);
+		telemetry.addData("Strafe Power", strafePower);
 		double drivePower = drivePid.calculate(yError);
+		telemetry.addData("Y Error", yError);
+		telemetry.addData("Drive Power", drivePower);
 		double turnPower = turnPid.calculate(angleError);
+		telemetry.addData("Angle Error", angleError);
+		telemetry.addData("Turn Power", turnPower);
+		telemetry.update();
 
 		double[] wheelSpeeds =
 				MecanumDrive.calculateDrivePowers(drivePower, strafePower, turnPower);

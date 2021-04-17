@@ -1,13 +1,37 @@
 package org.firstinspires.ftc.teamcode.java.util;
 
 public final class PidfConstants {
-	//TODO get rid of this in libary
+	//TODO get rid of this in library
 		//US
-	static double max = 0.000656;
-	static double min = 0.00060622;
-	public static double average = (max + min)/2;
+
+	//decent values
+//	static double max = 0.00065444437449;
+//	static double min = 0.000654249921305;
+	//public static double average = (max + min)/2;
+	// Ku 0.00258
+	// Kp  = 0.001548
+	// Ki = 0.00238153846
+	// Kd = 0.00024375
+	public static double average = 0.001465445;
+	// previous value: 0.00765445
+	// previous value: 0.000765445
+	//nice value = 0.00065445 ⇒ Good Value for P
+	/*
+	*
+	* */
+	// https://www.youtube.com/watch?v=nvAQHSe-Ax4
 	//public static final PidfController USDrive = new PidfController(0, 0, 0, 0);
-	public static final PidfController USDrive = new PidfController(average, 0, 0.0/*2605/*125*/, 0);
+	//1st 0.000643555static double max = 0.00065444437449;
+	//	static double min = 0.000654249921305;
+	//2nd 0.0006497775
+	//3rd 0.000652888749
+	//4th 0.00065444437449
+	//5th 0.000653666561745
+	//6th 0.00065405546812
+	//7th 0.000654249921305
+	//public static final PidfController USDrive = new PidfController(average, 0, 0.0/*2605/*125*/, 0);
+	public static final PidfController USDrive = new PidfController( 0.00065445, 0, 0, 0);
+
 	//decent low 0.0005564375
 	//decent high 0.000656
 	//start with .0005564375
