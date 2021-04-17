@@ -70,7 +70,7 @@ public class AutoDrivingTest extends LinearOpMode {
         autoDriving = new AutoDrivingNew(PIDFDrive, PIDFStrafe, PIDFTurn, robot);
         autoDriving.telemetry = telemetry;
         //autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn,robot);
-
+        telemetry.addData("Average", PidfConstants.average);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -97,13 +97,14 @@ public class AutoDrivingTest extends LinearOpMode {
             //telemetry.addData("Angle", AL.getAngle());
             //telemetry.addData("Path: ", PF.getEncoderPath());
             //telemetry.update();
+
             while (opModeIsActive() && !isStopRequested()) {
                 //frontLeftMotor.setPower(.29);
 	            autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
 //                autoDriving.setStartLocation(0,0,0);
-	            autoDriving.setDefaultErrorRanges(new MovementData(500, 600, Angle.fromDegrees(100, false)));
+	            autoDriving.setDefaultErrorRanges(new MovementData(500, 0, Angle.fromDegrees(180, false)));
 //                autoDriving.setDefaultErrorRanges(50,100,7);
-	            autoDriving.stopAt(new MovementData(0, 0, Angle.fromDegrees(270, false)), 0.9);
+	            autoDriving.stopAt(new MovementData(0, 600, Angle.fromDegrees(0, false)), 0.9);
 //                autoDriving.stopAt(new MovementData(0,0,Angle.fromDegrees(0)),.90);
                 movement +=1; //??? Might cause issue
                 //autoDriving.driveX(600);
