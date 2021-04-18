@@ -110,10 +110,10 @@ public class Teleop extends LinearOpMode {
             while (opModeIsActive()) {
                 //motors powers calculation
 
-                drive = -gamepad1.left_stick_y * Math.cos(activeLocation.getAngleInDegrees()) +
-                        gamepad1.left_stick_x * Math.sin(activeLocation.getAngleInDegrees());
-                strafe = gamepad1.left_stick_x * Math.cos(activeLocation.getAngleInDegrees()) -
-                        -gamepad1.left_stick_y * Math.sin(activeLocation.getAngleInDegrees());
+                drive = -gamepad1.left_stick_y * Math.cos(activeLocation.getAngleInRadians()) +
+                        gamepad1.left_stick_x * Math.sin(activeLocation.getAngleInRadians());
+                strafe = gamepad1.left_stick_x * Math.cos(activeLocation.getAngleInRadians()) -
+                        -gamepad1.left_stick_y * Math.sin(activeLocation.getAngleInRadians());
                 twist = gamepad1.right_stick_x;
 
                 // wheel speed calculation
