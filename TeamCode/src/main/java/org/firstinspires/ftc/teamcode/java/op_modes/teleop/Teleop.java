@@ -21,8 +21,8 @@ public class Teleop extends LinearOpMode {
     private DcMotor backRightMotor;
 
     private DcMotor intakeAndDelivery;
-    private DcMotorEx rightShooter;
-    private DcMotor leftShooter;
+    //private DcMotorEx rightShooter;
+    private DcMotorEx leftShooter;
     //public RevColorSensorV3 colorSensor;
 //    private DcMotor elevator;
     private Servo ringArm;
@@ -74,7 +74,8 @@ public class Teleop extends LinearOpMode {
         frontRightMotor = robot.frontRightMotor;
         backLeftMotor = robot.backLeftMotor;
         backRightMotor = robot.backRightMotor;
-        rightShooter = robot.rightShooter;
+        //rightShooter = robot.rightShooter;
+        leftShooter = robot.leftShooter;
 
         //rightShooter = hardwareMap.get(DcMotor.class, "rightShooter");
 
@@ -109,10 +110,10 @@ public class Teleop extends LinearOpMode {
             while (opModeIsActive()) {
                 //motors powers calculation
 
-                drive = -gamepad1.left_stick_y * Math.cos(activeLocation.getAngle()) +
-                        gamepad1.left_stick_x * Math.sin(activeLocation.getAngle());
-                strafe = gamepad1.left_stick_x * Math.cos(activeLocation.getAngle()) -
-                        -gamepad1.left_stick_y * Math.sin(activeLocation.getAngle());
+                drive = -gamepad1.left_stick_y * Math.cos(activeLocation.getAngleInRadians()) +
+                        gamepad1.left_stick_x * Math.sin(activeLocation.getAngleInRadians());
+                strafe = gamepad1.left_stick_x * Math.cos(activeLocation.getAngleInRadians()) -
+                        -gamepad1.left_stick_y * Math.sin(activeLocation.getAngleInRadians());
                 twist = gamepad1.right_stick_x;
 
                 // wheel speed calculation
@@ -186,31 +187,33 @@ public class Teleop extends LinearOpMode {
 //                }
                 if (gamepad2.x) {
                     //rightShooter.setPower(0.85); //0.75 - 0.80
-                    rightShooter.setVelocity(20, AngleUnit.RADIANS);
+                    //rightShooter.setVelocity(20, AngleUnit.RADIANS);
+                    leftShooter.setVelocity(20, AngleUnit.RADIANS);
 
                 }
                 if (gamepad2.a) {
-                    rightShooter.setPower(0);
+                    //rightShooter.setPower(0);
+                    leftShooter.setPower(0);
 
                 }
                 if (gamepad2.dpad_up) {
-                    double currentPower = rightShooter.getVelocity(AngleUnit.RADIANS);
+                    double currentPower = leftShooter.getVelocity(AngleUnit.RADIANS);
                     if (currentPower <= 20) {
                         currentPower += 1;
-                        rightShooter.setVelocity(currentPower, AngleUnit.RADIANS);
+                        leftShooter.setVelocity(currentPower, AngleUnit.RADIANS);
                     }
                 }
                 if (gamepad2.dpad_down) {
-                    double currentPower = rightShooter.getVelocity(AngleUnit.RADIANS);
+                    double currentPower = leftShooter.getVelocity(AngleUnit.RADIANS);
                     if (currentPower >= 5) {
                         currentPower -= 1;
-                        rightShooter.setVelocity(currentPower, AngleUnit.RADIANS);
+                        leftShooter.setVelocity(currentPower, AngleUnit.RADIANS);
                     }
                 }
-//                if (gamepad2.right_trigger > 0.1)
+//              if (gamepad2.right_trigger > 0.1)
 //                {
-//                    rightShooter.setPower(gamepad2.right_trigger);
-//                    //leftShooter.setPower(gamepad2.right_trigger);
+//                    //rightShooter.setPower(gamepad2.right_trigger);
+//                    leftShooter.setPower(gamepad2.right_trigger);
 //                }
                 if (gamepad2.right_bumper && ringGrabber.getPosition() >= .1) {
                     ringGrabber.setPosition(0);
@@ -326,7 +329,7 @@ public class Teleop extends LinearOpMode {
                 //telemetry.addData("Angle", activeLocation.getAngleInDegrees());
                 //telemetry.addData("Shooter Power", rightShooter.getPower());
                 //telemetry.addData("sPAIN", activeLocation.getAngleInDegrees());
-                telemetry.addData("V", rightShooter.getVelocity(AngleUnit.RADIANS));
+                telemetry.addData("V", leftShooter.getVelocity(AngleUnit.RADIANS));
                 telemetry.update();
                 sleep(250);//Helps with lag
                 //telemetry.addData("field X:", activeLocation.getFieldX());

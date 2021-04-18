@@ -25,8 +25,8 @@ public class RobotHardware {
     public DcMotorEx backLeftMotor = null;
     public DcMotorEx backRightMotor = null;
 
-    public DcMotorEx rightShooter = null;
-    public DcMotor leftShooter = null;
+    //public DcMotorEx rightShooter = null;
+    public DcMotorEx leftShooter = null;
     public DcMotor intakeAndDelivery = null;
 
     public CRServo rShooter;
@@ -71,8 +71,8 @@ public class RobotHardware {
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
         intakeAndDelivery = hardwareMap.get(DcMotor.class, "intakeAndDelivery");
-        rightShooter = hardwareMap.get(DcMotorEx.class, "rightShooter");
-//        leftShooter = hardwareMap.get(DcMotor.class, "leftShooter");
+        //rightShooter = hardwareMap.get(DcMotorEx.class, "rightShooter");
+        leftShooter = hardwareMap.get(DcMotorEx.class, "leftShooter");
 
         // Motor Directions
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -83,8 +83,8 @@ public class RobotHardware {
         rShooter.setDirection(DcMotorSimple.Direction.FORWARD);
 
         intakeAndDelivery.setDirection(DcMotor.Direction.FORWARD);
-        rightShooter.setDirection(DcMotor.Direction.FORWARD);
-//        leftShooter.setDirection(DcMotor.Direction.REVERSE);
+        //rightShooter.setDirection(DcMotor.Direction.FORWARD);
+        leftShooter.setDirection(DcMotor.Direction.FORWARD);
 
         frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -96,16 +96,17 @@ public class RobotHardware {
         backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //Shooter
-        rightShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //rightShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftShooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        rightShooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-//        leftShooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        //intakeAndDelivery.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        //rightShooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        leftShooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        intakeAndDelivery.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         // Turn off all motors
         frontRightMotor.setPower(0);
@@ -113,7 +114,7 @@ public class RobotHardware {
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         intakeAndDelivery.setPower(0);
-        rightShooter.setPower(0);
-//        leftShooter.setPower(0);
+        //rightShooter.setPower(0);
+        leftShooter.setPower(0);
     }
 }

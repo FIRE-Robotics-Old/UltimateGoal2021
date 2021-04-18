@@ -9,7 +9,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.movement.PathFinder;
-import org.firstinspires.ftc.teamcode.java.util.PositionControl.PidfController;
+import org.firstinspires.ftc.teamcode.java.util.Angle;
+import org.firstinspires.ftc.teamcode.java.util.PidfController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 //To fix error perhaps flip the switch
@@ -66,7 +67,7 @@ public class ActiveLocationTest extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         try {
             //activeLocation.setStartPosition(600,600, 90);
-            pathFinder.setDestination(600, 600, 0);
+            pathFinder.setDestination(600, 600, Angle.fromDegrees(0));
             /*
             telemetry.addData("FL", frontLeftMotor.getCurrentPosition());
             telemetry.addData("BR", backRightMotor.getCurrentPosition());
@@ -75,15 +76,15 @@ public class ActiveLocationTest extends LinearOpMode {
             telemetry.update();
         }*/
             while (opModeIsActive()) {
-                //telemetry.addData("X", activeLocation.getFieldX());
-//                telemetry.addData("Y", activeLocation.getFieldY());
+                telemetry.addData("X", activeLocation.getFieldX());
+                telemetry.addData("Y", activeLocation.getFieldY());
 ////                telemetry.addData("Angle", Math.toDegrees(imu.getAngularOrientation().firstAngle));
 ////                telemetry.addData("Pain", activeLocation.getAngleInDegrees());
-//	            telemetry.addData("Angle", imu.getAngularOrientation().firstAngle);
+	            telemetry.addData("Angle", activeLocation.getAngleInDegrees());
 	            telemetry.addData("Pain", activeLocation.getAngle());
 //	            pathFinder.getEncoderPath().getAngleInRadians();
 	            telemetry.addData("Path", pathFinder.getEncoderPath().getAngleInRadians());
-	            telemetry.addData("A To Move", pathFinder.getaToMove());
+	            //telemetry.addData("A To Move", pathFinder.get());
 //	            telemetry.addData("Path: ", pathFinder.getEncoderPath());
 //                telemetry.addData("Raw SPain", pathFinder.getEncoderPath().getAngleInDegrees());
 

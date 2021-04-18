@@ -16,11 +16,6 @@ import org.firstinspires.ftc.teamcode.java.util.*;
 import org.firstinspires.ftc.teamcode.java.vision.HeightDetector;
 import org.firstinspires.ftc.teamcode.java.vision.RingHeightPipeline;
 
-import static org.firstinspires.ftc.teamcode.java.util.Constants.COS_30;
-import static org.firstinspires.ftc.teamcode.java.util.Constants.TAU;
-import static org.firstinspires.ftc.teamcode.java.util.Constants.cornerAB;
-import static org.firstinspires.ftc.teamcode.java.util.Constants.lowerWobbleDown;
-
 
 @Autonomous(name="BasicRemoteAuton", group="Backup")
 public class BasicRemoteAuton extends LinearOpMode {
@@ -34,7 +29,7 @@ public class BasicRemoteAuton extends LinearOpMode {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
     private DcMotor intakeAndDelivery;
-    private DcMotorEx rightShooter;
+    private DcMotorEx leftShooter;
     private DcMotor elevator;
     private Servo wobbleGrip;
     private Servo ringArm;
@@ -74,7 +69,7 @@ public class BasicRemoteAuton extends LinearOpMode {
         backRightMotor = robot.backRightMotor;
         backLeftMotor = robot.backLeftMotor;
         intakeAndDelivery = robot.intakeAndDelivery;
-        rightShooter = robot.rightShooter;
+        leftShooter = robot.leftShooter;
 
 
 
@@ -116,13 +111,13 @@ public class BasicRemoteAuton extends LinearOpMode {
             double startTime = runtime.milliseconds();
             double currentTime = 0;
             //wobbleGrip.setPosition(Constants.lowerWobbleDown);
-            AL.setStartPosition(0, 0,0);
+            AL.setStartPosition(0, 0,Angle.fromDegrees(0));
             ringGrabber.setPosition(0);
             //Path B:
 //            rightShooter.setPower(Constants.highGoalPower);
             //ENCODERS!!!!
             //rightShooter.setVelocity(95);
-            rightShooter.setVelocity(20,AngleUnit.RADIANS);
+            leftShooter.setVelocity(20,AngleUnit.RADIANS);
 	        wobbleGrip.setPosition(Constants.lowerWobbleDown);
 
 //	        moveX(-600);
@@ -156,7 +151,7 @@ public class BasicRemoteAuton extends LinearOpMode {
 //            rightShooter.setPower(0);
             moveY(152);
             turnTo(18.5);
-            while(runtime.milliseconds()<5500 || rightShooter.getVelocity(AngleUnit.RADIANS) > 490){
+            while(runtime.milliseconds()<5500 || leftShooter.getVelocity(AngleUnit.RADIANS) > 490){
 
             }
             intakeAndDelivery.setPower(-.7);
@@ -169,7 +164,7 @@ public class BasicRemoteAuton extends LinearOpMode {
             //sleep(100);
             intakeAndDelivery.setPower(0);
 //            moveX(0);
-            rightShooter.setPower(0);
+            leftShooter.setPower(0);
 //            moveY(Constants.navLineY);
             switch (position) {
                 case A:
@@ -520,7 +515,7 @@ public class BasicRemoteAuton extends LinearOpMode {
     @Deprecated
     public void turn(double angle){
     	int direct;
-    	if (Math.abs(AL.getAngle()-angle)<2){
+    	if (Math.abs(AL.getAngleInDegrees()-angle)<2){
     		return;
 	    }
 	    double maxTime = runtime.milliseconds()+500;
