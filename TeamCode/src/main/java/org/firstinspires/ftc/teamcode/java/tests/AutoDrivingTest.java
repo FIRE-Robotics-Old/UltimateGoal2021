@@ -97,12 +97,12 @@ public class AutoDrivingTest extends LinearOpMode {
             //telemetry.addData("Angle", AL.getAngle());
             //telemetry.addData("Path: ", PF.getEncoderPath());
             //telemetry.update();
+            autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
+            autoDriving.setDefaultErrorRanges(new MovementData(70, 70, Angle.fromDegrees(10, false)));
 
             while (opModeIsActive() && !isStopRequested()) {
                 //frontLeftMotor.setPower(.29);
-	            autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
 //                autoDriving.setStartLocation(0,0,0);
-	            autoDriving.setDefaultErrorRanges(new MovementData(0, 6000, Angle.fromDegrees(180, false)));
 //                autoDriving.setDefaultErrorRanges(50,100,7);
 	            autoDriving.stopAt(new MovementData(600, 0, Angle.fromDegrees(0, false)), 0.9);
 //                autoDriving.stopAt(new MovementData(0,0,Angle.fromDegrees(0)),.90);
@@ -168,7 +168,7 @@ public class AutoDrivingTest extends LinearOpMode {
                     //requestOpModeStop();
                     //AL.Stop();
                     //PF.stop();
-
+                    break;
                 }
 
             }
