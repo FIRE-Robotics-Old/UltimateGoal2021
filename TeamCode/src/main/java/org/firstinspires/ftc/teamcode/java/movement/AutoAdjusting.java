@@ -54,6 +54,20 @@ public class AutoAdjusting {
 		activeGoal = GoalPosition.generate(side, initialGoal);
 	}
 
+	public AutoAdjusting(RobotHardware robot, ActiveLocation activeLocation, Side side, PidfController turnController) {
+		this.potentiometer = robot.potentiometer;
+		this.imu = robot.imu;
+
+		this.activeLocation = activeLocation;
+
+		// TODO: Calibrate turn and Pitch Values
+		this.PidfYaw = turnController;
+		this.PidfPitch = new PidfController(0, 0, 0, 0);
+
+		this.side = side;
+		activeGoal = GoalPosition.generate(side, initialGoal);
+	}
+
 	private void update() {
 		deltaX = activeGoal.xPosition - activeLocation.getFieldX();
 		deltaY = activeGoal.yPosition - activeLocation.getFieldY();

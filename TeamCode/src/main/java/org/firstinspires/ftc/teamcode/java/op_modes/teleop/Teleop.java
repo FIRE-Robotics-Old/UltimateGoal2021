@@ -107,7 +107,7 @@ public class Teleop extends LinearOpMode {
         locationThread = new Thread(activeLocation);
         locationThread.start();
 
-        AutoAdjusting adjuster = new AutoAdjusting(robot, activeLocation, Side.RED);
+        AutoAdjusting adjuster = new AutoAdjusting(robot, activeLocation, Side.RED, PidfConstants.USTurn);
 
         TurnMode turnMode = TurnMode.FREE;
 
