@@ -13,6 +13,11 @@ import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.movement.AutoAdjusting;
 import org.firstinspires.ftc.teamcode.java.util.*;
 
+enum TurnMode {
+    LOCKED,
+    FREE
+}
+
 @TeleOp(name = "Final TeleOp", group = "TeleOp")
 public class Teleop extends LinearOpMode {
     private DcMotor frontLeftMotor;
@@ -101,6 +106,11 @@ public class Teleop extends LinearOpMode {
         activeLocation = new ActiveLocation(robot);
         locationThread = new Thread(activeLocation);
         locationThread.start();
+
+        AutoAdjusting adjuster = new AutoAdjusting(robot, activeLocation, Side.RED);
+
+        TurnMode turnMode = TurnMode.FREE;
+
         //autoAdjusting = new AutoAdjusting(robot);
 
         waitForStart();
@@ -110,11 +120,19 @@ public class Teleop extends LinearOpMode {
             while (opModeIsActive()) {
                 //motors powers calculation
 
+                if (gamepad1.x) {
+                    turnMode = turnMode == TurnMode.FREE ? TurnMode.LOCKED : TurnMode.FREE;
+                }
+
                 drive = -gamepad1.left_stick_y * Math.cos(activeLocation.getAngleInRadians()) +
                         gamepad1.left_stick_x * Math.sin(activeLocation.getAngleInRadians());
                 strafe = gamepad1.left_stick_x * Math.cos(activeLocation.getAngleInRadians()) -
                         -gamepad1.left_stick_y * Math.sin(activeLocation.getAngleInRadians());
-                twist = gamepad1.right_stick_x;
+
+                if (turnMode == TurnMode.FREE)
+                    twist = gamepad1.right_stick_x;
+                else
+                    twist = adjuster.getTurnPower();
 
                 // wheel speed calculation
                 double[] speeds = {
@@ -131,6 +149,7 @@ public class Teleop extends LinearOpMode {
                         max = Math.abs(speed);
                     }
                 }
+
                 //double max = Math.abs(Collections.max(Arrays.stream(speeds).boxed().collect(Collectors.toList())));
 
                 if (max > maxSpeed) {
@@ -166,8 +185,10 @@ public class Teleop extends LinearOpMode {
                     } else {
                         lowerWobble.setPosition(Constants.lowerWobbleUp);
                     }
-
                 }
+
+
+
                 if (gamepad2.b) {
                     intakeAndDelivery.setPower(0);
                 }
