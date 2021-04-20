@@ -14,7 +14,7 @@ import static org.firstinspires.ftc.teamcode.java.util.Constants.*;
  * PathFinder, helps create a Field Mapping to allow us to accurately move to specific positions in
  * autonomous.
  */
-public class ActiveLocation implements Runnable {
+public class ActiveLocationJava implements Runnable {
 
 	// Hardware setup
 	private final BNO055IMU imu;
@@ -50,7 +50,7 @@ public class ActiveLocation implements Runnable {
 	 *
 	 * @param robot the HardwareMap set of the Robot
 	 */
-	public ActiveLocation(RobotHardware robot) {
+	public ActiveLocationJava(RobotHardware robot) {
 		yDirectionEncoder = robot.frontLeftMotor;
 		xDirectionEncoder = robot.backRightMotor;
 		imu = robot.imu;
@@ -63,8 +63,8 @@ public class ActiveLocation implements Runnable {
 	 * @param yDirectionEncoder the encoder set up in the Y Direction
 	 * @param gyroscope the imu (aka gyroscope) to determine the angle of the robot
 	 */
-	public ActiveLocation(DcMotor xDirectionEncoder, DcMotor yDirectionEncoder,
-			BNO055IMU gyroscope) {
+	public ActiveLocationJava(DcMotor xDirectionEncoder, DcMotor yDirectionEncoder,
+	                          BNO055IMU gyroscope) {
 		this.yDirectionEncoder = yDirectionEncoder;
 		this.xDirectionEncoder = xDirectionEncoder;
 		this.imu = gyroscope;
