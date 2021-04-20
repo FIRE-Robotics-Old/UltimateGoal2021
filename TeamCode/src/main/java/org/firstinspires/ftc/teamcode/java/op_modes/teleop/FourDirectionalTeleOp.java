@@ -17,7 +17,7 @@ public class FourDirectionalTeleOp extends LinearOpMode {
 	boolean down = false;
 	boolean left = false;
 
-	double speed = 0.3;
+	double speed = 0.2;
 	double still = 0;
 
 	int currentButton = 4; // none

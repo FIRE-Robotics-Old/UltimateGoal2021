@@ -109,11 +109,10 @@ public class ActiveLocation implements Runnable {
 	 */
 	public void setStartPosition(double startX, double startY, Angle startAngle) {
 		this.startAngle = startAngle;
-		this.internalCurrentX = startX * Math.cos(startAngle.getAngleInRadians())
-				- startY * Math.sin(startAngle.getAngleInRadians());
-		this.internalCurrentY = startX * Math.sin(startAngle.getAngleInRadians())
-				+ startY * Math.cos(startAngle.getAngleInRadians());
-
+		this.internalCurrentY = startY * Math.cos(startAngle.getAngleInRadians()) -
+				startX * Math.sin(startAngle.getAngleInRadians());
+		this.internalCurrentX = startX * Math.cos(startAngle.getAngleInRadians()) +
+				startY * Math.sin(startAngle.getAngleInRadians());
 	}
 
 	/**
@@ -158,10 +157,10 @@ public class ActiveLocation implements Runnable {
 		// Change in internal x and y values
 		double deltaY = internalCurrentY - internalPreviousY;
 		double deltaX = internalCurrentX - internalPreviousX;
-		fieldXPosition += deltaX * Math.cos(angle.getAngleInRadians())
-				- deltaY * Math.sin(angle.getAngleInRadians());
-		fieldYPosition += deltaX * Math.sin(angle.getAngleInRadians())
-				+ deltaY * Math.cos(angle.getAngleInRadians());
+		fieldXPosition += deltaX * Math.cos(angle.getAngleInRadians()) +
+				deltaY * Math.sin(angle.getAngleInRadians());
+		fieldYPosition += deltaY * Math.cos(angle.getAngleInRadians()) -
+				deltaX * Math.sin(angle.getAngleInRadians());
 	}
 
 	/**

@@ -98,7 +98,7 @@ public class AutoDrivingTest extends LinearOpMode {
             //telemetry.addData("Path: ", PF.getEncoderPath());
             //telemetry.update();
             autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
-            autoDriving.setDefaultErrorRanges(new MovementData(70, 70, Angle.fromDegrees(10, false)));
+            autoDriving.setDefaultErrorRanges(new MovementData(0, 10000, Angle.fromDegrees(0, false)));
 
             while (opModeIsActive() && !isStopRequested()) {
                 //frontLeftMotor.setPower(.29);

@@ -188,7 +188,7 @@ public class Teleop extends LinearOpMode {
                 if (gamepad2.x) {
                     //rightShooter.setPower(0.85); //0.75 - 0.80
                     //rightShooter.setVelocity(20, AngleUnit.RADIANS);
-                    leftShooter.setVelocity(20, AngleUnit.RADIANS);
+                    leftShooter.setVelocity(17.1, AngleUnit.RADIANS);
 
                 }
                 if (gamepad2.a) {
@@ -199,14 +199,14 @@ public class Teleop extends LinearOpMode {
                 if (gamepad2.dpad_up) {
                     double currentPower = leftShooter.getVelocity(AngleUnit.RADIANS);
                     if (currentPower <= 20) {
-                        currentPower += 1;
+                        currentPower += 0.10;
                         leftShooter.setVelocity(currentPower, AngleUnit.RADIANS);
                     }
                 }
                 if (gamepad2.dpad_down) {
                     double currentPower = leftShooter.getVelocity(AngleUnit.RADIANS);
                     if (currentPower >= 5) {
-                        currentPower -= 1;
+                        currentPower -= 0.10;
                         leftShooter.setVelocity(currentPower, AngleUnit.RADIANS);
                     }
                 }
@@ -329,7 +329,11 @@ public class Teleop extends LinearOpMode {
                 //telemetry.addData("Angle", activeLocation.getAngleInDegrees());
                 //telemetry.addData("Shooter Power", rightShooter.getPower());
                 //telemetry.addData("sPAIN", activeLocation.getAngleInDegrees());
+                telemetry.addData("X value", activeLocation.getFieldX());
+                telemetry.addData("Y value", activeLocation.getFieldY());
                 telemetry.addData("V", leftShooter.getVelocity(AngleUnit.RADIANS));
+                //telemetry.addData("Power", )
+                telemetry.addData("A", activeLocation.getAngleInDegrees());
                 telemetry.update();
                 sleep(250);//Helps with lag
                 //telemetry.addData("field X:", activeLocation.getFieldX());
