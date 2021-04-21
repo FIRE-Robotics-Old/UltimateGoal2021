@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.java.movement;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.java.util.Angle;
 import org.firstinspires.ftc.teamcode.java.util.Goal;
 import org.firstinspires.ftc.teamcode.java.util.GoalPosition;
 import org.firstinspires.ftc.teamcode.java.util.PidfController;
@@ -40,6 +42,8 @@ public class AutoAdjusting {
 	private GoalPosition activeGoal;
 	private int goalPositionIndex = 0;
 
+	Telemetry telemetry;
+
 	public AutoAdjusting(RobotHardware robot, ActiveLocation activeLocation, Side side) {
 		this.potentiometer = robot.potentiometer;
 		this.imu = robot.imu;
@@ -54,9 +58,10 @@ public class AutoAdjusting {
 		activeGoal = GoalPosition.generate(side, initialGoal);
 	}
 
-	public AutoAdjusting(RobotHardware robot, ActiveLocation activeLocation, Side side, PidfController turnController) {
+	public AutoAdjusting(RobotHardware robot, ActiveLocation activeLocation, Side side, PidfController turnController, Telemetry telemetry) {
 		this.potentiometer = robot.potentiometer;
 		this.imu = robot.imu;
+		this.telemetry = telemetry;
 
 		this.activeLocation = activeLocation;
 
@@ -106,6 +111,13 @@ public class AutoAdjusting {
 		double currentAngle = activeLocation.getAngleInRadians();
 		double yaw = Math.atan2(deltaX, deltaY);
 		double error = currentAngle - yaw;
+		if (telemetry != null) {
+			telemetry.addData("Delta X", deltaX);
+			telemetry.addData("Delta Y", deltaY);
+			telemetry.addData("Angle Error", error);
+			telemetry.addData("Yaw Angle", yaw);
+			telemetry.update();
+		}
 		robotTurnPower = PidfYaw.calculate(error);
 	}
 
@@ -124,8 +136,37 @@ public class AutoAdjusting {
 				+ shooterLength * Math.sin(theta);
 	}
 
+
+
 	public double getTurnPower() {
 		calculateYawPower();
+		return robotTurnPower;
+	}
+
+	/**
+	 * adjusting the yaw angle (using PID)
+	 * <p>
+	 * X — — — — — — — S | | Y | | | |
+	 * <p>
+	 * Calculates the angle between the Robot and the Goal and returns the Necessary Adjustment
+	 */
+	public void calculateYawPower(Angle errorAngle, AutoDrivingNew driving) {
+		double currentAngle = activeLocation.getAngleInRadians();
+		double yaw = Math.atan2(deltaX, deltaY);
+		double error = currentAngle - yaw + Math.toRadians(18.5);
+		if (telemetry != null) {
+			telemetry.addData("Delta X", deltaX);
+			telemetry.addData("Delta Y", deltaY);
+			telemetry.addData("Angle Error", error);
+			telemetry.addData("Yaw Angle", yaw);
+			telemetry.update();
+		}
+
+		driving.rotateTo(Angle.fromRadians(error), 0.9, errorAngle);
+	}
+
+	public double getTurnPower(Angle angleError, AutoDrivingNew driving) {
+		calculateYawPower(angleError, driving);
 		return robotTurnPower;
 	}
 

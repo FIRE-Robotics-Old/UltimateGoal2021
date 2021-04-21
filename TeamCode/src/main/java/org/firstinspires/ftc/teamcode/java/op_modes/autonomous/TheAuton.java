@@ -94,16 +94,17 @@ public class TheAuton extends LinearOpMode {
 
 			while (opModeIsActive() && !isStopRequested()) {
 				leftShooter.setVelocity(17.1, AngleUnit.RADIANS);
-				ringGrabber.setPosition(0);
-				autoDriving.stopAt(new MovementData(0,0,Angle.fromDegrees(30.886, false)),0.9);
+				wobbleGrip.setPosition(0);
+				autoDriving.stopAt(new MovementData(0,120,Angle.fromDegrees(0,false)),0.9);
+				autoDriving.stopAt(new MovementData(0,120,Angle.fromDegrees(-30.886, false)),0.9);
 				intakeAndDelivery.setPower(Constants.deliveryPower);
-				sleep(3000);
+				sleep(5000);
 				intakeAndDelivery.setPower(0);
 				leftShooter.setVelocity(0,AngleUnit.RADIANS);
 
 					//PATH AB
 				//autoDriving.stopAt(new MovementData(-150, Constants.ALowerBorder, Angle.fromDegrees(0, false)), 0.9);
-				ringGrabber.setPosition(1);
+				wobbleGrip.setPosition(1);
 				movement += 1; //??? Might cause issue
 				telemetry.update();
 				if (runtime.milliseconds() >= 29000 || movement >= 1) {

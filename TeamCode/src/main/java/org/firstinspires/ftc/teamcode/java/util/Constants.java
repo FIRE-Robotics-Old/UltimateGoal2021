@@ -51,7 +51,7 @@ public final class Constants {
 	public static final double backAngle = 17;
 
 	public static final double highGoalPower = 17.1;
-	public static final double deliveryPower = 0.50;
+	public static final double deliveryPower = -0.50;
 
 
 		//Hardware constants

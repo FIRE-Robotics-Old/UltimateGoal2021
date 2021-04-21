@@ -11,6 +11,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 //import org.firstinspires.ftc.teamcode.java.movement.AutoAdjusting;
 import org.firstinspires.ftc.teamcode.java.movement.AutoAdjusting;
+import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
+import org.firstinspires.ftc.teamcode.java.movement.AutoDrivingNew;
 import org.firstinspires.ftc.teamcode.java.util.*;
 
 enum TurnMode {
@@ -107,9 +109,10 @@ public class Teleop extends LinearOpMode {
         locationThread = new Thread(activeLocation);
         locationThread.start();
 
-        AutoAdjusting adjuster = new AutoAdjusting(robot, activeLocation, Side.RED, PidfConstants.USTurn);
-
+        AutoAdjusting adjuster = new AutoAdjusting(robot, activeLocation, Side.RED, PidfConstants.USTurn, telemetry);
         TurnMode turnMode = TurnMode.FREE;
+
+        AutoDrivingNew driving = new AutoDrivingNew(PidfConstants.USDrive, PidfConstants.USStrafe, PidfConstants.USTurn, robot, telemetry);
 
         //autoAdjusting = new AutoAdjusting(robot);
 
@@ -121,7 +124,7 @@ public class Teleop extends LinearOpMode {
                 //motors powers calculation
 
                 if (gamepad1.x) {
-                    turnMode = turnMode == TurnMode.FREE ? TurnMode.LOCKED : TurnMode.FREE;
+                    adjuster.getTurnPower(Angle.fromDegrees(5.5), driving);
                 }
 
                 drive = -gamepad1.left_stick_y * Math.cos(activeLocation.getAngleInRadians()) +
@@ -129,10 +132,6 @@ public class Teleop extends LinearOpMode {
                 strafe = gamepad1.left_stick_x * Math.cos(activeLocation.getAngleInRadians()) -
                         -gamepad1.left_stick_y * Math.sin(activeLocation.getAngleInRadians());
 
-                if (turnMode == TurnMode.FREE)
-                    twist = gamepad1.right_stick_x;
-                else
-                    twist = adjuster.getTurnPower();
 
                 // wheel speed calculation
                 double[] speeds = {
