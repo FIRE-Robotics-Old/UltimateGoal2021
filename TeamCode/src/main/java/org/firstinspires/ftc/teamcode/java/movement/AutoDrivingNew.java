@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.java.movement;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.java.drivebase.MecanumDrive;
@@ -429,6 +430,45 @@ public class AutoDrivingNew {
 
 	/**
 	 * Moves the robot to a given point using a PID Loop
+	 *
+	 * @param goal the position the robot should reach
+	 * @param maxVelocity the maximum rotational movement of the wheel to reach
+	 * @param errorRange the error range of movement
+	 * @param milliseconds the maximum time that the loop is around to run
+	 * @param hasTimeLimit whether or not to use milliseconds for time limit
+	 * @return false if the robot is already at the goal position, true if the robot has just
+	 *         reached the new position
+	 */
+	public boolean stopAt(MovementData goal, double maxVelocity, MovementData errorRange,
+	                      double milliseconds, boolean hasTimeLimit) {
+		if (arrivedAt(goal, errorRange))
+			return false;
+		pathFinder.setDestination(goal);
+		ElapsedTime elapsedTime = new ElapsedTime();
+		double time = 0;
+		while (!arrivedAt(goal, errorRange) && (!hasTimeLimit || (time = elapsedTime.milliseconds()) < milliseconds)) {
+			pathFinder.updateEncoderPath();
+			setMotorPowers(calculateDrivePowers(maxVelocity, pathFinder.getEncoderPath()));
+		}
+		// turnOff();
+		return (!hasTimeLimit || time < milliseconds);
+	}
+
+	/**
+	 * Moves the robot to a given point using a PID Loop
+	 *
+	 * @param goal the position the robot should reach
+	 * @param maxVelocity the maximum rotational movement of the wheel to reach
+	 * @param errorRange the error range of movement
+	 * @return false if the robot is already at the goal position, true if the robot has just
+	 *         reached the new position
+	 */
+	public boolean stopAt(MovementData goal, double maxVelocity, MovementData errorRange, double milliseconds) {
+		return stopAt(goal, maxVelocity, errorRange, milliseconds, true);
+	}
+
+	/**
+	 * Moves the robot to a given point using a PID Loop
 	 * 
 	 * @param goal the position the robot should reach
 	 * @param maxVelocity the maximum rotational movement of the wheel to reach
@@ -437,15 +477,7 @@ public class AutoDrivingNew {
 	 *         reached the new position
 	 */
 	public boolean stopAt(MovementData goal, double maxVelocity, MovementData errorRange) {
-		if (arrivedAt(goal, errorRange))
-			return false;
-		pathFinder.setDestination(goal);
-		while (!arrivedAt(goal, errorRange)) {
-			pathFinder.updateEncoderPath();
-			setMotorPowers(calculateDrivePowers(maxVelocity, pathFinder.getEncoderPath()));
-		}
-		// turnOff();
-		return true;
+		return stopAt(goal, maxVelocity, errorRange, 0, false);
 	}
 
 	/**
