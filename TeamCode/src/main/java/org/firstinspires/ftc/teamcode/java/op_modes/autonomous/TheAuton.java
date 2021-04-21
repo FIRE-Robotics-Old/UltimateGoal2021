@@ -90,15 +90,21 @@ public class TheAuton extends LinearOpMode {
 		// run until the end of the match (driver presses STOP)
 		try {
 			autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
-			autoDriving.setDefaultErrorRanges(new MovementData(70, 100, Angle.fromDegrees(10, false)));
+			autoDriving.setDefaultErrorRanges(new MovementData(70, 140, Angle.fromDegrees(7, false)));
 
 			while (opModeIsActive() && !isStopRequested()) {
 				leftShooter.setVelocity(17.1, AngleUnit.RADIANS);
 				wobbleGrip.setPosition(0);
-				autoDriving.stopAt(new MovementData(0,120,Angle.fromDegrees(0,false)),0.9);
-				autoDriving.stopAt(new MovementData(0,120,Angle.fromDegrees(-30.886, false)),0.9);
+				autoDriving.stopAt(new MovementData(0,230,Angle.fromDegrees(0,false)),0.9);
+				autoDriving.stopAt(new MovementData(0,230,Angle.fromDegrees(-25.886, false)),0.9);
 				intakeAndDelivery.setPower(Constants.deliveryPower);
-				sleep(5000);
+				sleep(1500);
+				intakeAndDelivery.setPower(0);
+				autoDriving.stopAt(new MovementData(0,230,Angle.fromDegrees(-18.886, false)),0.9);
+				intakeAndDelivery.setPower(Constants.deliveryPower);
+				//autoDriving.stopAt(new MovementData(0,190,Angle.fromDegrees(-27.886, false)),0.9, new MovementData(70, 140, Angle.fromDegrees(2)));
+				//intakeAndDelivery.setPower(Constants.deliveryPower);
+				sleep(3000);
 				intakeAndDelivery.setPower(0);
 				leftShooter.setVelocity(0,AngleUnit.RADIANS);
 

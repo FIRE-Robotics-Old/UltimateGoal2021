@@ -98,13 +98,13 @@ public class AutoDrivingTest extends LinearOpMode {
             //telemetry.addData("Path: ", PF.getEncoderPath());
             //telemetry.update();
             autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
-            autoDriving.setDefaultErrorRanges(new MovementData(0, 10000, Angle.fromDegrees(0, false)));
+            autoDriving.setDefaultErrorRanges(new MovementData(80, 80, Angle.fromDegrees(7, false)));
 
             while (opModeIsActive() && !isStopRequested()) {
                 //frontLeftMotor.setPower(.29);
 //                autoDriving.setStartLocation(0,0,0);
 //                autoDriving.setDefaultErrorRanges(50,100,7);
-	            autoDriving.stopAt(new MovementData(600, 0, Angle.fromDegrees(0, false)), 0.9);
+	            autoDriving.stopAt(new MovementData(0, 1300, Angle.fromDegrees(0, false)), 0.9);
 //                autoDriving.stopAt(new MovementData(0,0,Angle.fromDegrees(0)),.90);
                 movement +=1; //??? Might cause issue
                 //autoDriving.driveX(600);

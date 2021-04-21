@@ -30,7 +30,8 @@ public final class PidfConstants {
 	//6th 0.00065405546812
 	//7th 0.000654249921305
 	//public static final PidfController USDrive = new PidfController(average, 0, 0.0/*2605/*125*/, 0);
-	public static final PidfController USDrive = new PidfController( 0.00065457, 0, 0.003, 0); ///Curremnt drive
+	//eh drive p = 0.00065457
+	public static final PidfController USDrive = new PidfController( 0.00065057, 0, 0.003, 0); ///Curremnt drive
 
 	//decent low 0.0005564375
 	//decent high 0.000656
