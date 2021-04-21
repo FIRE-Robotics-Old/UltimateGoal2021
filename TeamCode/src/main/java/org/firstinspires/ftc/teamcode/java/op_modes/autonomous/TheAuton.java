@@ -104,6 +104,7 @@ public class TheAuton extends LinearOpMode {
 				intakeAndDelivery.setPower(Constants.deliveryPower);
 				//autoDriving.stopAt(new MovementData(0,190,Angle.fromDegrees(-27.886, false)),0.9, new MovementData(70, 140, Angle.fromDegrees(2)));
 				//intakeAndDelivery.setPower(Constants.deliveryPower);
+				//comment
 				sleep(3000);
 				intakeAndDelivery.setPower(0);
 				leftShooter.setVelocity(0,AngleUnit.RADIANS);
