@@ -59,7 +59,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 				case B:
 					return "B: 1 Ring";
 				case C:
-					return "C: 3 Rings";
+					return "C: 4 Rings";
 				default:
 					return "No Height Selected";
 			}
@@ -106,7 +106,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	int gstart = 100;
 	int bstart = 40;
 	// FOUR STACK: (0, 100, 35)
-	Scalar YELLOW_MINIMUM = new Scalar(0, 100, 40);
+	Scalar YELLOW_MINIMUM = new Scalar(0, 160, 0);
 	// Scalar YELLOW_MINIMUM = new Scalar(0, 0, 0);
 	//145 165 165
 	// 161 155 155
@@ -124,7 +124,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 	 * This is the maximum threshold for Yellow/Orange which we will detect
 	 */
 //	static final Scalar YELLOW_MAXIMUM = new Scalar(230, 172, 157.5); //TODO: Fine Tune
-	Scalar YELLOW_MAXIMUM = new Scalar(173, 204, 65);
+	Scalar YELLOW_MAXIMUM = new Scalar(209, 255, 126);
 	// Scalar YELLOW_MAXIMUM = new Scalar(255, 255, 255);
 
 	final static int bigIncrement = 5;
@@ -277,7 +277,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		//                                              There is only     There is a full
 		//                                                one ring         stack of ring
 
-		updateMin();
+//		updateMin();
 //		telemetry.addData("Min",YELLOW_MINIMUM);
 //		telemetry.addData("Max", YELLOW_MAXIMUM);
 //		if (height == Height.C){
@@ -295,7 +295,8 @@ public class RingHeightPipeline extends OpenCvPipeline {
 //		return mask;
 		Imgproc.resize(toStudy, toStudy, new Size(240, 320));
 		Imgproc.resize(inputSmaller, inputSmaller, new Size(240, 320));
-		return toStudy;
+//		telemetry.addData("Height", height);
+		return input;
 	}
 
 	public Height getHeight() {
