@@ -1,121 +1,152 @@
-package org.firstinspires.ftc.teamcode.java.util;
+package org.firstinspires.ftc.teamcode.java.util
 
-public class MathUtil {
-	public static double squared(double num) {
-		return num * num;
-	}
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.tan
 
-	public static float squared(float num) {
-		return num * num;
-	}
+object MathUtil {
+    fun squared(num: Double): Double {
+        return num * num
+    }
 
-	public static int squared(byte num) {
-		return num * num;
-	}
+    fun squared(num: Float): Float {
+        return num * num
+    }
 
-	public static int squared(short num) {
-		return num * num;
-	}
+    fun squared(num: Byte): Int {
+        return num * num
+    }
 
-	public static long squared(int num) {
-		return num * num;
-	}
+    fun squared(num: Short): Int {
+        return num * num
+    }
 
-	public static long squared(long num) {
-		return num * num;
-	}
+    fun squared(num: Int): Long {
+        return (num * num).toLong()
+    }
 
-	public static double cube(double num) {
-		return num * num * num;
-	}
+    @JvmStatic
+    fun squared(num: Long): Long {
+        return num * num
+    }
 
-	public static float cube(float num) {
-		return num * num * num;
-	}
+    fun cube(num: Double): Double {
+        return num * num * num
+    }
 
-	public static int cube(byte num) {
-		return num * num * num;
-	}
+    fun cube(num: Float): Float {
+        return num * num * num
+    }
 
-	public static int cube(short num) {
-		return num * num * num;
-	}
+    fun cube(num: Byte): Int {
+        return num * num * num
+    }
 
-	public static long cube(int num) {
-		return num * num * num;
-	}
+    fun cube(num: Short): Int {
+        return num * num * num
+    }
 
-	public static long cube(long num) {
-		return num * num * num;
-	}
+    fun cube(num: Int): Long {
+        return (num * num * num).toLong()
+    }
 
-	public static double pow(double num, int times) {
-		double sol = 1D;
-		while (times > 0) {
-			if ((times & 1) == 1) sol *= num;
-			num *= num;
-			times >>= 1;
-		}
-		return sol;
-	}
+    fun cube(num: Long): Long {
+        return num * num * num
+    }
 
-	public static float pow(float num, int times) {
-		float sol = 1F;
-		while (times > 0) {
-			if ((times & 1) == 1) sol *= num;
-			num *= num;
-			times >>= 1;
-		}
-		return sol;
-	}
+    fun pow(_num: Double, _times: Int): Double {
+        var num = _num
+        var times = _times
+        var sol = 1.0
+        while (times > 0) {
+            if (times and 1 == 1) sol *= num
+            num *= num
+            times = times shr 1
+        }
+        return sol
+    }
 
-	public static int pow(byte num, int times) {
-		int sol = 1;
-		while (times > 0) {
-			if ((times & 1) == 1) sol *= num;
-			num *= num;
-			times >>= 1;
-		}
-		return sol;
-	}
+    fun pow(_num: Float, _times: Int): Float {
+        var num = _num
+        var times = _times
+        var sol = 1f
+        while (times > 0) {
+            if (times and 1 == 1) sol *= num
+            num *= num
+            times = times shr 1
+        }
+        return sol
+    }
 
-	public static int pow(short num, int times) {
-		int sol = 1;
-		while (times > 0) {
-			if ((times & 1) == 1) sol *= num;
-			num *= num;
-			times >>= 1;
-		}
-		return sol;
-	}
+    fun pow(_num: Byte, _times: Int): Int {
+        var num: Int = _num.toInt()
+        var times: Int = _times
+        var sol = 1
+        while (times > 0) {
+            if (times and 1 == 1) sol *= num
+            num *= num
+            times = times shr 1
+        }
+        return sol
+    }
 
-	public static long pow(int num, int times) {
-		long sol = 1L;
-		while (times > 0) {
-			if ((times & 1) == 1) sol *= num;
-			num *= num;
-			times >>= 1;
-		}
-		return sol;
-	}
+    fun pow(_num: Short, _times: Int): Int {
+        var num: Int = _num.toInt()
+        var times: Int = _times
+        var sol = 1
+        while (times > 0) {
+            if (times and 1 == 1) sol *= num
+            num *= num
+            times = times shr 1
+        }
+        return sol
+    }
 
-	public static int powInt(int num, int times) {
-		int sol = 1;
-		while (times > 0) {
-			if ((times & 1) == 1) sol *= num;
-			num *= num;
-			times >>= 1;
-		}
-		return sol;
-	}
+    fun pow(_num: Int, _times: Int): Long {
+        var num = _num
+        var times = _times
+        var sol = 1L
+        while (times > 0) {
+            if (times and 1 == 1) sol *= num.toLong()
+            num *= num
+            times = times shr 1
+        }
+        return sol
+    }
 
-	public static long pow(long num, long times) {
-		long sol = 1;
-		while (times > 0) {
-			if ((times & 1) == 1) sol *= num;
-			num *= num;
-			times >>= 1;
-		}
-		return sol;
-	}
+    fun powInt(_num: Int, _times: Int): Int {
+        var num: Int = _num
+        var times: Int = _times
+        var sol = 1
+        while (times > 0) {
+            if (times and 1 == 1) sol *= num
+            num *= num
+            times = times shr 1
+        }
+        return sol
+    }
+
+    fun pow(_num: Long, _times: Long): Long {
+        var num: Long = _num
+        var times: Long = _times
+        var sol: Long = 1
+        while (times > 0) {
+            if (times and 1 == 1L) sol *= num
+            num *= num
+            times = times shr 1
+        }
+        return sol
+    }
+
+    fun sin(angle: Angle): Double {
+        return sin(angle.angleInRadians)
+    }
+
+    fun cos(angle: Angle): Double {
+        return cos(angle.angleInRadians)
+    }
+
+    fun tan(angle: Angle): Double {
+        return tan(angle.angleInRadians)
+    }
 }
