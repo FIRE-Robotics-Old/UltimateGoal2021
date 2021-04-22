@@ -95,23 +95,30 @@ public class TheAuton extends LinearOpMode {
 			while (opModeIsActive() && !isStopRequested()) {
 				leftShooter.setVelocity(17.1, AngleUnit.RADIANS);
 				wobbleGrip.setPosition(0);
-				autoDriving.stopAt(new MovementData(0,230,Angle.fromDegrees(0,false)),0.9);
-				autoDriving.stopAt(new MovementData(0,230,Angle.fromDegrees(-25.886, false)),0.9);
+				autoDriving.stopAt(new MovementData(0,230,Angle.fromDegrees(0,false)),0.9,new MovementData(70, 140, Angle.fromDegrees(10, false)),3000);
+				autoDriving.stopAt(new MovementData(0,230,Angle.fromDegrees(-30.886, false)),0.9, new MovementData(70, 140, Angle.fromDegrees(3.5, false)),3000);
 				intakeAndDelivery.setPower(Constants.deliveryPower);
-				sleep(1500);
-				intakeAndDelivery.setPower(0);
-				autoDriving.stopAt(new MovementData(0,230,Angle.fromDegrees(-18.886, false)),0.9);
-				intakeAndDelivery.setPower(Constants.deliveryPower);
+				sleep(6000);
+				//intakeAndDelivery.setPower(0);
+				//autoDriving.stopAt(new MovementData(0,230,Angle.fromDegrees(-18.886, false)),0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)),3000);
+				//intakeAndDelivery.setPower(Constants.deliveryPower);
 				//autoDriving.stopAt(new MovementData(0,190,Angle.fromDegrees(-27.886, false)),0.9, new MovementData(70, 140, Angle.fromDegrees(2)));
 				//intakeAndDelivery.setPower(Constants.deliveryPower);
 				//comment
-				sleep(3000);
+				//intakeAndDelivery.setPower(Constants.deliveryPower);
+				//sleep(3000);
 				intakeAndDelivery.setPower(0);
 				leftShooter.setVelocity(0,AngleUnit.RADIANS);
-
-					//PATH AB
-				//autoDriving.stopAt(new MovementData(-150, Constants.ALowerBorder, Angle.fromDegrees(0, false)), 0.9);
+				autoDriving.stopAt(new MovementData(0,230,Angle.fromDegrees(0, false)),0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)),3000);
+				sleep(1000);
+				autoDriving.stopAt(new MovementData(0,Constants.navLineY+600,Angle.fromDegrees(0, false)),0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)),3000);
 				wobbleGrip.setPosition(1);
+				//autoDriving.stopAt(new MovementData(0,Constants.navLineY-100,Angle.fromDegrees(0, false)),0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)),3000);
+
+
+				//PATH AB
+				//autoDriving.stopAt(new MovementData(-150, Constants.ALowerBorder, Angle.fromDegrees(0, false)), 0.9);
+
 				movement += 1; //??? Might cause issue
 				telemetry.update();
 				if (runtime.milliseconds() >= 29000 || movement >= 1) {

@@ -15,10 +15,10 @@ import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDrivingNew;
 import org.firstinspires.ftc.teamcode.java.util.*;
 
-enum TurnMode {
-    LOCKED,
-    FREE
-}
+//enum TurnMode {
+//    LOCKED,
+//    FREE
+//}
 
 @TeleOp(name = "Final TeleOp", group = "TeleOp")
 public class Teleop extends LinearOpMode {
@@ -68,7 +68,7 @@ public class Teleop extends LinearOpMode {
     private boolean slowMode = false;
 
 
-    private AutoAdjusting autoAdjusting;
+    //private AutoAdjusting autoAdjusting;
     private ActiveLocation activeLocation;
     Thread locationThread;
 
@@ -108,9 +108,9 @@ public class Teleop extends LinearOpMode {
         activeLocation = new ActiveLocation(robot);
         locationThread = new Thread(activeLocation);
         locationThread.start();
-
-        AutoAdjusting adjuster = new AutoAdjusting(robot, activeLocation, Side.RED, PidfConstants.USTurn, telemetry);
-        TurnMode turnMode = TurnMode.FREE;
+//
+//        AutoAdjusting adjuster = new AutoAdjusting(robot, activeLocation, Side.RED, PidfConstants.USTurn, telemetry);
+//        TurnMode turnMode = TurnMode.FREE;
 
         AutoDrivingNew driving = new AutoDrivingNew(PidfConstants.USDrive, PidfConstants.USStrafe, PidfConstants.USTurn, robot, telemetry);
 
@@ -123,9 +123,9 @@ public class Teleop extends LinearOpMode {
             while (opModeIsActive()) {
                 //motors powers calculation
 
-                if (gamepad1.x) {
-                    adjuster.getTurnPower(Angle.fromDegrees(5.5), driving);
-                }
+//                if (gamepad1.x) {
+//                    adjuster.getTurnPower(Angle.fromDegrees(5.5), driving);
+//                }
 
                 drive = -gamepad1.left_stick_y * Math.cos(activeLocation.getAngleInRadians()) +
                         gamepad1.left_stick_x * Math.sin(activeLocation.getAngleInRadians());
