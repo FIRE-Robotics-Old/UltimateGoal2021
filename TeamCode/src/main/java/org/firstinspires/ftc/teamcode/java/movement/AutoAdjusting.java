@@ -109,7 +109,8 @@ public class AutoAdjusting {
 	 */
 	public void calculateYawPower() {
 		double currentAngle = activeLocation.getAngleInRadians();
-		double yaw = Math.atan2(deltaX, deltaY);
+		// TODO: Offset
+		double yaw = Math.atan2(deltaX, deltaY) - Math.toRadians(-19);
 		double error = currentAngle - yaw;
 		if (telemetry != null) {
 			telemetry.addData("Delta X", deltaX);

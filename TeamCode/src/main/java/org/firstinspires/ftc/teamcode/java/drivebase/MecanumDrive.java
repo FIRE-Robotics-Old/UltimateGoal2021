@@ -47,7 +47,7 @@ public class MecanumDrive extends Drivetrain {
 		}
 	}
 
-	private void driveWithPower(double frontLeft, double frontRight, double backLeft, double backRight) {
+	public void driveWithPower(double frontLeft, double frontRight, double backLeft, double backRight) {
 		motors[MotorPosition.frontLeft.position].setPower(frontLeft);
 		motors[MotorPosition.frontRight.position].setPower(frontRight);
 		motors[MotorPosition.backLeft.position].setPower(backLeft);

@@ -216,6 +216,7 @@ public class Teleop extends LinearOpMode {
                     leftShooter.setPower(0);
 
                 }
+
                 if (gamepad2.dpad_up) {
                     double currentPower = leftShooter.getVelocity(AngleUnit.RADIANS);
                     if (currentPower <= 20) {
@@ -230,6 +231,7 @@ public class Teleop extends LinearOpMode {
                         leftShooter.setVelocity(currentPower, AngleUnit.RADIANS);
                     }
                 }
+
 //              if (gamepad2.right_trigger > 0.1)
 //                {
 //                    //rightShooter.setPower(gamepad2.right_trigger);
