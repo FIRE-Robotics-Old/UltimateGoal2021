@@ -48,6 +48,7 @@ public class TheAuton extends LinearOpMode {
 	private PidfController PIDFTurn;
 
 	private boolean location;
+	long sleepTime = 500;
 
 	//private ElapsedTime runtime = new ElapsedTime();
 	@Override
@@ -91,17 +92,18 @@ public class TheAuton extends LinearOpMode {
 		try {
 			autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
 			autoDriving.setDefaultErrorRanges(new MovementData(70, 140, Angle.fromDegrees(7, false)));
-
 			while (opModeIsActive() && !isStopRequested()) {
-				leftShooter.setVelocity(17.1, AngleUnit.RADIANS);
+				//leftShooter.setVelocity(17.1, AngleUnit.RADIANS);
 				wobbleGrip.setPosition(0);
 				autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+				sleep(sleepTime);
 				autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(-32.886, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(3.5, false)), 3000);
 				intakeAndDelivery.setPower(Constants.deliveryPower);
 				sleep(2000);
 				intakeAndDelivery.setPower(0);
 				autoDriving.stopAt(new MovementData(0, 190, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
-				autoDriving.stopAt(new MovementData(0, 190, Angle.fromDegrees(-27.886, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(2)));
+				sleep(sleepTime);
+				autoDriving.stopAt(new MovementData(0, 190, Angle.fromDegrees(-27.886, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(4, false)), 3000);
 				intakeAndDelivery.setPower(Constants.deliveryPower);
 				sleep(3000);
 				intakeAndDelivery.setPower(0);
@@ -109,8 +111,8 @@ public class TheAuton extends LinearOpMode {
 
 
 				autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
-				sleep(1000);
-				pathA();
+				sleep(sleepTime);
+				pathC();
 				wobbleGrip.setPosition(1);
 				//autoDriving.stopAt(new MovementData(0,Constants.navLineY-100,Angle.fromDegrees(0, false)),0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)),3000);
 
@@ -144,20 +146,31 @@ public class TheAuton extends LinearOpMode {
 
 
 	public void pathA() {
-		autoDriving.stopAt(new MovementData(0, Constants.navLineY + 600, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(12, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
+		sleep(1000);
+		autoDriving.stopAt(new MovementData(150, Constants.ALowerBorder, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		sleep(sleepTime);
 		wobbleGrip.setPosition(1);
-		autoDriving.stopAt(new MovementData(0, Constants.navLineY + 500, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		sleep(sleepTime);
+		//autoDriving.stopAt(new MovementData(0, Constants.navLineY-200, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
 	}
 
 	public void pathB() {
-		autoDriving.stopAt(new MovementData(0, Constants.navLineY + 1200, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		autoDriving.stopAt(new MovementData(-100, Constants.BLowerBorder, Angle.fromDegrees(-4, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		sleep(sleepTime);
 		wobbleGrip.setPosition(1);
-		autoDriving.stopAt(new MovementData(0, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		sleep(sleepTime);
+		//autoDriving.stopAt(new MovementData(0, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
 	}
 
 	public void pathC() {
-		autoDriving.stopAt(new MovementData(0, Constants.navLineY + 1800, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		autoDriving.stopAt(new MovementData(150, 230, Angle.fromDegrees(5, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
+		sleep(sleepTime);
+		autoDriving.stopAt(new MovementData(150, Constants.CLowerBorder, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		sleep(sleepTime);
 		wobbleGrip.setPosition(1);
-		autoDriving.stopAt(new MovementData(0, Constants.navLineY + 500, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		sleep(sleepTime);
+		autoDriving.stopAt(new MovementData(150, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		//autoDriving.stopAt(new MovementData(0, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
 	}
 }
