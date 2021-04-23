@@ -164,9 +164,9 @@ public class TheAuton extends LinearOpMode {
 	}
 
 	public void pathC() {
-		autoDriving.stopAt(new MovementData(150, 230, Angle.fromDegrees(5, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
+		autoDriving.stopAt(new MovementData(100, 230, Angle.fromDegrees(5, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
 		sleep(sleepTime);
-		autoDriving.stopAt(new MovementData(150, Constants.CLowerBorder, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		autoDriving.stopAt(new MovementData(100, Constants.CLowerBorder, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
 		sleep(sleepTime);
 		wobbleGrip.setPosition(1);
 		sleep(sleepTime);

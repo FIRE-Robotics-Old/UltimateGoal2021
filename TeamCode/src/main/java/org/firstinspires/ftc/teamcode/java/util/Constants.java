@@ -45,7 +45,7 @@ public final class Constants {
 	public static final Coordinate cornerBC = new Coordinate(1828.8,3048);
 	public static final double ALowerBorder = 1500;
 	public static final double BLowerBorder = 2000;
-	public static final double CLowerBorder = 2350;
+	public static final double CLowerBorder = 2300;
 	public static final double wobbleY = 400;
 	public static final double wobbleX = -600;
 	public static final double backAngle = 17;
