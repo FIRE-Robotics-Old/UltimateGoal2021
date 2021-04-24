@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.java.util.PidfConstants;
 import org.firstinspires.ftc.teamcode.java.util.PidfController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.java.vision.HeightDetector;
+import org.firstinspires.ftc.teamcode.java.vision.RingHeightPipeline;
 
 //To fix error perhaps flip the switch
 
@@ -48,7 +49,7 @@ public class TheAuton extends LinearOpMode {
 	private PidfController PIDFTurn;
 
 	private boolean location;
-	long sleepTime = 500;
+	long sleepTime = 1000;
 
 	//private ElapsedTime runtime = new ElapsedTime();
 	@Override
@@ -56,7 +57,7 @@ public class TheAuton extends LinearOpMode {
 		location = true;
 		robot.init(hardwareMap);
 
-		//heightDetector = new HeightDetector(hardwareMap, telemetry);
+		heightDetector = new HeightDetector(hardwareMap, telemetry);
 
 		imu = robot.imu;
 
@@ -81,7 +82,7 @@ public class TheAuton extends LinearOpMode {
 		//autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn,robot);
 		telemetry.addData("Status", "Initialized");
 		telemetry.update();
-		//heightDetector.startStreaming();
+		heightDetector.startStreaming();
 		// Wait for the game to start (driver presses PLAY)
 		waitForStart();
 		runtime.reset();
@@ -90,20 +91,24 @@ public class TheAuton extends LinearOpMode {
 		//while (opModeIsActive()) {
 		// run until the end of the match (driver presses STOP)
 		try {
+			RingHeightPipeline.Height position = heightDetector.getHeight();
+			heightDetector.stopStreaming();
+			telemetry.addData("Position of Ring", position);
+			telemetry.update();
 			autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
 			autoDriving.setDefaultErrorRanges(new MovementData(70, 140, Angle.fromDegrees(7, false)));
 			while (opModeIsActive() && !isStopRequested()) {
-				//leftShooter.setVelocity(17.1, AngleUnit.RADIANS);
+				leftShooter.setVelocity(17.2, AngleUnit.RADIANS);
 				wobbleGrip.setPosition(0);
 				autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
-				sleep(sleepTime);
-				autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(-32.886, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(3.5, false)), 3000);
+				sleep(sleepTime + 500);
+				autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(-27.000, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(3.5, false)), 3000);
 				intakeAndDelivery.setPower(Constants.deliveryPower);
-				sleep(2000);
+				sleep(3000);
 				intakeAndDelivery.setPower(0);
 				autoDriving.stopAt(new MovementData(0, 190, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
 				sleep(sleepTime);
-				autoDriving.stopAt(new MovementData(0, 190, Angle.fromDegrees(-27.886, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(4, false)), 3000);
+				autoDriving.stopAt(new MovementData(0, 190, Angle.fromDegrees(-25.000, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(4, false)), 3000);
 				intakeAndDelivery.setPower(Constants.deliveryPower);
 				sleep(3000);
 				intakeAndDelivery.setPower(0);
@@ -112,6 +117,18 @@ public class TheAuton extends LinearOpMode {
 
 				autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
 				sleep(sleepTime);
+				switch (position) {
+					case A:
+						pathA();
+						telemetry.speak("Case");
+						break;
+					//PathC();
+					case B:
+						pathB();
+						break;
+					default:
+						pathC();
+				}
 				pathC();
 				wobbleGrip.setPosition(1);
 				//autoDriving.stopAt(new MovementData(0,Constants.navLineY-100,Angle.fromDegrees(0, false)),0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)),3000);
@@ -122,6 +139,7 @@ public class TheAuton extends LinearOpMode {
 
 				movement += 1; //??? Might cause issue
 				telemetry.update();
+				stop();
 				if (runtime.milliseconds() >= 29000 || movement >= 1) {
 					location = false;
 					frontRightMotor.setPower(0);
@@ -132,6 +150,7 @@ public class TheAuton extends LinearOpMode {
 					telemetry.update();
 					break;
 				}
+				stop();
 
 			}
 		} catch (Exception e) {
@@ -160,7 +179,7 @@ public class TheAuton extends LinearOpMode {
 		sleep(sleepTime);
 		wobbleGrip.setPosition(1);
 		sleep(sleepTime);
-		//autoDriving.stopAt(new MovementData(0, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		autoDriving.stopAt(new MovementData(0, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
 	}
 
 	public void pathC() {
@@ -171,6 +190,6 @@ public class TheAuton extends LinearOpMode {
 		wobbleGrip.setPosition(1);
 		sleep(sleepTime);
 		autoDriving.stopAt(new MovementData(150, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
-		//autoDriving.stopAt(new MovementData(0, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		autoDriving.stopAt(new MovementData(0, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
 	}
 }
