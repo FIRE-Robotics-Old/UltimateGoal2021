@@ -4,13 +4,19 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.arcrobotics.ftclib.files.hardware.motors.Motor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.java.drivebase.MecanumDrive;
 import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.movement.AutoAdjusting;
+import org.firstinspires.ftc.teamcode.java.movement.AutoDrivingNew;
+import org.firstinspires.ftc.teamcode.java.util.Angle;
 import org.firstinspires.ftc.teamcode.java.util.Constants;
+import org.firstinspires.ftc.teamcode.java.util.MovementData;
 import org.firstinspires.ftc.teamcode.java.util.PidfConstants;
+import org.firstinspires.ftc.teamcode.java.util.PidfController;
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.java.util.Side;
 
@@ -20,11 +26,23 @@ public class TeleopNew extends LinearOpMode {
 	/**
 	 * The Maximum Power Allocated to a Motor
 	 */
-	static double maxSpeed = 0.7;
-
+	static double maxSpeed = 0.9;
+	private final ElapsedTime runtime = new ElapsedTime();
+	private double minPow = 0.15;
+	private double maxPow = 0.5;
+	private double ppd = (maxPow-minPow)/180;
+	private double slowdist = 1000; //600
+	private AutoDrivingNew autoDriving;
+	//private double ppdst = (maxPow-minPow)/slowdist;
+	//private double startdist = 150;
+	//private double powerFator = 0.3;
+	private PidfController PIDFDrive;
+	private PidfController PIDFStrafe;
+	private PidfController PIDFTurn;
 	@Override
 	public void runOpMode() throws InterruptedException {
 		// Create an Instance of the Robot
+
 		RobotHardware robot = new RobotHardware();
 		robot.init(hardwareMap);
 
@@ -46,22 +64,31 @@ public class TeleopNew extends LinearOpMode {
 		Thread activeLocationThread = new Thread(activeLocation);
 		activeLocationThread.start();
 
-        AutoAdjusting adjuster = new AutoAdjusting(robot, activeLocation, Side.RED, PidfConstants.USTurn, telemetry);
+		PIDFDrive = new PidfController(0,0,0,0);
+		PIDFStrafe = new PidfController(0,0,0,0);
+		PIDFTurn = PidfConstants.USTurn;
+
+
+		autoDriving = new AutoDrivingNew(PIDFDrive, PIDFStrafe, PIDFTurn, robot, telemetry);
+		autoDriving.telemetry = telemetry;
+
+        //AutoAdjusting adjuster = new AutoAdjusting(robot, activeLocation, Side.RED, PidfConstants.USTurn, telemetry);
 
 		MecanumDrive robotDrive = new MecanumDrive(frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor);
 
 		boolean locked = false;
 		boolean slowMode = false;
 		boolean slowModePressed = false;
-
+		autoDriving.setDefaultErrorRanges(new MovementData(100000, 1000000, Angle.fromDegrees(5, false)));
 		waitForStart();
 		while (opModeIsActive()) {
-			if (gamepad1.x) locked = !locked;
+			//if (gamepad1.x) locked = !locked;
 			double drive = -gamepad1.left_stick_y * Math.cos(activeLocation.getAngleInRadians()) +
 					gamepad1.left_stick_x * Math.sin(activeLocation.getAngleInRadians());
 			double strafe = gamepad1.left_stick_x * Math.cos(activeLocation.getAngleInRadians()) -
 					-gamepad1.left_stick_y * Math.sin(activeLocation.getAngleInRadians());
-			double turn = locked ? adjuster.getTurnPower() : gamepad1.right_stick_x;
+			//double turn = locked ? adjuster.getTurnPower() : gamepad1.right_stick_x;
+			double turn = gamepad1.right_stick_x;
 
 			double[] speeds = MecanumDrive.calculateDrivePowers(drive, strafe, turn);
 			double max = Math.abs(speeds[0]);
@@ -79,9 +106,53 @@ public class TeleopNew extends LinearOpMode {
 			if (gamepad1.a) slowMode = !slowMode;
 
 			if (slowMode) {
-				maxSpeed = 0.3;
+				maxSpeed = 0.2;
 			} else {
-				maxSpeed = 0.7;
+				maxSpeed = 0.9;
+			}
+			if (gamepad1.x){
+				frontLeftMotor.setPower(0);
+				frontRightMotor.setPower(0);
+				backLeftMotor.setPower(0);
+				backRightMotor.setPower(0);
+				telemetry.speak("X");
+				sleep(100);
+				autoDriving.stopAt(new MovementData(0, 0, Angle.fromDegrees(-20, false)), 0.9, new MovementData(9000000, 90000000, Angle.fromDegrees(5, false)),5000);
+				telemetry.speak("Over");
+				sleep(100);
+
+//				sleep(100);
+//				if (Math.abs(activeLocation.getAngleInDegrees()+19) <1){
+//					return;
+//				}
+//				double maxTime = runtime.milliseconds()+3000;
+//				int direct = 1;
+//				double power = 0.1;
+//				double aToMove = -19 - activeLocation.getAngleInDegrees();
+////        if (aToMove > Math.PI) {
+////            aToMove = -(direct - aToMove);
+////        } else if (aToMove < -Math.PI) {
+////            aToMove = -(TAU - Math.abs(aToMove));
+////        }
+//				while ((Math.abs(activeLocation.getAngleInDegrees()+19)>2) /*&& runtime.milliseconds()<maxTime*/) {
+//					//double aToMove = Math.abs(AL.getAngleInDegrees()-angle);
+//					aToMove = -19 - activeLocation.getAngleInDegrees();
+//					if (aToMove > 180) {
+//						direct = 1;
+//						power = minPow + ppd * (360 - aToMove);
+//					} else if (aToMove < -180) {
+//						direct = -1;
+//						power = minPow + ppd * (360 + aToMove);
+//					} else {
+//						direct = (int) -(Math.abs(aToMove) / aToMove);
+//						power = minPow + ppd * (Math.abs(aToMove));
+//					}
+//
+//					frontRightMotor.setPower(-power * direct);
+//					frontLeftMotor.setPower(power * direct);
+//					backRightMotor.setPower(-power * direct);
+//					backLeftMotor.setPower(power * direct);
+					//output("A"+angle,AL.getAngleInDegrees());
 			}
 
 			// Adjust Speed (DPAD UP ⇒ +0.1, down ⇒ -0.1)
@@ -130,27 +201,45 @@ public class TeleopNew extends LinearOpMode {
 				}
 			}
 
-			if (gamepad2.right_bumper && ringGrabber.getPosition() >= .1) {
-				ringGrabber.setPosition(0);
-				telemetry.speak("Zero");
-			} else if (gamepad2.right_bumper && ringGrabber.getPosition() <= 0.4) {
+			if (gamepad2.right_bumper){
 				ringGrabber.setPosition(0.3);
 			}
+			else if (gamepad2.right_trigger>.1){
+				ringGrabber.setPosition(0);
+			}
 
-			if (gamepad2.left_bumper && toDelivery.getPosition() > 0.2) {
-				telemetry.addData("info", toDelivery.getPosition());
-				telemetry.update();
-				toDelivery.setPosition(0.1);
-			} else if (gamepad2.left_bumper && toDelivery.getPosition() <= 0.2) {
+			if (gamepad2.left_bumper){
 				toDelivery.setPosition(0.8);
 			}
+			else if (gamepad2.left_trigger>.1){
+				toDelivery.setPosition(0);
+			}
+
+
+//			if (gamepad2.right_bumper && ringGrabber.getPosition() >= .1) {
+//				ringGrabber.setPosition(0);
+//				//telemetry.speak("Zero");
+//			} else if (gamepad2.right_bumper && ringGrabber.getPosition() <= 0.4) {
+//				ringGrabber.setPosition(0.3);
+//			}
+
+//			if (gamepad2.left_bumper && toDelivery.getPosition() > 0.2) {
+//				telemetry.addData("info", toDelivery.getPosition());
+//				telemetry.update();
+//				toDelivery.setPosition(0.1);
+//			} else if (gamepad2.left_bumper && toDelivery.getPosition() <= 0.2) {
+//				toDelivery.setPosition(0.8);
+//			}
+
 
 			if (gamepad1.start) {
 				activeLocation.resetAngle();
+				autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
+
 			}
 
 			robotDrive.driveWithPower(speeds[0], speeds[1], speeds[2], speeds[3]);
-
+			sleep(250);
 			telemetry.addData("X value", activeLocation.getFieldX());
 			telemetry.addData("Y value", activeLocation.getFieldY());
 			telemetry.addData("V", leftShooter.getVelocity(AngleUnit.RADIANS));

@@ -15,7 +15,7 @@ public final class Constants {
 
 	public static final double E   = Math.E;
 	public static final double E_1 = E;
-	public static final double E_2 = E * E;
+	public static final double E_2 = E * E; 
 	public static final double E_3 = E * E * E;
 	public static final double E_4 = E * E * E * E;
 	public static final double E_5 = E * E * E * E * E;

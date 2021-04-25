@@ -250,7 +250,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		Imgproc.rectangle(toStudy, maximumRectangle, new Scalar(0, 0, 255), 5);
 		Imgproc.rectangle(input, maximumRectangle, new Scalar(0, 0, 255), 5);
 		Imgproc.rectangle(inputSmaller, maximumRectangle, new Scalar(0, 0, 255), 5);
-		telemetry.addData("Rectangle", maximumRectangle.toString());
+		//telemetry.addData("Rectangle", maximumRectangle.toString());
 
 		// NOTE: the reason that a DIVIDER exists is because YCrCb is unreliable when
 		// differentiating between RED and ORANGE. Thus, the DIVIDER prevents the Pipeline from
@@ -260,7 +260,7 @@ public class RingHeightPipeline extends OpenCvPipeline {
 		// the height of the stack relative to the width, giving us a good measure of how many
 		// rings there are.
 		double aspectRatio = (double) maximumRectangle.height / maximumRectangle.width;
-		telemetry.addData("Aspect Ratio", aspectRatio);
+		//telemetry.addData("Aspect Ratio", aspectRatio);
 		height = (maximumWidth >= MINIMUM_WIDTH ? (aspectRatio > HEIGHT_FACTOR ? Height.C : Height.B) : Height.A);
 
 		// The Above Ternary Expression Might be a little confusing to those with less experience

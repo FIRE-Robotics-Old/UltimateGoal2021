@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
  * PathFinder.
  */
 public class AutoDrivingNew {
+	private final ElapsedTime runtime = new ElapsedTime();
 	/**
 	 * {@link PidfController} for the 3 Axes of Movement: X, Y, and θ
 	 */
@@ -447,8 +448,13 @@ public class AutoDrivingNew {
 		ElapsedTime elapsedTime = new ElapsedTime();
 		double time = 0;
 		while (!arrivedAt(goal, errorRange) && (!hasTimeLimit || (time = elapsedTime.milliseconds()) < milliseconds)) {
+			double endTime= elapsedTime.milliseconds()+30;
+			while (elapsedTime.milliseconds()>endTime){
+
+			}
 			pathFinder.updateEncoderPath();
 			setMotorPowers(calculateDrivePowers(maxVelocity, pathFinder.getEncoderPath()));
+
 		}
 		// turnOff();
 		return (!hasTimeLimit || time < milliseconds);
