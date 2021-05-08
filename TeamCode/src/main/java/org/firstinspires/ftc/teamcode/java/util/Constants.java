@@ -40,7 +40,7 @@ public final class Constants {
 	public static final double robotWidth = 457.2; //jajaja
 		//field constants
 	public static final double backFieldY = 3587.75;
-	public static final double navLineY = 1800;
+	public static final double navLineY = 1950;
 	public static final Coordinate cornerAB = new Coordinate(1828.8,2438.4);
 	public static final Coordinate cornerBC = new Coordinate(1828.8,3048);
 	public static final double ALowerBorder = 1500;
