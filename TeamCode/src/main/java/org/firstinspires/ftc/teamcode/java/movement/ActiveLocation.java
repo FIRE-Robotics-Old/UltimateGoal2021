@@ -136,6 +136,7 @@ public class ActiveLocation implements Runnable {
 		xEncoder = xDirectionEncoder.getCurrentPosition();
 		angle = Angle.fromRadians(-((imu.getAngularOrientation().firstAngle)
 				+ startAngle.getAngleInRadians() - resetAngle.getAngleInRadians()));
+
 		// angle = ((angle + (2 * Math.PI)) % (2 * Math.PI));
 	}
 
@@ -243,6 +244,7 @@ public class ActiveLocation implements Runnable {
 		while (isRunning) {
 			updateSensors();
 			findFieldPosition();
+
 		}
 	}
 }
