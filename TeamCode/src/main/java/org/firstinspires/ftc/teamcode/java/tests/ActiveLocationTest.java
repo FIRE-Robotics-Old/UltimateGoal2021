@@ -63,7 +63,7 @@ public class ActiveLocationTest extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-
+        activeLocation.setStartPosition(300, 300, Angle.fromDegrees(0));
         // run until the end of the match (driver presses STOP)
         try {
             //activeLocation.setStartPosition(600,600, 90);

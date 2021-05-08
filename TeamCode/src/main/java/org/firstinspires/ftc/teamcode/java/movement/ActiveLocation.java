@@ -109,10 +109,10 @@ public class ActiveLocation implements Runnable {
 	 */
 	public void setStartPosition(double startX, double startY, Angle startAngle) {
 		this.startAngle = startAngle;
-		this.internalCurrentY = startY * Math.cos(startAngle.getAngleInRadians()) -
-				startX * Math.sin(startAngle.getAngleInRadians());
-		this.internalCurrentX = startX * Math.cos(startAngle.getAngleInRadians()) +
-				startY * Math.sin(startAngle.getAngleInRadians());
+		this.internalCurrentY = -(startY * Math.cos(startAngle.getAngleInRadians()) -
+				startX * Math.sin(startAngle.getAngleInRadians()));
+		this.internalCurrentX = -(startX * Math.cos(startAngle.getAngleInRadians()) +
+				startY * Math.sin(startAngle.getAngleInRadians()));
 	}
 
 	/**
