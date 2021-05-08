@@ -449,7 +449,7 @@ public class AutoDrivingNew {
 		double time = 0;
 		while (!arrivedAt(goal, errorRange) && (!hasTimeLimit || (time = elapsedTime.milliseconds()) < milliseconds)) {
 			double endTime= elapsedTime.milliseconds()+30;
-			while (elapsedTime.milliseconds()>endTime){
+			while (elapsedTime.milliseconds()<endTime){
 
 			}
 			pathFinder.updateEncoderPath();

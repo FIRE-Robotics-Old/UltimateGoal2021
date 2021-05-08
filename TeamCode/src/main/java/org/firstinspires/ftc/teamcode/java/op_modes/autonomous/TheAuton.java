@@ -123,15 +123,20 @@ public class TheAuton extends LinearOpMode {
 			autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
 			autoDriving.setDefaultErrorRanges(new MovementData(70, 140, Angle.fromDegrees(7, false)));
 			while (opModeIsActive() && !isStopRequested()) {
-//				leftShooter.setVelocity(17.2, AngleUnit.RADIANS);
-//				wobbleGrip.setPosition(0);
-//				autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(-23, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)),2000);
-//				intakeAndDelivery.setPower(Constants.deliveryPower);
-//				sleep(5000);
-//				intakeAndDelivery.setPower(0);
-//				leftShooter.setVelocity(0, AngleUnit.RADIANS);
-//				sleep(sleepTime);
-				if (runtime.milliseconds()<1700) {
+				leftShooter.setVelocity(17.2, AngleUnit.RADIANS);
+				ringGrabber.setPosition(0);
+				wobbleGrip.setPosition(0);
+				autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(-22.5, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(2, false)),3000);
+				driveOff();
+				sleep(3500);
+				intakeAndDelivery.setPower(Constants.deliveryPower);
+				sleep(5000);
+				ringGrabber.setPosition(0.3);
+				sleep(6000);
+				intakeAndDelivery.setPower(0);
+				leftShooter.setVelocity(0, AngleUnit.RADIANS);
+				sleep(sleepTime);
+				if (runtime.milliseconds()<25000) {
 					switch (position) {
 						case A:
 							pathA();
@@ -185,7 +190,9 @@ public class TheAuton extends LinearOpMode {
 	public void pathA() {
 		//autoDriving.stopAt(new MovementData(0, 230, Angle.fromDegrees(12, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
 		//sleep(sleepTime);
-		autoDriving.stopAt(new MovementData(150, Constants.ALowerBorder, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		autoDriving.stopAt(new MovementData(200 , Constants.ALowerBorder+100, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
+		sleep(100);
+		autoDriving.stopAt(new MovementData(400 , Constants.ALowerBorder+100, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(5, false)), 3000);
 		sleep(sleepTime);
 		wobbleGrip.setPosition(1);
 		sleep(sleepTime);
@@ -193,12 +200,12 @@ public class TheAuton extends LinearOpMode {
 	}
 
 	public void pathB() {
-		autoDriving.stopAt(new MovementData(0, Constants.BLowerBorder, Angle.fromDegrees(-4, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		autoDriving.stopAt(new MovementData(0, Constants.BLowerBorder+300, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
 		sleep(sleepTime);
 		//autoDriving.stopAt(new MovementData(-100, Constants.BLowerBorder, Angle.fromDegrees(-4, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
 		wobbleGrip.setPosition(1);
 		sleep(sleepTime);
-		//autoDriving.stopAt(new MovementData(0, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+		autoDriving.stopAt(new MovementData(0, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
 	}
 
 	public void pathC() {
@@ -210,5 +217,12 @@ public class TheAuton extends LinearOpMode {
 		sleep(sleepTime);
 		autoDriving.stopAt(new MovementData(100, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
 		//autoDriving.stopAt(new MovementData(0, Constants.navLineY, Angle.fromDegrees(0, false)), 0.9, new MovementData(70, 140, Angle.fromDegrees(10, false)), 3000);
+	}
+
+	public void driveOff(){
+		frontLeftMotor.setPower(0);
+		frontRightMotor.setPower(0);
+		backLeftMotor.setPower(0);
+		backRightMotor.setPower(0);
 	}
 }

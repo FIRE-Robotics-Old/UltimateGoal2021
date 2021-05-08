@@ -29,7 +29,7 @@ public class TeleopNew extends LinearOpMode {
 	static double maxSpeed = 0.9;
 	private final ElapsedTime runtime = new ElapsedTime();
 	private double minPow = 0.15;
-	private double maxPow = 0.5;
+	private double maxPow = 0.3;
 	private double ppd = (maxPow-minPow)/180;
 	private double slowdist = 1000; //600
 	private AutoDrivingNew autoDriving;
@@ -110,55 +110,66 @@ public class TeleopNew extends LinearOpMode {
 			} else {
 				maxSpeed = 0.9;
 			}
-			if (gamepad1.x){
+			if (gamepad1.x) {
 				frontLeftMotor.setPower(0);
 				frontRightMotor.setPower(0);
 				backLeftMotor.setPower(0);
 				backRightMotor.setPower(0);
 				telemetry.speak("X");
 				sleep(100);
-				autoDriving.stopAt(new MovementData(0, 0, Angle.fromDegrees(-20, false)), 0.9, new MovementData(9000000, 90000000, Angle.fromDegrees(5, false)),5000);
-				telemetry.speak("Over");
-				sleep(100);
-
-//				sleep(100);
-//				if (Math.abs(activeLocation.getAngleInDegrees()+19) <1){
-//					return;
+//				boolean hit = autoDriving.stopAt(new MovementData(0, 0, Angle.fromDegrees(-20, false)), 0.9, new MovementData(9000000, 9000000, Angle.fromDegrees(5, false)),4000);
+//				if (hit){
+//					telemetry.speak("hit");
 //				}
-//				double maxTime = runtime.milliseconds()+3000;
-//				int direct = 1;
-//				double power = 0.1;
-//				double aToMove = -19 - activeLocation.getAngleInDegrees();
-////        if (aToMove > Math.PI) {
-////            aToMove = -(direct - aToMove);
-////        } else if (aToMove < -Math.PI) {
-////            aToMove = -(TAU - Math.abs(aToMove));
-////        }
-//				while ((Math.abs(activeLocation.getAngleInDegrees()+19)>2) /*&& runtime.milliseconds()<maxTime*/) {
-//					//double aToMove = Math.abs(AL.getAngleInDegrees()-angle);
-//					aToMove = -19 - activeLocation.getAngleInDegrees();
-//					if (aToMove > 180) {
-//						direct = 1;
-//						power = minPow + ppd * (360 - aToMove);
-//					} else if (aToMove < -180) {
-//						direct = -1;
-//						power = minPow + ppd * (360 + aToMove);
-//					} else {
-//						direct = (int) -(Math.abs(aToMove) / aToMove);
-//						power = minPow + ppd * (Math.abs(aToMove));
-//					}
-//
-//					frontRightMotor.setPower(-power * direct);
-//					frontLeftMotor.setPower(power * direct);
-//					backRightMotor.setPower(-power * direct);
-//					backLeftMotor.setPower(power * direct);
-					//output("A"+angle,AL.getAngleInDegrees());
+//				telemetry.speak("Over");
+//				sleep(100);
+
+				sleep(100);
+				if (Math.abs(activeLocation.getAngleInDegrees() + 19) < 1) {
+					return;
+				}
+				double maxTime = runtime.milliseconds() + 3000;
+				int direct = 1;
+				double power = 0.1;
+				double aToMove = activeLocation.getAngleInDegrees()+19;
+//        if (aToMove > Math.PI) {
+//            aToMove = -(direct - aToMove);
+//        } else if (aToMove < -Math.PI) {
+//            aToMove = -(TAU - Math.abs(aToMove));
+//        }
+				while (Math.abs(activeLocation.getAngleInDegrees() + 19) > 3) /*&& runtime.milliseconds()<maxTime*/ {
+					//double aToMove = Math.abs(AL.getAngleInDegrees()-angle);
+					//(360+353)%360
+					aToMove = (360+activeLocation.getAngleInDegrees())%360-19;
+					if (aToMove >0) {
+						direct = 1;
+						power = minPow + ppd * (360 - aToMove);
+					} else if (aToMove < 0) {
+						direct = -1;
+						power = minPow + ppd * (360 + aToMove);
+					} else {
+						direct = (int) (Math.abs(aToMove) / aToMove);
+						power = minPow + ppd * (Math.abs(aToMove));
+					}
+
+					frontRightMotor.setPower(-power * direct);
+					frontLeftMotor.setPower(power * direct);
+					backRightMotor.setPower(-power * direct);
+					backLeftMotor.setPower(power * direct);
+					sleep(100);
+				}
 			}
 
 			// Adjust Speed (DPAD UP ⇒ +0.1, down ⇒ -0.1)
-			maxSpeed += (gamepad1.dpad_up ? 0.1 : gamepad1.dpad_down ? -0.1 : 0);
-			// Keeps it between 0.3 and 0.9
-			maxSpeed = Math.min(Math.max(maxSpeed, 0.3), 0.9);
+//			maxSpeed += (gamepad1.dpad_up ? 0.1 : gamepad1.dpad_down ? -0.1 : 0);
+//			// Keeps it between 0.3 and 0.9
+//			maxSpeed = Math.min(Math.max(maxSpeed, 0.3), 0.9);
+			if (gamepad1.dpad_up && maxSpeed < 0.9) {
+				maxSpeed += 0.1;
+			}
+			if (gamepad1.dpad_down && maxSpeed > 0.3) {
+				maxSpeed -= 0.1;
+			}
 
 			// Lower Wobble
 			if (gamepad1.right_bumper) {
@@ -240,8 +251,7 @@ public class TeleopNew extends LinearOpMode {
 
 			robotDrive.driveWithPower(speeds[0], speeds[1], speeds[2], speeds[3]);
 			sleep(250);
-			telemetry.addData("X value", activeLocation.getFieldX());
-			telemetry.addData("Y value", activeLocation.getFieldY());
+			telemetry.addData("speed", maxSpeed);
 			telemetry.addData("V", leftShooter.getVelocity(AngleUnit.RADIANS));
 			telemetry.addData("A", activeLocation.getAngleInDegrees());
 			telemetry.update();
