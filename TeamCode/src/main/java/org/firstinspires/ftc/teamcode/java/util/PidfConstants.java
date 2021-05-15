@@ -31,7 +31,10 @@ public final class PidfConstants {
 	//7th 0.000654249921305
 	//public static final PidfController USDrive = new PidfController(average, 0, 0.0/*2605/*125*/, 0);
 	//eh drive p = 0.00065457
-	public static final PidfController USDrive = new PidfController( 0.00065057, 0, 0.003, 0); ///Curremnt drive
+	//public static final PidfController USDrive = new PidfController( 0.00065072, 0, 0.003, 0); ///Curremnt drive
+	public static final PidfController USDrive = new PidfController( 0, 0, 0, 0);
+
+
 
 	//decent low 0.0005564375
 	//decent high 0.000656
@@ -40,10 +43,13 @@ public final class PidfConstants {
 	//low = 0.00085 strafe p
 	//good low strafe d = 0.03
 	public static final PidfController USStrafe = new PidfController(0.0013, 0, 0.056, 0);
+	//public static final PidfController USStrafe = new PidfController(0, 0, 0, 0);
+
 	//public static final PidfController USTurn = new PidfController(0, 0, 0, 0);
 	//good turn p = 0.26
-	public static final PidfController USTurn = new PidfController(0.28, 0, 0.18, 0);
-	//public static final PidfController USTurn = new PidfController(0.13255, 0, 0./*3695*/, 0); //.35
+	//public static final PidfController USTurn = new PidfController(0.32, -0.0003, 0.22, 0);
+	//ok turn = 0.38, 0, 0.18
+	public static final PidfController USTurn = new PidfController(0, 0, 0./*3695*/, 0); //.35
 	//turn decent low: 0.1205s
 	//turn decent high: 0.1325
 		//Israel
