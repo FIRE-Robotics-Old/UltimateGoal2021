@@ -42,14 +42,14 @@ public final class PidfConstants {
 	//public static final PidfController USStrafe = new PidfController(0, 0, 0, 0);
 	//low = 0.00085 strafe p
 	//good low strafe d = 0.03
-	public static final PidfController USStrafe = new PidfController(0.0013, 0, 0.056, 0);
-	//public static final PidfController USStrafe = new PidfController(0, 0, 0, 0);
+	//public static final PidfController USStrafe = new PidfController(0.0013, 0, 0.056, 0);
+	public static final PidfController USStrafe = new PidfController(0, 0, 0, 0);
 
 	//public static final PidfController USTurn = new PidfController(0, 0, 0, 0);
 	//good turn p = 0.26
 	//public static final PidfController USTurn = new PidfController(0.32, -0.0003, 0.22, 0);
-	//ok turn = 0.38, 0, 0.18
-	public static final PidfController USTurn = new PidfController(0, 0, 0./*3695*/, 0); //.35
+	//ok turn = 0.28, 0, 0.18
+	public static final PidfController USTurn = new PidfController(0.28, 0, 0.18/*3695*/, 0); //.35
 	//turn decent low: 0.1205s
 	//turn decent high: 0.1325
 		//Israel
