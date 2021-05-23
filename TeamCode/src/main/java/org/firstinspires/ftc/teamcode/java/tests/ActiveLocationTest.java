@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.java.movement.ActiveLocation;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.movement.PathFinder;
 import org.firstinspires.ftc.teamcode.java.util.Angle;
-import org.firstinspires.ftc.teamcode.java.util.PidfController;
+
 import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
 
 //To fix error perhaps flip the switch
@@ -34,7 +34,6 @@ public class ActiveLocationTest extends LinearOpMode {
     private PathFinder pathFinder;
     private Thread pathThread;
     private AutoDriving autoDriving;
-    private PidfController PIDF;
 
     //private ElapsedTime runtime = new ElapsedTime();
     @Override
