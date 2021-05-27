@@ -11,7 +11,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.java.movement.*;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDriving;
 import org.firstinspires.ftc.teamcode.java.movement.AutoDrivingNew;
-import org.firstinspires.ftc.teamcode.java.util.*;
+import org.firstinspires.ftc.teamcode.java.util.Angle;
+import org.firstinspires.ftc.teamcode.java.util.MovementData;
+import org.firstinspires.ftc.teamcode.java.util.PositionControl.PidfConstants;
+import org.firstinspires.ftc.teamcode.java.util.RobotHardware;
+
+import static org.firstinspires.ftc.teamcode.java.util.PositionControl.PidfConstants.USDrive;
+import static org.firstinspires.ftc.teamcode.java.util.PositionControl.PidfConstants.USStrafe;
+import static org.firstinspires.ftc.teamcode.java.util.PositionControl.PidfConstants.USTurn;
 
 
 //To fix error perhaps flip the switch
@@ -45,6 +52,9 @@ public class AutoDrivingTest extends LinearOpMode {
     //private ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() {
+    	telemetry.addData("Test", "Test");
+    	telemetry.update();
+//    	sleep(10000);
         location = true;
         robot.init(hardwareMap);
         //  pl = robot.lShooter;
@@ -83,12 +93,14 @@ public class AutoDrivingTest extends LinearOpMode {
         //  PIDFTurn = PidfConstants.USTurn; //new PIDFController(0.35, 0.000000000, 0.395, 0); //38
         //PIDFTurn = new PIDFController(0, 0, 0, 0); //38
 
-        // autoDriving = new AutoDrivingNew(PIDFDrive, PIDFStrafe, PIDFTurn, robot, telemetry);
-        autoDriving.telemetry = telemetry;
+         autoDriving = new AutoDrivingNew(USDrive, USStrafe, USTurn, robot, telemetry);
+//        autoDriving.telemetry = telemetry;
         //autoDriving = new AutoDriving(PIDFDrive, PIDFStrafe, PIDFTurn,robot);
-        telemetry.addData("Average", PidfConstants.average);
+//        telemetry.addData("Average", PidfConstants.average);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+
+//        sleep(1000);
 
         waitForStart();
         runtime.reset();
@@ -100,14 +112,15 @@ public class AutoDrivingTest extends LinearOpMode {
         //while (opModeIsActive()) {
         // run until the end of the match (driver presses STOP)
 //        try {
-        movement = 1;
-        while (opModeIsActive()) {
-            if (movement == 1) {
-                telemetry.addData("Test", "qwertyuytresdcvbhjuytrdbfghtytfvcbvbmgjhfgbfng");
-                telemetry.update();
-            }
-            movement = 2;
-        }
+
+//        movement = 1;
+//        while (opModeIsActive()) {
+//            if (movement == 1) {
+//                telemetry.addData("Test", "qwertyuytresdcvbhjuytrdbfghtytfvcbvbmgjhfgbfng");
+//                telemetry.update();
+//            }
+//            movement = 2;
+//        }
         //AL.setStartPosition(0, 0);
         //PF.setDestination(600,600);
             /*
@@ -118,7 +131,7 @@ public class AutoDrivingTest extends LinearOpMode {
             telemetry.update();
         }*/
         //telemetry.addData("X", AL.getFieldX());
-        //telemetry.addData("Y", AL.getFieldY());
+        //telemetry.addData("Y", AL.getFieldY())r
         //telemetry.addData("Angle", AL.getAngle());
         //telemetry.addData("Path: ", PF.getEncoderPath());
         //telemetry.update();
@@ -127,9 +140,11 @@ public class AutoDrivingTest extends LinearOpMode {
             //frontLeftMotor.setPower(.29);
             autoDriving.setStartLocation(new MovementData(0, 0, Angle.fromDegrees(0)));
 //                autoDriving.setStartLocation(0,0,0);
-            autoDriving.setDefaultErrorRanges(new MovementData(0, 6000, Angle.fromDegrees(180, false)));
+            autoDriving.setDefaultErrorRanges(new MovementData(6000, 6000, Angle.fromDegrees(0, false)));
 //                autoDriving.setDefaultErrorRanges(50,100,7);
-            autoDriving.stopAt(new MovementData(600, 0, Angle.fromDegrees(0, false)), 0.9);
+            autoDriving.stopAt(new MovementData(0, 0, Angle.fromDegrees(30)), 0.9);
+            telemetry.addData("Moving", "true");
+            telemetry.update();
 //                autoDriving.stopAt(new MovementData(0,0,Angle.fromDegrees(0)),.90);
             movement += 1; //??? Might cause issue
             //autoDriving.driveX(600);
