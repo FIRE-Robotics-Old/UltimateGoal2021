@@ -3,15 +3,13 @@ package org.firstinspires.ftc.teamcode.java.util;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-    import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
@@ -29,6 +27,11 @@ public class RobotHardware {
     public DcMotorEx leftShooter = null;
     public DcMotor intakeAndDelivery = null;
 
+
+
+    public CRServo wobbleLift1 = null;
+    public CRServo wobbleLift2 = null;
+    public Servo wobbleGrip    =null;
 
     HardwareMap hardwareMap = null;
     private final ElapsedTime period = new ElapsedTime();
@@ -60,9 +63,13 @@ public class RobotHardware {
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
-        intakeAndDelivery = hardwareMap.get(DcMotor.class, "intakeAndDelivery");
+        intakeAndDelivery = hardwareMap.get(DcMotor.class, "intakeAndDelivery1");
         rightShooter = hardwareMap.get(DcMotorEx.class, "rightShooter");
         leftShooter = hardwareMap.get(DcMotorEx.class, "leftShooter");
+
+        wobbleLift1 = hardwareMap.get(CRServo.class, "wobbleLift1");
+        wobbleLift2 = hardwareMap.get(CRServo.class, "wobbleLift2");
+        wobbleGrip = hardwareMap.get(Servo.class, "wobble");
 
         // Motor Directions
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -70,9 +77,12 @@ public class RobotHardware {
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotor.Direction.FORWARD);
 
+        wobbleLift1.setDirection(DcMotor.Direction.FORWARD);
+        wobbleLift2.setDirection(DcMotor.Direction.REVERSE);
 
-        intakeAndDelivery.setDirection(DcMotor.Direction.REVERSE);
-        rightShooter.setDirection(DcMotor.Direction.REVERSE);
+        intakeAndDelivery.setDirection(DcMotor.Direction.FORWARD);
+
+        rightShooter.setDirection(DcMotor.Direction.FORWARD);
         leftShooter.setDirection(DcMotor.Direction.FORWARD);
 
         frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -93,17 +103,21 @@ public class RobotHardware {
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+
         rightShooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         leftShooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         intakeAndDelivery.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
         // Turn off all motors
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         intakeAndDelivery.setPower(0);
+
         rightShooter.setPower(0);
         leftShooter.setPower(0);
+
+        wobbleLift1.setPower(0);
+        wobbleLift2.setPower(0);
     }
 }
