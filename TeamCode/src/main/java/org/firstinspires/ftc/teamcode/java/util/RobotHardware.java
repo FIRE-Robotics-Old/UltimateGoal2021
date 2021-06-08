@@ -63,9 +63,9 @@ public class RobotHardware {
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
-        intakeAndDelivery = hardwareMap.get(DcMotor.class, "intakeAndDelivery1");
-        rightShooter = hardwareMap.get(DcMotorEx.class, "rightShooter");
-        leftShooter = hardwareMap.get(DcMotorEx.class, "leftShooter");
+        intakeAndDelivery = hardwareMap.get(DcMotor.class, "intakeAndDelivery");
+        rightShooter = hardwareMap.get(DcMotorEx.class, "shooter2");
+        leftShooter = hardwareMap.get(DcMotorEx.class, "shooter1");
 
         wobbleLift1 = hardwareMap.get(CRServo.class, "wobbleLift1");
         wobbleLift2 = hardwareMap.get(CRServo.class, "wobbleLift2");

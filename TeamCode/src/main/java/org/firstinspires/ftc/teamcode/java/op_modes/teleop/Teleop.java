@@ -116,11 +116,14 @@ public class Teleop extends LinearOpMode {
                     maxSpeed -= 0.1;
                 }
                 //wobble lift control
-                if (gamepad2.dpad_down) {
+                if (gamepad2.dpad_up) {
                     liftPower = 1;
                 }
                 else if (gamepad2.dpad_up) {
                     liftPower = -1;
+                }
+                else {
+                    liftPower = 0;
                 }
                 //wobble gripper control
                 if (gamepad2.a && !isGripped && !isGriperPressed) {

@@ -57,6 +57,7 @@ public class BasicRemoteAuton extends LinearOpMode {
 //    private Thread pathThread;
 
     @Override
+    @Deprecated
     public void runOpMode() {
         robot.init(hardwareMap);
 
